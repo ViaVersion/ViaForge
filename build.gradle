@@ -1,0 +1,131 @@
+buildscript {
+
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+
+        maven { url 'https://files.minecraftforge.net/maven' }
+        maven { url 'https://plugins.gradle.org/m2' }
+        maven { url 'https://repo.spongepowered.org/maven' }
+    }
+
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '2.3-SNAPSHOT'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.6-SNAPSHOT'
+        classpath group: 'com.github.jengelman.gradle.plugins', name: 'shadow', version: '4.0.4'
+    }
+}
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "org.spongepowered.mixin"
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "java"
+
+repositories {
+    
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    
+    maven {
+        name = 'spongepowered-repo'
+        url = 'http://repo.spongepowered.org/maven/'
+    }
+}
+
+version = "b1"
+group = "com.github.creeper123123321"
+archivesBaseName = "ViaForge"
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = 'windows-1252'
+
+minecraft {
+    version = "1.12.2-14.23.5.2847"
+    runDir = 'run'
+    mappings = "stable_39"
+    makeObfSourceJar = true
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/java'
+    main.java.srcDirs += '../shared/main/java'
+    main.resources.srcDirs += '../shared/main/resources'
+}
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.spongepowered.org/maven/' }
+}
+
+dependencies {
+    compile("org.spongepowered:mixin:0.7.10-SNAPSHOT") {
+        exclude module: "launchwrapper"
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+mixin {
+    add sourceSets.main, "mixins.viaforge.refmap.json"
+}
+
+jar {
+    manifest.attributes(
+            "MixinConfigs": "mixins.viaforge.json",
+            "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "TweakOrder": 0,
+            "FMLCorePluginContainsFMLMod": "com.github.creeper123123321.viafabric.injection.MixinLoader"
+    )
+}
+
+apply plugin: "idea"
+
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('org.spongepowered:mixin'))
+    }
+
+    exclude 'dummyThing'
+    exclude 'LICENSE.txt'
+
+    classifier = ""
+}
+
+reobf { shadowJar { mappingType = "SEARGE" } }
+tasks.reobfShadowJar.mustRunAfter shadowJar
+
+configurations {
+    external
+    compile.extendsFrom external
+}
+
+build.dependsOn shadowJar

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.github.creeper123123321.viafabric.injection.mixins",
+  "refmap": "mixins.viaforge.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinGuiDisconnected",
+    "MixinGuiMainMenu",
+    "MixinGuiMultiplayer",
+    "MixinGuiScreenAddServer",
+    "MixinGuiScreenServerList",
+    "MixinMinecraft",
+    "MixinNetworkManager",
+    "MixinNetworkManagerChInit"
+  ]
+}
