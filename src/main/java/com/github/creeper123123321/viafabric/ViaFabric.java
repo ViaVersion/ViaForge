@@ -50,6 +50,7 @@ import java.util.logging.Logger;
 public class ViaFabric {
 
     public static int clientSideVersion = 340;
+    public static String lastServer = "";
 
     public static final Logger JLOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaFabric"));
     public static final ExecutorService ASYNC_EXECUTOR;

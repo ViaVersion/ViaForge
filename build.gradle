@@ -35,7 +35,7 @@ repositories {
 }
 
 version = "b1"
-group = "com.github.creeper123123321"
+group = "de.flori2007.viaforge"
 archivesBaseName = "ViaForge"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -97,7 +97,7 @@ jar {
             "MixinConfigs": "mixins.viaforge.json",
             "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": 0,
-            "FMLCorePluginContainsFMLMod": "com.github.creeper123123321.viafabric.injection.MixinLoader"
+            "FMLCorePluginContainsFMLMod": "de.flori2007.viaforge.injection.MixinLoader"
     )
 }
 

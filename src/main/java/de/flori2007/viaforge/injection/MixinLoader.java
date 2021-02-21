@@ -1,4 +1,4 @@
-package com.github.creeper123123321.viafabric.injection;
+package de.flori2007.viaforge.injection;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
