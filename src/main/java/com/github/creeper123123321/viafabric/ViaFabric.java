@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 @Mod(modid = "viaforge", useMetadata = true)
 public class ViaFabric {
 
-    public static int clientSideVersion = 47;
+    public static int clientSideVersion = 340;
 
     public static final Logger JLOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaFabric"));
     public static final ExecutorService ASYNC_EXECUTOR;
