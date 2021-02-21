@@ -1,4 +1,4 @@
-package com.github.creeper123123321.viafabric.injection.mixins;
+package de.flori2007.viaforge.injection.mixins;
 
 import com.github.creeper123123321.viafabric.handler.CommonTransformer;
 import com.github.creeper123123321.viafabric.handler.clientside.VRDecodeHandler;
@@ -27,7 +27,6 @@ public abstract class MixinNetworkManagerChInit {
             channel.pipeline()
                     .addBefore("encoder", CommonTransformer.HANDLER_ENCODER_NAME, new VREncodeHandler(user))
                     .addBefore("decoder", CommonTransformer.HANDLER_DECODER_NAME, new VRDecodeHandler(user));
-            System.out.println("aaaa");
         }
     }
 }

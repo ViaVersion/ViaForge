@@ -1,18 +1,18 @@
-package com.github.creeper123123321.viafabric.injection.mixins;
+package de.flori2007.viaforge.injection.mixins;
 
 import com.github.creeper123123321.viafabric.ViaFabric;
 import com.github.creeper123123321.viafabric.util.ProtocolUtils;
 import de.flori2007.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiScreenServerList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GuiScreenServerList.class)
-public abstract class MixinGuiScreenServerList extends GuiScreen {
+@Mixin(GuiMainMenu.class)
+public abstract class MixinGuiMainMenu extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
     public void injectInitGui(CallbackInfo ci) {

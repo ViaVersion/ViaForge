@@ -1,4 +1,4 @@
-package com.github.creeper123123321.viafabric.injection.mixins;
+package de.flori2007.viaforge.injection.mixins;
 
 import com.github.creeper123123321.viafabric.ViaFabric;
 import net.minecraft.client.Minecraft;
