@@ -22,19 +22,7 @@ apply plugin: "org.spongepowered.mixin"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "java"
 
-repositories {
-    
-    mavenLocal()
-    mavenCentral()
-    jcenter()
-    
-    maven {
-        name = 'spongepowered-repo'
-        url = 'http://repo.spongepowered.org/maven/'
-    }
-}
-
-version = "b1"
+version = "1.0.0.0"
 group = "de.flori2007.viaforge"
 archivesBaseName = "ViaForge"
 
@@ -55,14 +43,16 @@ sourceSets {
     main.resources.srcDirs += '../shared/main/resources'
 }
 
-
 repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
 
     maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.spongepowered.org/maven/' }
+    maven {
+        name = 'spongepowered-repo'
+        url = 'https://repo.spongepowered.org/maven/'
+    }
 }
 
 dependencies {
