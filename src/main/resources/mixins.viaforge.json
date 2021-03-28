@@ -13,5 +13,8 @@
     "MixinMinecraft",
     "MixinNetworkManager",
     "MixinNetworkManagerChInit"
+  ],
+  "client": [
+    "MixinGuiIngameMenu"
   ]
 }

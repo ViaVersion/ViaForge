@@ -46,10 +46,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.logging.Logger;
 
-@Mod(modid = "viaforge", useMetadata = true)
+@Mod(modid = "viaforge")
 public class ViaFabric {
 
-    public static int clientSideVersion = 340;
+    public static int nativeVersion = 340;
+    public static int clientSideVersion;
     public static String lastServer = "";
 
     public static final Logger JLOGGER = new JLoggerToLog4j(LogManager.getLogger("ViaFabric"));
@@ -69,6 +70,7 @@ public class ViaFabric {
     }
 
     public void onInitialize() {
+        clientSideVersion = nativeVersion;
 
         Via.init(ViaManager.builder()
                 .injector(new VRInjector())

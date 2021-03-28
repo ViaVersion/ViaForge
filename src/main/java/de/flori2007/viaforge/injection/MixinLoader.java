@@ -10,6 +10,7 @@ import java.util.Map;
 public class MixinLoader implements IFMLLoadingPlugin {
 
     public MixinLoader() {
+        System.out.println("Starting MixinBootstrap from IFMLLoadingPlugin");
         MixinBootstrap.init();
         Mixins.addConfiguration("mixins.viaforge.json");
         MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
