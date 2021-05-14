@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "de.flori2007.viaforge.injection.mixins",
+  "package": "de.enzaxd.viaforge.injection.mixins",
   "refmap": "mixins.viaforge.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
@@ -11,10 +11,6 @@
     "MixinGuiScreenAddServer",
     "MixinGuiScreenServerList",
     "MixinMinecraft",
-    "MixinNetworkManager",
     "MixinNetworkManagerChInit"
-  ],
-  "client": [
-    "MixinGuiIngameMenu"
   ]
 }

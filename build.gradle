@@ -34,12 +34,12 @@ repositories {
 }
 
 version = "1.0.0.0"
-group = "de.flori2007.viaforge"
+group = "de.enzaxd.viaforge"
 archivesBaseName = "ViaForge"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-compileJava.options.encoding = 'windows-1252'
+compileJava.options.encoding = 'UTF-8'
 
 minecraft {
     version = "1.12.2-14.23.5.2768"
@@ -99,7 +99,7 @@ jar {
             "MixinConfigs": "mixins.viaforge.json",
             "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": 0,
-            "FMLCorePluginContainsFMLMod": "de.flori2007.viaforge.injection.MixinLoader"
+            "FMLCorePluginContainsFMLMod": "de.enzaxd.viaforge.injection.MixinLoader"
     )
 }
 
