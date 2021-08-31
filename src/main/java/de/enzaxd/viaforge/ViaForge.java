@@ -9,8 +9,8 @@ import de.enzaxd.viaforge.loader.VRProviderLoader;
 import de.enzaxd.viaforge.platform.VRInjector;
 import de.enzaxd.viaforge.platform.VRPlatform;
 import de.enzaxd.viaforge.utils.JLoggerToLog4j;
+import io.netty.channel.DefaultEventLoopGroup;
 import io.netty.channel.EventLoop;
-import io.netty.channel.local.LocalEventLoopGroup;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
@@ -25,26 +25,23 @@ public class ViaForge {
     public final static int SHARED_VERSION = 340;
 
     private static final ViaForge instance = new ViaForge();
+    private final Logger jLogger = new JLoggerToLog4j(LogManager.getLogger("ViaForge"));
+    private final CompletableFuture<Void> initFuture = new CompletableFuture<>();
+    private ExecutorService asyncExecutor;
+    private EventLoop eventLoop;
+    private File file;
+    private int version;
+    private String lastServer;
 
     public static ViaForge getInstance() {
         return instance;
     }
 
-    private final Logger jLogger = new JLoggerToLog4j(LogManager.getLogger("ViaForge"));
-    private final CompletableFuture<Void> initFuture = new CompletableFuture<>();
-
-    private ExecutorService asyncExecutor;
-    private EventLoop eventLoop;
-
-    private File file;
-    private int version;
-    private String lastServer;
-
     public void start() {
         ThreadFactory factory = new ThreadFactoryBuilder().setDaemon(true).setNameFormat("ViaForge-%d").build();
         asyncExecutor = Executors.newFixedThreadPool(8, factory);
 
-        eventLoop = new LocalEventLoopGroup(1, factory).next();
+        eventLoop = new DefaultEventLoopGroup(1, factory).next();
         eventLoop.submit(initFuture::join);
 
         setVersion(SHARED_VERSION);
@@ -54,10 +51,10 @@ public class ViaForge {
 
         Via.init(
                 ViaManagerImpl.builder()
-                .injector(new VRInjector())
-                .loader(new VRProviderLoader())
-                .platform(new VRPlatform(file))
-                .build()
+                        .injector(new VRInjector())
+                        .loader(new VRProviderLoader())
+                        .platform(new VRPlatform(file))
+                        .build()
         );
 
         MappingDataLoader.enableMappingsCache();
@@ -88,22 +85,23 @@ public class ViaForge {
         return file;
     }
 
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     public String getLastServer() {
         return lastServer;
+    }
+
+    public void setLastServer(String lastServer) {
+        this.lastServer = lastServer;
     }
 
     public int getVersion() {
         return version;
     }
+
     public void setVersion(int version) {
         this.version = version;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public void setLastServer(String lastServer) {
-        this.lastServer = lastServer;
     }
 }
