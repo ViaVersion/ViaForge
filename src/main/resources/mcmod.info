@@ -1,0 +1,18 @@
+[
+    {
+        "modid": "viaforge",
+        "name": "Viaforge",
+        "description": "Client-side loader for ViaVersion and ViaBackwards.",
+        "version": "1.0.0",
+        "mcversion": "1.12.2",
+        "url": "",
+        "updateUrl": "",
+        "authorList": [
+            "enzaxd"
+        ],
+        "credits": "",
+        "logoFile": "",
+        "screenshots": [],
+        "dependencies": []
+    }
+]

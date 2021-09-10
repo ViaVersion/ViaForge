@@ -1,16 +1,18 @@
 {
-  "required": true,
-  "package": "de.enzaxd.viaforge.injection.mixins",
-  "refmap": "mixins.viaforge.refmap.json",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "MixinGuiConnecting",
-    "MixinGuiDisconnected",
-    "MixinGuiMainMenu",
-    "MixinGuiMultiplayer",
-    "MixinGuiScreenAddServer",
-    "MixinGuiScreenServerList",
-    "MixinMinecraft",
-    "MixinNetworkManagerChInit"
-  ]
+    "required": true,
+    "minVersion": "0.8.3",
+    "compatibilityLevel": "JAVA_8",
+    "package": "de.enzaxd.viaforge.injection.mixins",
+    "refmap": "mixins.viaforge.refmap.json",
+    "mixins": [
+        "MixinGuiConnecting",
+        "MixinGuiDisconnected",
+        "MixinGuiMainMenu",
+        "MixinGuiMultiplayer",
+        "MixinGuiScreenAddServer",
+        "MixinGuiScreenServerList",
+        "MixinMinecraft",
+        "MixinNetworkManagerChInit"
+    ],
+    "verbose": true
 }
