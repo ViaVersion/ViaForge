@@ -22,18 +22,18 @@ apply plugin: "org.spongepowered.mixin"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "java"
 
-version = "1.0.0.0"
-group = "de.enzaxd.viaforge"
-archivesBaseName = "ViaForge"
+version = "${minecraft_version}-${mod_version}"
+group = "${mod_base_package}.${mod_id}"
+archivesBaseName = mod_id
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
 
 minecraft {
-    version = "1.8.9-11.15.1.2318-1.8.9"
+    version = "${minecraft_version}-${forge_version}-${minecraft_version}"
     runDir = "run"
-    mappings = "stable_22"
+    mappings = "${mappings_channel}_${mappings_version}"
     makeObfSourceJar = true
 }
 
@@ -48,17 +48,33 @@ repositories {
     mavenCentral()
     jcenter()
 
-    maven { url 'https://jitpack.io' }
+    maven {
+        url 'https://jitpack.io'
+    }
     maven {
         name = 'spongepowered-repo'
         url = 'https://repo.spongepowered.org/maven/'
     }
+
+    maven {
+        url = "https://repo.viaversion.com"
+    }
+}
+
+configurations {
+    include
+    implementation.extendsFrom(include)
 }
 
 dependencies {
-    compile("org.spongepowered:mixin:0.7.10-SNAPSHOT") {
+    compile ("org.spongepowered:mixin:0.7.10-SNAPSHOT") {
         exclude module: "launchwrapper"
     }
+    include "com.viaversion:viaversion:${viaversion_version}"
+    include "com.viaversion:viabackwards:${viabackwards_version}"
+    include "com.viaversion:viarewind-fabric:${viarewind_version}"
+    include "org.yaml:snakeyaml:1.29"
+    include "org.spongepowered:mixin:0.7.10-SNAPSHOT"
 }
 
 processResources {
@@ -79,7 +95,7 @@ processResources {
 }
 
 mixin {
-    add sourceSets.main, "mixins.viaforge.refmap.json"
+    add sourceSets.main, "mixins.${mod_id}.refmap.json"
 }
 
 jar {
@@ -100,22 +116,39 @@ idea {
 }
 
 shadowJar {
-    dependencies {
-        include(dependency('org.spongepowered:mixin'))
-    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    configurations = [project.configurations.include]
+    exclude "LICENSE.md"
+    exclude "dummyThing"
+    exclude "**/module-info.class"
+    exclude "*.so"
+    exclude "*.dylib"
+    exclude "*.dll"
+    exclude "*.jnilib"
+    exclude "ibxm/**"
+    exclude "com/jcraft/**"
+    exclude "org/lwjgl/**"
+    exclude "net/java/**"
 
-    exclude 'dummyThing'
-    exclude 'LICENSE.txt'
+    exclude "META-INF/proguard/**"
+    exclude "META-INF/maven/**"
+    exclude "META-INF/versions/**"
+    exclude "META-INF/com.android.tools/**"
 
-    classifier = ""
+    exclude "fabric.mod.json"
+    exclude "bungee.yml"
+    exclude "plugin.yml"
+    exclude "velocity-plugin.json"
+    exclude "LICENSE.txt"
+
+    exclude "mcmod.info"
+
+    exclude "org/apache/**"
+    exclude "com/google/**"
 }
 
-reobf { shadowJar { mappingType = "SEARGE" } }
-tasks.reobfShadowJar.mustRunAfter shadowJar
-
-configurations {
-    external
-    compile.extendsFrom external
+reobf {
+    shadowJar {}
 }
 
-build.dependsOn shadowJar
+jar.dependsOn("shadowJar")

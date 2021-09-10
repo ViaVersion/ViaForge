@@ -2,7 +2,7 @@ package de.enzaxd.viaforge.injection.mixins;
 
 import de.enzaxd.viaforge.ViaForge;
 import de.enzaxd.viaforge.gui.GuiProtocolSelector;
-import de.enzaxd.viaforge.protocols.ProtocolCollection;
+import de.enzaxd.viaforge.protocol.ProtocolCollection;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
