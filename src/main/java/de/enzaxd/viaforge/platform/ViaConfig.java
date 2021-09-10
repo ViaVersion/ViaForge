@@ -8,14 +8,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class VRViaConfig extends AbstractViaConfig {
+public class ViaConfig extends AbstractViaConfig {
     // Based on Sponge ViaVersion
     private static List<String> UNSUPPORTED = Arrays.asList("anti-xray-patch", "bungee-ping-interval",
             "bungee-ping-save", "bungee-servers", "quick-move-action-fix", "nms-player-ticking",
             "velocity-ping-interval", "velocity-ping-save", "velocity-servers",
             "blockconnection-method", "change-1_9-hitbox", "change-1_14-hitbox");
 
-    public VRViaConfig(File configFile) {
+    public ViaConfig(File configFile) {
         super(configFile);
         // Load config
         reloadConfig();

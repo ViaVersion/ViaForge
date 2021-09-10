@@ -1,6 +1,5 @@
 package de.enzaxd.viaforge.platform;
 
-import com.viaversion.viaversion.api.ViaAPI;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.configuration.ConfigurationProvider;
 import com.viaversion.viaversion.api.configuration.ViaVersionConfig;
@@ -24,19 +23,19 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class VRPlatform implements ViaPlatform<UUID> {
+public class Platform implements ViaPlatform<UUID> {
 
     private final Logger logger = new JLoggerToLog4j(LogManager.getLogger("ViaVersion"));
 
-    private final VRViaConfig config;
+    private final ViaConfig config;
     private final File dataFolder;
-    private final ViaAPI<UUID> api;
+    private final com.viaversion.viaversion.api.ViaAPI api;
 
-    public VRPlatform(File dataFolder) {
+    public Platform(File dataFolder) {
         Path configDir = dataFolder.toPath().resolve("ViaVersion");
-        config = new VRViaConfig(configDir.resolve("viaversion.yml").toFile());
+        config = new ViaConfig(configDir.resolve("viaversion.yml").toFile());
         this.dataFolder = configDir.toFile();
-        api = new VRViaAPI();
+        api = new ViaAPI();
     }
 
     public static String legacyToJson(String legacy) {
@@ -125,7 +124,7 @@ public class VRPlatform implements ViaPlatform<UUID> {
     }
 
     @Override
-    public ViaAPI<UUID> getApi() {
+    public com.viaversion.viaversion.api.ViaAPI getApi() {
         return api;
     }
 

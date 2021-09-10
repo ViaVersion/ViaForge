@@ -4,10 +4,10 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
-import de.enzaxd.viaforge.loader.VRBackwardsLoader;
-import de.enzaxd.viaforge.loader.VRProviderLoader;
-import de.enzaxd.viaforge.platform.VRInjector;
-import de.enzaxd.viaforge.platform.VRPlatform;
+import de.enzaxd.viaforge.loader.BackwardsLoader;
+import de.enzaxd.viaforge.platform.Injector;
+import de.enzaxd.viaforge.platform.Platform;
+import de.enzaxd.viaforge.platform.ProviderLoader;
 import de.enzaxd.viaforge.util.JLoggerToLog4j;
 import io.netty.channel.DefaultEventLoopGroup;
 import io.netty.channel.EventLoop;
@@ -51,16 +51,16 @@ public class ViaForge {
 
         Via.init(
                 ViaManagerImpl.builder()
-                        .injector(new VRInjector())
-                        .loader(new VRProviderLoader())
-                        .platform(new VRPlatform(file))
+                        .injector(new Injector())
+                        .loader(new ProviderLoader())
+                        .platform(new Platform(file))
                         .build()
         );
 
         MappingDataLoader.enableMappingsCache();
         ((ViaManagerImpl) Via.getManager()).init();
 
-        new VRBackwardsLoader(file);
+        new BackwardsLoader(file);
 
         initFuture.complete(null);
     }

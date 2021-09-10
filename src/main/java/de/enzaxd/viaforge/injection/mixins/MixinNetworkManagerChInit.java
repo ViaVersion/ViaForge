@@ -5,8 +5,8 @@ import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.enzaxd.viaforge.ViaForge;
 import de.enzaxd.viaforge.handler.CommonTransformer;
-import de.enzaxd.viaforge.handler.VRDecodeHandler;
-import de.enzaxd.viaforge.handler.VREncodeHandler;
+import de.enzaxd.viaforge.handler.DecodeHandler;
+import de.enzaxd.viaforge.handler.EncodeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,8 +25,8 @@ public abstract class MixinNetworkManagerChInit {
             new ProtocolPipelineImpl(user);
 
             channel.pipeline()
-                    .addBefore("encoder", CommonTransformer.HANDLER_ENCODER_NAME, new VREncodeHandler(user))
-                    .addBefore("decoder", CommonTransformer.HANDLER_DECODER_NAME, new VRDecodeHandler(user));
+                    .addBefore("encoder", CommonTransformer.HANDLER_ENCODER_NAME, new EncodeHandler(user))
+                    .addBefore("decoder", CommonTransformer.HANDLER_DECODER_NAME, new DecodeHandler(user));
         }
     }
 }

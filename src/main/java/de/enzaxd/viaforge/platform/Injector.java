@@ -5,7 +5,7 @@ import com.viaversion.viaversion.libs.gson.JsonObject;
 import de.enzaxd.viaforge.ViaForge;
 import de.enzaxd.viaforge.handler.CommonTransformer;
 
-public class VRInjector implements ViaInjector {
+public class Injector implements ViaInjector {
 
     @Override
     public void inject() {

@@ -1,4 +1,4 @@
-package de.enzaxd.viaforge.loader;
+package de.enzaxd.viaforge.platform;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -9,7 +9,7 @@ import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.enzaxd.viaforge.ViaForge;
 
-public class VRProviderLoader implements ViaPlatformLoader {
+public class ProviderLoader implements ViaPlatformLoader {
 
     @Override
     public void load() {

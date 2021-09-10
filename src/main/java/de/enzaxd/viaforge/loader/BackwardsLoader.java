@@ -6,10 +6,10 @@ import de.enzaxd.viaforge.ViaForge;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class VRBackwardsLoader implements ViaBackwardsPlatform {
+public class BackwardsLoader implements ViaBackwardsPlatform {
     private final File file;
 
-    public VRBackwardsLoader(final File file) {
+    public BackwardsLoader(final File file) {
         this.init(this.file = new File(file, "ViaBackwards"));
     }
 
