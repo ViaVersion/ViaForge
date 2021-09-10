@@ -1,4 +1,4 @@
-package de.enzaxd.viaforge.protocols;
+package de.enzaxd.viaforge.protocol;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 

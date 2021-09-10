@@ -2,7 +2,7 @@ package de.enzaxd.viaforge.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import de.enzaxd.viaforge.ViaForge;
-import de.enzaxd.viaforge.protocols.ProtocolCollection;
+import de.enzaxd.viaforge.protocol.ProtocolCollection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -93,7 +93,7 @@ public class GuiProtocolSelector extends GuiScreen {
                             ProtocolCollection.values()[i].getVersion().getVersion() ? ChatFormatting.GREEN.toString() :
                             ChatFormatting.DARK_RED.toString()) + ProtocolCollection.getProtocolById(
                     ProtocolCollection.values()[i].getVersion().getVersion()).getName(),
-                    width / 2, i2 + 2, -1);
+                    width / 2, i2, -1);
         }
     }
 }

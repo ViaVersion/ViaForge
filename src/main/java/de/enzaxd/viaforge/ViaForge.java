@@ -8,7 +8,7 @@ import de.enzaxd.viaforge.loader.VRBackwardsLoader;
 import de.enzaxd.viaforge.loader.VRProviderLoader;
 import de.enzaxd.viaforge.platform.VRInjector;
 import de.enzaxd.viaforge.platform.VRPlatform;
-import de.enzaxd.viaforge.utils.JLoggerToLog4j;
+import de.enzaxd.viaforge.util.JLoggerToLog4j;
 import io.netty.channel.DefaultEventLoopGroup;
 import io.netty.channel.EventLoop;
 import org.apache.logging.log4j.LogManager;

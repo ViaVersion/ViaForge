@@ -1,4 +1,4 @@
-package de.enzaxd.viaforge.utils;
+package de.enzaxd.viaforge.util;
 
 import com.viaversion.viaversion.api.platform.PlatformTask;
 

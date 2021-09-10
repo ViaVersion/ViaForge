@@ -14,58 +14,29 @@ archivesBaseName = mod_id
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 compileJava.options.encoding = "UTF-8"
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    // The mappings can be changed at any time and must be in the following format.
-    // Channel:   Version:
-    // snapshot   YYYYMMDD          Snapshot are built nightly.
-    // stable     #                 Stables are built at the discretion of the MCP team.
-    // official   MCVersion         Official field/method names from Mojang mapping files
-    // parchment  YYYY.MM.DD-MCVer  Javadocs and parameters layered on top of Mojmaps from the ParchmentMC team.
-    //
-    // You must be aware of the Mojang license when using the 'official' / 'parchment' mappings.
-    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-    //
-    // Use non-default mappings at your own risk. They may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: mappings_channel, version: mappings_version
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file("run")
 
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
             property "forge.logging.console.level", "debug"
 
             // mixin
             property 'mixin.debug.export', 'true'
             property "mixin.hotSwap", "true"
             property "fml.coreMods.load", "de.enzaxd.viaforge.injection.MixinLoader"
-            // These arguments allow for optional authentication with Mojang servers.
-            // If you want to authenticate, put these properties in GRADLE_HOME/gradle.properties.
-            // By default, this is C:\Users\<your username>\.gradle\gradle.properties on Windows or ~/.gradle/gradle.properties on Linux/MacOS.
-            if (project.hasProperty('mc_uuid')) {
-                // Your UUID, trimmed / without the dashes
+
+            if (project.hasProperty('mc_uuid'))
                 args '--uuid', project.getProperty('mc_uuid')
-            }
-            if (project.hasProperty('mc_username')) {
-                // Your Minecraft in-game username, not email
+
+            if (project.hasProperty('mc_username'))
                 args '--username', project.getProperty('mc_username')
-            }
-            if (project.hasProperty('mc_accessToken')) {
-                // Your current access token. When it expires, you need to retrieve a new one and regenerate your run configurations.
-                // You may be able to find it in your .minecraft folder in launcher_accounts.json or launcher_profiles.json.
+
+            if (project.hasProperty('mc_accessToken'))
                 args '--accessToken', project.getProperty('mc_accessToken')
-            }
 
             args '-mixin.config=' + 'mixins.' + project.getProperty('mod_id') + '.json'
 
@@ -91,32 +62,11 @@ configurations {
 }
 
 dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then "net.minecraft" it is assumed
-    // that the dep is a ForgeGradle "patcher" dependency. And it"s patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
-
-    // Real examples
-    // compile "com.mod-buildcraft:buildcraft:6.0.8:dev"  // adds buildcraft to the dev env
-    // compile "com.googlecode.efficient-java-matrix-library:ejml:0.24" // adds ejml to the dev env
-
-    // The "provided" configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided "com.mod-buildcraft:buildcraft:6.0.8:dev"
-
-    // These dependencies get remapped to your current MCP mappings
-    // deobf "com.mod-buildcraft:buildcraft:6.0.8:dev"
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
     include "org.spongepowered:mixin:${mixin_version}"
-    include "com.viaversion:viaversion:4.0.2-SNAPSHOT"
-    include "com.viaversion:viabackwards:4.0.2-SNAPSHOT"
+    include "com.viaversion:viaversion:${viaversion_version}"
+    include "com.viaversion:viabackwards:${viabackwards_version}"
     include "org.yaml:snakeyaml:1.29"
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
