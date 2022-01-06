@@ -1,6 +1,6 @@
 {
     "required": true,
-    "minVersion": "0.8.3",
+    "minVersion": "0.7.5",
     "compatibilityLevel": "JAVA_8",
     "package": "de.enzaxd.viaforge.injection.mixins",
     "refmap": "mixins.viaforge.refmap.json",
