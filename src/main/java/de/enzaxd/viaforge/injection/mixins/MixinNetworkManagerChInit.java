@@ -19,7 +19,7 @@ public abstract class MixinNetworkManagerChInit {
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(Channel channel, CallbackInfo ci) {
-        if (channel instanceof SocketChannel && ViaForge.getInstance().getVersion() != ViaForge.SHARED_VERSION) {
+        if (channel instanceof SocketChannel && ViaForge.getInstance().getProtocol().getVersion() != ViaForge.SHARED_VERSION) {
 
             UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);

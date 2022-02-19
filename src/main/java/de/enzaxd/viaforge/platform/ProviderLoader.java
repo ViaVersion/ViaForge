@@ -18,7 +18,7 @@ public class ProviderLoader implements ViaPlatformLoader {
             @Override
             public int getClosestServerProtocol(UserConnection connection) throws Exception {
                 if (connection.isClientSide())
-                    return ViaForge.getInstance().getVersion();
+                    return ViaForge.getInstance().getProtocol().getVersion();
                 return super.getClosestServerProtocol(connection);
             }
         });

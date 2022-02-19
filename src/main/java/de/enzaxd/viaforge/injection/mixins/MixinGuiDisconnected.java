@@ -2,7 +2,6 @@ package de.enzaxd.viaforge.injection.mixins;
 
 import de.enzaxd.viaforge.ViaForge;
 import de.enzaxd.viaforge.gui.GuiProtocolSelector;
-import de.enzaxd.viaforge.protocol.ProtocolCollection;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
@@ -17,7 +16,7 @@ public abstract class MixinGuiDisconnected extends GuiScreen {
     @Inject(method = "initGui", at = @At("RETURN"))
     public void injectInitGui(CallbackInfo ci) {
         buttonList.add(new GuiButton(1337, 5, 6, 98, 20,
-                ProtocolCollection.getProtocolById(ViaForge.getInstance().getVersion()).getName()));
+                ViaForge.getInstance().getProtocol().getName()));
         buttonList.add(new GuiButton(1338, 5, 28, 98, 20, "Reconnect"));
     }
 

@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.enzaxd.viaforge.loader.BackwardsLoader;
 import de.enzaxd.viaforge.loader.RewindLoader;
 import de.enzaxd.viaforge.platform.Injector;
@@ -15,6 +16,8 @@ import io.netty.channel.local.LocalEventLoopGroup;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +26,8 @@ import java.util.logging.Logger;
 
 public class ViaForge {
 
-    public final static int SHARED_VERSION = 47;
+    public final static ProtocolVersion SHARED_PROTOCOL = ProtocolVersion.v1_8;
+    public final static int SHARED_VERSION = SHARED_PROTOCOL.getVersion();
 
     private static final ViaForge instance = new ViaForge();
 
@@ -38,8 +42,13 @@ public class ViaForge {
     private EventLoop eventLoop;
 
     private File file;
-    private int version;
+    private ProtocolVersion protocol;
     private String lastServer;
+
+    /**
+     * [ProtocolVersion.getProtocols()] will create an unmodifiable list every time called and will cause performance issues.
+     */
+    private List<ProtocolVersion> protocolVersions;
 
     public void start() {
         ThreadFactory factory = new ThreadFactoryBuilder().setDaemon(true).setNameFormat("ViaForge-%d").build();
@@ -48,17 +57,17 @@ public class ViaForge {
         eventLoop = new LocalEventLoopGroup(1, factory).next();
         eventLoop.submit(initFuture::join);
 
-        setVersion(SHARED_VERSION);
+        setProtocol(SHARED_PROTOCOL);
         this.file = new File("ViaForge");
         if (this.file.mkdir())
             this.getjLogger().info("Creating ViaForge Folder");
 
         Via.init(
                 ViaManagerImpl.builder()
-                .injector(new Injector())
-                .loader(new ProviderLoader())
-                .platform(new Platform(file))
-                .build()
+                        .injector(new Injector())
+                        .loader(new ProviderLoader())
+                        .platform(new Platform(file))
+                        .build()
         );
 
         MappingDataLoader.enableMappingsCache();
@@ -68,6 +77,10 @@ public class ViaForge {
         new RewindLoader(file);
 
         initFuture.complete(null);
+
+        protocolVersions = new ArrayList<>(ProtocolVersion.getProtocols());
+        protocolVersions.remove(ProtocolVersion.unknown); // remove unknown protocol
+        protocolVersions.sort((o1, o2) -> o2.getVersion() - o1.getVersion());
     }
 
     public Logger getjLogger() {
@@ -94,12 +107,12 @@ public class ViaForge {
         return lastServer;
     }
 
-    public int getVersion() {
-        return version;
+    public ProtocolVersion getProtocol() {
+        return protocol;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setProtocol(ProtocolVersion protocolIn) {
+        this.protocol = protocolIn;
     }
 
     public void setFile(File file) {
@@ -108,5 +121,9 @@ public class ViaForge {
 
     public void setLastServer(String lastServer) {
         this.lastServer = lastServer;
+    }
+
+    public List<ProtocolVersion> getProtocols() {
+        return protocolVersions;
     }
 }

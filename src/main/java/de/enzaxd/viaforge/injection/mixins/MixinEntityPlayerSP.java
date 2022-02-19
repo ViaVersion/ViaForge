@@ -31,8 +31,7 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
     @Redirect(method = "onUpdateWalkingPlayer", at = @At(value = "INVOKE", target =
             "Lnet/minecraft/client/network/NetHandlerPlayClient;addToSendQueue(Lnet/minecraft/network/Packet;)V"))
     public void redirectOnUpdateWalkingPlayer(NetHandlerPlayClient netHandlerPlayClient, Packet p_addToSendQueue_1_) {
-        if (p_addToSendQueue_1_ instanceof C03PacketPlayer && ViaForge.getInstance().getVersion() !=
-        ViaForge.SHARED_VERSION) {
+        if (p_addToSendQueue_1_ instanceof C03PacketPlayer && ViaForge.getInstance().getProtocol().getVersion() != ViaForge.SHARED_VERSION) {
             if (lastOnGround != onGround)
                 netHandlerPlayClient.addToSendQueue(p_addToSendQueue_1_);
         } else

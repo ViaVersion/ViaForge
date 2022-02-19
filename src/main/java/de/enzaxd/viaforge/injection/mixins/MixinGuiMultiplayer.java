@@ -2,7 +2,6 @@ package de.enzaxd.viaforge.injection.mixins;
 
 import de.enzaxd.viaforge.ViaForge;
 import de.enzaxd.viaforge.gui.GuiProtocolSelector;
-import de.enzaxd.viaforge.protocol.ProtocolCollection;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,7 +16,7 @@ public abstract class MixinGuiMultiplayer extends GuiScreen {
     @Inject(method = "initGui", at = @At("RETURN"))
     public void injectInitGui(CallbackInfo ci) {
         buttonList.add(new GuiButton(1337, 5, 38, 98, 20,
-                ProtocolCollection.getProtocolById(ViaForge.getInstance().getVersion()).getName()));
+                ViaForge.getInstance().getProtocol().getName()));
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))
