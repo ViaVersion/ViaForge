@@ -27,8 +27,8 @@ jobs:
       - name: build
         run: ./gradlew build
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '8' }}
+        if: ${{ runner.os == 'Windows' && matrix.java == '8' }}
         uses: actions/upload-artifact@v2
         with:
           name: Viaforge-Build
-          path: build/libs
+          path: build/libs/
