@@ -9,7 +9,6 @@ jobs:
         java: [
           8
         ]
-        # and run on both Linux and Windows
         os: [windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
