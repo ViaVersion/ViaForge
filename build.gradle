@@ -1,64 +1,59 @@
-buildscript {
-
-    repositories {
-        jcenter()
-        mavenLocal()
-        mavenCentral()
-
-        maven { url 'https://files.minecraftforge.net/maven' }
-        maven { url 'https://plugins.gradle.org/m2' }
-        maven { url 'https://repo.spongepowered.org/maven' }
-    }
-
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '2.1-SNAPSHOT'
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.6-SNAPSHOT'
-        classpath group: 'com.github.jengelman.gradle.plugins', name: 'shadow', version: '4.0.4'
-    }
+plugins {
+    id "java"
+    id "idea"
+    id "maven-publish"
+    id "net.minecraftforge.gradle" version "5.1.+"
+    id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
-
-apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: "org.spongepowered.mixin"
-apply plugin: "com.github.johnrengelman.shadow"
-apply plugin: "java"
 
 version = "${minecraft_version}-${mod_version}"
 group = "${mod_base_package}.${mod_id}"
 archivesBaseName = mod_id
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-compileJava.options.encoding = 'UTF-8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+compileJava.options.encoding = "UTF-8"
 
 minecraft {
-    version = "${minecraft_version}-${forge_version}-${minecraft_version}"
-    runDir = "run"
-    mappings = "${mappings_channel}_${mappings_version}"
-    makeObfSourceJar = true
+    mappings channel: mappings_channel, version: mappings_version
+
+    runs {
+        client {
+            workingDirectory project.file("run")
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property "forge.logging.console.level", "debug"
+
+            // mixin
+            property 'mixin.debug.export', 'true'
+            property "mixin.hotSwap", "true"
+            property "fml.coreMods.load", "de.enzaxd.viaforge.injection.MixinLoader"
+
+            if (project.hasProperty('mc_uuid'))
+                args '--uuid', project.getProperty('mc_uuid')
+
+            if (project.hasProperty('mc_username'))
+                args '--username', project.getProperty('mc_username')
+
+            if (project.hasProperty('mc_accessToken'))
+                args '--accessToken', project.getProperty('mc_accessToken')
+
+            args '-mixin.config=' + 'mixins.' + project.getProperty('mod_id') + '.json'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+    }    
 }
 
-sourceSets {
-    main.java.srcDirs += 'src/main/java'
-    main.java.srcDirs += '../shared/main/java'
-    main.resources.srcDirs += '../shared/main/resources'
-}
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
-
-    maven {
-        url 'https://jitpack.io'
-    }
-    maven {
-        name = 'spongepowered-repo'
-        url = 'https://repo.spongepowered.org/maven/'
-    }
-
-    maven {
-        url = "https://repo.viaversion.com"
-    }
+    maven { url = "https://repo.spongepowered.org/repository/maven-public" }
+    maven { url = "https://repo.viaversion.com" }
 }
 
 configurations {
@@ -67,32 +62,15 @@ configurations {
 }
 
 dependencies {
-    compile ("org.spongepowered:mixin:0.7.10-SNAPSHOT") {
-        exclude module: "launchwrapper"
-    }
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    include "org.spongepowered:mixin:${mixin_version}"
     include "com.viaversion:viaversion:${viaversion_version}"
     include "com.viaversion:viabackwards:${viabackwards_version}"
-    include "com.viaversion:viarewind-fabric:${viarewind_version}"
     include "org.yaml:snakeyaml:1.29"
-    include "org.spongepowered:mixin:0.7.10-SNAPSHOT"
-}
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-
-
-rename '(.+_at.cfg)', 'META-INF/$1'
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
 
 mixin {
@@ -101,22 +79,23 @@ mixin {
 
 jar {
     manifest.attributes(
-            "MixinConfigs": "mixins.viaforge.json",
-            "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-            "TweakOrder": 0,
-            "FMLCorePluginContainsFMLMod": "de.enzaxd.viaforge.injection.MixinLoader"
+            "Specification-Title": "viaforge",
+            "Specification-Vendor": "viaforge",
+            "Specification-Version": "1",
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${archiveVersion}",
+            "Implementation-Vendor" :"viaforge",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
+            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "TweakOrder": "0",
+            "FMLCorePluginContainsFMLMod": "de.enzaxd.viaforge.injection.MixinLoader",
+            "MixinConfigs": "mixins.${mod_id}.json"
     )
-}
-
-apply plugin: "idea"
-
-idea {
-    module {
-        inheritOutputDirs = true
-    }
+    enabled = false
 }
 
 shadowJar {
+    archiveFileName = jar.archiveFileName
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     configurations = [project.configurations.include]
     exclude "LICENSE.md"
@@ -141,10 +120,6 @@ shadowJar {
     exclude "plugin.yml"
     exclude "velocity-plugin.json"
     exclude "LICENSE.txt"
-    exclude "mcmod.info"
-
-    exclude "org/apache/**"
-    exclude "com/google/**"
 }
 
 reobf {
