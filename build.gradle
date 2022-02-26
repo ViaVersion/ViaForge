@@ -141,6 +141,7 @@ shadowJar {
     exclude "velocity-plugin.json"
     exclude "LICENSE.txt"
 
+    exclude "mcmod.info"
 
     exclude "org/apache/**"
     exclude "com/google/**"
