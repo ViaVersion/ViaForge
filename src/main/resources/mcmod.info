@@ -9,7 +9,7 @@
       "updateJSON": "https://raw.githubusercontent.com/FlorianMichael/ViaForge/forge-1.12.2/updates.json",
       "authorList": ["EnZaXD","Flori2007"],
       "credits": "Everyone who helped with this mod!",
-      "dependencies": [],
+      "dependencies": ["VersionChecker"],
       "logoFile": "",
       "screenshots": []
     }
