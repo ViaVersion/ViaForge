@@ -81,9 +81,6 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-    }
 
 
     rename '(.+_at.cfg)', 'META-INF/$1'
