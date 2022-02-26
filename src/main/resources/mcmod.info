@@ -1,7 +1,7 @@
 [
   {
-      "modid": "${mod_id}",
-      "name": "${mod_name}",
+      "modid": "viaforge",
+      "name": "ViaForge",
       "description": "Clientside Implementation of ViaVersion for Forge",
       "version": "${mod_version}",
       "mcversion": "${minecraft_version}",
