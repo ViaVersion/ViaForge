@@ -98,7 +98,6 @@ mixin {
     add sourceSets.main, "mixins.${mod_id}.refmap.json"
 }
 
-
 jar {
     manifest.attributes(
             "MixinConfigs": "mixins.viaforge.json",
