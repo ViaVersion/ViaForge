@@ -4,6 +4,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public enum ProtocolCollection {
     
+    R1_18_2(new ProtocolVersion(758, "1.18.2")),
     R1_18_1(new ProtocolVersion(757, "1.18-1.18.1")),
 
     R1_17_1(new ProtocolVersion(756, "1.17.1")),
