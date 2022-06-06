@@ -1,4 +1,4 @@
-name: build
+name: ViaForge 1.8.9 build
 on: [pull_request, push, workflow_dispatch]
 
 jobs:
