@@ -10,5 +10,5 @@ updates:
     schedule:
       interval: "weekly"
     allow:
-      - depency-name: "com.viaversion:via*"
+      - dependency-name: "com.viaversion:via*"
         dependency-type: "all"
