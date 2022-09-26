@@ -88,8 +88,10 @@ jar {
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
-            "FMLCorePluginContainsFMLMod": "de.enzaxd.viaforge.injection.MixinLoader",
-            "MixinConfigs": "mixins.${mod_id}.json"
+            "FMLCorePluginContainsFMLMod": "true",
+            "FMLCorePlugin": "de.enzaxd.viaforge.injection.MixinLoader",
+            "MixinConfigs": "mixins.${mod_id}.json",
+            "ForceLoadAsMod": "true"
     )
     enabled = false
 }

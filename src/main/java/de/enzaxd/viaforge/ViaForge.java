@@ -20,11 +20,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.logging.Logger;
 
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+@Mod(modid = "viaforge", name = "ViaForge", version = "1.0.0")
 public class ViaForge {
 
     public final static int SHARED_VERSION = 340;
 
-    private static final ViaForge instance = new ViaForge();
+    private static ViaForge instance = null;
+    { instance = this; } // called when forge initializes the mod
     private final Logger jLogger = new JLoggerToLog4j(LogManager.getLogger("ViaForge"));
     private final CompletableFuture<Void> initFuture = new CompletableFuture<>();
     private ExecutorService asyncExecutor;
@@ -37,7 +42,8 @@ public class ViaForge {
         return instance;
     }
 
-    public void start() {
+    @Mod.EventHandler
+    public void init(FMLPreInitializationEvent event) {
         ThreadFactory factory = new ThreadFactoryBuilder().setDaemon(true).setNameFormat("ViaForge-%d").build();
         asyncExecutor = Executors.newFixedThreadPool(8, factory);
 
