@@ -62,6 +62,6 @@ public enum ProtocolCollection {
         for (ProtocolCollection coll : values())
             if (coll.getVersion().getVersion() == id)
                 return coll.getVersion();
-        return null;
+        return R1_12_2.getVersion();
     }
 }
