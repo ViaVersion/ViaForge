@@ -1,3 +1,4 @@
+# MOVED DEVELOPMENT TO https://github.com/RejectedVia/ViaForge
 # ViaForge
 Clientside Implementation of ViaVersion for Forge
 
