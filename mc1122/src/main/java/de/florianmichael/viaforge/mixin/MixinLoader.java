@@ -1,4 +1,4 @@
-package de.enzaxd.viaforge.injection;
+package de.florianmichael.viaforge.mixin;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;

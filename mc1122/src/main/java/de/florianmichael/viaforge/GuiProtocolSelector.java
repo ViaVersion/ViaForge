@@ -1,8 +1,8 @@
-package de.enzaxd.viaforge.gui;
+package de.florianmichael.viaforge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import de.enzaxd.viaforge.ViaForge;
-import de.enzaxd.viaforge.protocol.ProtocolCollection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.viaprotocolhack.util.VersionList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -50,8 +50,7 @@ public class GuiProtocolSelector extends GuiScreen {
 
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
-        this.drawCenteredString(this.fontRenderer, ChatFormatting.GOLD.toString() + "ViaForge",
-                this.width / 4, 6, 16777215);
+        this.drawCenteredString(this.fontRenderer, ChatFormatting.GOLD + "ViaForge", this.width / 4, 6, 16777215);
         GL11.glPopMatrix();
 
         drawString(this.fontRenderer, "by EnZaXD/Flori2007", 1, 1, -1);
@@ -69,12 +68,12 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return ProtocolCollection.values().length;
+            return VersionList.getProtocols().size();
         }
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaForge.getInstance().setVersion(ProtocolCollection.values()[i].getVersion().getVersion());
+            ViaForge.targetVersion = VersionList.getProtocols().get(i).getVersion();
         }
 
         @Override
@@ -89,11 +88,9 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5, float v) {
-            drawCenteredString(mc.fontRenderer,(ViaForge.getInstance().getVersion() ==
-                            ProtocolCollection.values()[i].getVersion().getVersion() ? ChatFormatting.GREEN.toString() :
-                            ChatFormatting.DARK_RED.toString()) + ProtocolCollection.getProtocolById(
-                    ProtocolCollection.values()[i].getVersion().getVersion()).getName(),
-                    width / 2, i2, -1);
+            final ProtocolVersion version = VersionList.getProtocols().get(i);
+
+            drawCenteredString(mc.fontRenderer,(ViaForge.targetVersion == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
     }
 }
