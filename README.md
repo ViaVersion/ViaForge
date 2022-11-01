@@ -18,7 +18,7 @@ No
 ## For developers
 
 ### How does it work?
-![](.github/images/via-expl.png)
+![](images/via-expl.png)
 
 ### Project Structure
 
