@@ -1,11 +1,26 @@
-plugins {
-    id "java"
-    id "idea"
-    id "maven-publish"
-    id "net.minecraftforge.gradle" version "5.1.+"
-    id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
-    id "com.github.johnrengelman.shadow" version "7.0.0"
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+
+        maven { url = "https://maven.minecraftforge.net/" }
+        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+        maven { url = "https://jitpack.io/" }
+        maven { url 'https://files.minecraftforge.net/maven' }
+        maven { url 'https://plugins.gradle.org/m2' }
+    }
+
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:5.1.+"
+        classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
+        classpath "com.github.johnrengelman:shadow:7.0.0"
+    }
 }
+
+apply plugin: "net.minecraftforge.gradle"
+apply plugin: "org.spongepowered.mixin"
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "java"
 
 version = "1.12.2-${mod_version}"
 group = "${mod_base_package}.${mod_id}"
