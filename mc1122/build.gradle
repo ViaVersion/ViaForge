@@ -85,18 +85,23 @@ configurations {
     implementation.extendsFrom(include)
 }
 
+var viaLibs = [
+        // Via Protocol Hack README
+        "com.viaversion:viaversion:4.5.0-22w44a-SNAPSHOT",
+        "com.viaversion:viabackwards-common:4.5.0-22w44a-SNAPSHOT",
+        "org.yaml:snakeyaml:1.29",
+
+        "com.github.RejectedVia:ViaProtocolHack:b39bbe9bf1"
+]
+
 dependencies {
     minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2859"
 
     include "org.spongepowered:mixin:${mixin_version}"
 
-    include "com.github.RejectedVia:ViaProtocolHack:${viaprotocolhack_version}"
-
-    include "com.viaversion:viaversion:${viaversion_version}"
-    include "com.viaversion:viabackwards:${viabackwards_version}"
-    include "com.viaversion:viarewind-core:${viarewind_version}"
-
-    include "org.yaml:snakeyaml:${snakeyml_version}"
+    for (final def via in viaLibs) {
+        implementation(via)
+    }
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
