@@ -131,31 +131,16 @@ jar {
 }
 
 shadowJar {
-    archiveFileName = jar.archiveFileName
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    configurations = [project.configurations.include]
-    exclude "LICENSE.md"
-    exclude "dummyThing"
-    exclude "**/module-info.class"
-    exclude "*.so"
-    exclude "*.dylib"
-    exclude "*.dll"
-    exclude "*.jnilib"
-    exclude "ibxm/**"
-    exclude "com/jcraft/**"
-    exclude "org/lwjgl/**"
-    exclude "net/java/**"
+    archiveClassifier.set("shadow")
+    compileJava.options.encoding = "UTF-8"
+    exclude "native-binaries/*"
 
-    exclude "META-INF/proguard/**"
-    exclude "META-INF/maven/**"
-    exclude "META-INF/versions/**"
-    exclude "META-INF/com.android.tools/**"
-
-    exclude "fabric.mod.json"
-    exclude "bungee.yml"
-    exclude "plugin.yml"
-    exclude "velocity-plugin.json"
-    exclude "LICENSE.txt"
+    dependencies {
+        for (final def lib in viaLibs) {
+            include(dependency(lib))
+        }
+        include(dependency("org.spongepowered:mixin:${mixin_version}"))
+    }
 }
 
 reobf {
