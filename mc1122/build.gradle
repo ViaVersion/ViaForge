@@ -87,8 +87,8 @@ configurations {
 
 var viaLibs = [
         // Via Protocol Hack README
-        "com.viaversion:viaversion:4.5.0-22w44a-SNAPSHOT",
-        "com.viaversion:viabackwards-common:4.5.0-22w44a-SNAPSHOT",
+        "com.viaversion:viaversion:4.5.0-22w45a-SNAPSHOT",
+        "com.viaversion:viabackwards-common:4.5.0-22w45a-SNAPSHOT",
         "org.yaml:snakeyaml:1.29",
 
         "com.github.RejectedVia:ViaProtocolHack:b39bbe9bf1"
