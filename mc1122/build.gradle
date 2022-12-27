@@ -85,13 +85,14 @@ configurations {
     implementation.extendsFrom(include)
 }
 
-var viaLibs = [
-        // Via Protocol Hack README
-        "com.viaversion:viaversion:4.5.0-22w45a-SNAPSHOT",
-        "com.viaversion:viabackwards-common:4.5.0-22w45a-SNAPSHOT",
+// ViaProtocolHack READ-ME
+def viaLibs = [
+        "com.viaversion:viaversion:${project.viaversion_version}",
+        "com.viaversion:viabackwards:${project.viabackwards_version}",
+        "com.viaversion:viarewind-core:${project.viarewind_version}",
         "org.yaml:snakeyaml:1.29",
 
-        "com.github.RejectedVia:ViaProtocolHack:b39bbe9bf1"
+        "com.github.RejectedVia:ViaProtocolHack:${project.viaprotocolhack_version}"
 ]
 
 dependencies {
