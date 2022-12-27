@@ -124,7 +124,7 @@ jar {
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
             "FMLCorePluginContainsFMLMod": "true",
-            "FMLCorePlugin": "de.enzaxd.viaforge.injection.MixinLoader",
+            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
             "MixinConfigs": "mixins.${mod_id}.json",
             "ForceLoadAsMod": "true"
     )
