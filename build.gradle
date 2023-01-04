@@ -1,3 +1,135 @@
-plugins {
-    id "java"
+buildscript {
+    repositories {
+        maven { url = "https://repo.viaversion.com" }
+        maven { url = "https://maven.minecraftforge.net/" }
+        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+        maven { url = "https://jitpack.io/" }
+    }
+
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
+        classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
+        classpath "com.github.johnrengelman:shadow:4.0.4"
+    }
 }
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "org.spongepowered.mixin"
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "java"
+
+version = "1.8.9-${mod_version}"
+group = "${mod_base_package}.${mod_id}"
+archivesBaseName = mod_id
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    maven { url = "https://repo.viaversion.com" }
+    maven { url = "https://maven.minecraftforge.net/" }
+    maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+    maven { url = "https://jitpack.io/" }
+}
+
+minecraft {
+    version = "1.8.9-11.15.1.2318-1.8.9"
+    runDir = "run"
+    mappings = "stable_22"
+    makeObfSourceJar = false
+    clientJvmArgs += ["-Dfml.coreMods.load=de.florianmichael.viaforge.mixin.MixinLoader"]
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/java'
+    main.java.srcDirs += '../shared/main/java'
+    main.resources.srcDirs += '../shared/main/resources'
+}
+
+configurations {
+    include
+    implementation.extendsFrom(include)
+}
+
+// ViaProtocolHack READ-ME
+def viaLibs = [
+        "com.viaversion:viaversion:${project.viaversion_version}",
+        "com.viaversion:viabackwards:${project.viabackwards_version}",
+        "com.viaversion:viarewind-core:${project.viarewind_version}",
+        "org.yaml:snakeyaml:1.29",
+
+        "com.github.RejectedVia:ViaProtocolHack:${project.viaprotocolhack_version}"
+]
+
+dependencies {
+    compile ("org.spongepowered:mixin:0.7.10-SNAPSHOT") {
+        exclude module: "launchwrapper"
+    }
+    include "org.spongepowered:mixin:0.7.10-SNAPSHOT"
+
+    for (final def via in viaLibs) {
+        include(via)
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+mixin {
+    add sourceSets.main, "mixins.${mod_id}.refmap.json"
+}
+
+jar {
+    manifest.attributes(
+            "MixinConfigs": "mixins.viaforge.json",
+            "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "TweakOrder": 0,
+            "FMLCorePluginContainsFMLMod": "de.florianmichael.viaforge.mixin.MixinLoader"
+    )
+
+    enabled = false
+}
+
+apply plugin: "idea"
+
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
+
+shadowJar {
+    archiveName = jar.archiveName
+    configurations = [project.configurations.include]
+    compileJava.options.encoding = "UTF-8"
+    exclude "native-binaries/*"
+    exclude "META-INF/versions/**"
+
+    dependencies {
+        for (final def lib in viaLibs) {
+            include(dependency(lib))
+        }
+        include(dependency("org.spongepowered:mixin:0.7.10-SNAPSHOT"))
+    }
+}
+
+reobf {
+    shadowJar {}
+}
+
+jar.dependsOn("shadowJar")

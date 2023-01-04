@@ -14,7 +14,7 @@ public class MixinNetworkManager {
 
     @Shadow private Channel channel;
 
-    @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
+    @Inject(method = "setCompressionTreshold", at = @At("RETURN"))
     public void reOrderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
         channel.pipeline().fireUserEventTriggered(new PipelineReorderEvent());
     }

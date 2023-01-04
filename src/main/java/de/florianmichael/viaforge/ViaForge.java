@@ -3,25 +3,24 @@ package de.florianmichael.viaforge;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import de.florianmichael.viaprotocolhack.INativeProvider;
 import de.florianmichael.viaprotocolhack.ViaProtocolHack;
-import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.EventLoop;
+import io.netty.channel.local.LocalEventLoopGroup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 
-@Mod(modid = "viaforge", name = "ViaForge", version = "1.0.0")
 public class ViaForge implements INativeProvider {
 
     public static int targetVersion = RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
 
-    @Mod.EventHandler
-    public void init(FMLPreInitializationEvent event) throws Exception {
-        ViaProtocolHack.instance().init(this, () -> System.out.println("ViaProtocolHack loaded successfully"));
+    public static void start() {
+        try {
+            ViaProtocolHack.instance().init(new ViaForge(), () -> System.out.println("ViaProtocolHack loaded successfully"));
+        } catch (Exception ignored) {
+        }
     }
     
     @Override
@@ -49,7 +48,7 @@ public class ViaForge implements INativeProvider {
 
     @Override
     public File run() {
-        return Minecraft.getMinecraft().gameDir;
+        return Minecraft.getMinecraft().mcDataDir;
     }
 
     @Override
@@ -59,6 +58,6 @@ public class ViaForge implements INativeProvider {
 
     @Override
     public EventLoop eventLoop(ThreadFactory threadFactory, ExecutorService executorService) {
-        return new DefaultEventLoop(executorService);
+        return new LocalEventLoopGroup(1, threadFactory).next();
     }
 }

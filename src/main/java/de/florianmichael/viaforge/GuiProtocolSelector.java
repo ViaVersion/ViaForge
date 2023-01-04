@@ -50,11 +50,11 @@ public class GuiProtocolSelector extends GuiScreen {
 
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
-        this.drawCenteredString(this.fontRenderer, ChatFormatting.GOLD + "ViaForge", this.width / 4, 6, 16777215);
+        this.drawCenteredString(this.fontRendererObj, ChatFormatting.GOLD + "ViaForge", this.width / 4, 6, 16777215);
         GL11.glPopMatrix();
 
-        drawString(this.fontRenderer, "by EnZaXD/Flori2007", 1, 1, -1);
-        drawString(this.fontRenderer, "Discord: EnZaXD#6257", 1, 11, -1);
+        drawString(this.fontRendererObj, "by EnZaXD/Flori2007", 1, 1, -1);
+        drawString(this.fontRendererObj, "Discord: EnZaXD#6257", 1, 11, -1);
 
         super.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
     }
@@ -87,10 +87,10 @@ public class GuiProtocolSelector extends GuiScreen {
         }
 
         @Override
-        protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5, float v) {
+        protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5) {
             final ProtocolVersion version = VersionList.getProtocols().get(i);
 
-            drawCenteredString(mc.fontRenderer,(ViaForge.targetVersion == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
+            drawCenteredString(mc.fontRendererObj,(ViaForge.targetVersion == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
     }
 }
