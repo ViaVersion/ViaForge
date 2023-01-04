@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "viaforge",
+    "name": "ViaForge",
+    "description": "Clientside Implementation of ViaVersion for Forge",
+    "version": "1.0.0",
+    "mcversion": "[1.8,1.12.2]",
+    "url": "https://github.com/FlorianMichael/ViaForge",
+    "updateUrl": "",
+    "authorList": [],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

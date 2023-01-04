@@ -1,0 +1,3 @@
+rootProject.name = "ViaForge"
+include 'mc1122'
+
