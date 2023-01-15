@@ -49,6 +49,10 @@ public enum ProtocolCollection {
 
     R1_8(new ProtocolVersion(47, "1.8.x"));
 
+    # ViaLegacy protocols
+    R1_7_10(new ProtocolVersion(5, "1.7.6-1.7.10"));
+    R1_7_5(new ProtocolVersion(4, "1.7.2-1.7.5"));
+
     private ProtocolVersion version;
 
     private ProtocolCollection(ProtocolVersion version) {
