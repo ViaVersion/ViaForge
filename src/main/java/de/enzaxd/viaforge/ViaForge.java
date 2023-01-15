@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
+import com.viaversion.viaversion.protocol.ProtocolManagerImpl;
 import de.enzaxd.viaforge.loader.BackwardsLoader;
 import de.enzaxd.viaforge.loader.RewindLoader;
 import de.enzaxd.viaforge.loader.LegacyLoader;
