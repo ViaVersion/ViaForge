@@ -68,6 +68,8 @@ public class ViaForge {
 
         new BackwardsLoader(file);
 
+        new LegacyLoader(file);
+
         initFuture.complete(null);
     }
 
