@@ -54,6 +54,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url = "https://repo.spongepowered.org/repository/maven-public" }
     maven { url = "https://repo.viaversion.com" }
+    maven { url = "https://maven.lenni0451.net/releases" }
 }
 
 configurations {
@@ -67,6 +68,7 @@ dependencies {
     include "org.spongepowered:mixin:${mixin_version}"
     include "com.viaversion:viaversion:${viaversion_version}"
     include "com.viaversion:viabackwards:${viabackwards_version}"
+    include "net.raphimc:ViaLegacy:${vialegacy_version}"
     include "org.yaml:snakeyaml:1.29"
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
