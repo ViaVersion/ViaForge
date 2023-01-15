@@ -68,7 +68,6 @@ public class ViaForge {
         ((ViaManagerImpl) Via.getManager()).init();
 
         new BackwardsLoader(file);
-
         new LegacyLoader(file);
 
         initFuture.complete(null);
