@@ -20,6 +20,6 @@ public class LegacyLoader implements ViaLegacyPlatform {
 
     @Override
     public File getDataFolder() {
-        return new File(this.file, "config.yml");
+        return new File(this.file, "vialegacy.yml");
     }
 }
