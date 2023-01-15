@@ -5,6 +5,7 @@ import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
 import de.enzaxd.viaforge.loader.BackwardsLoader;
+import de.enzaxd.viaforge.loader.LegacyLoader;
 import de.enzaxd.viaforge.platform.Injector;
 import de.enzaxd.viaforge.platform.Platform;
 import de.enzaxd.viaforge.platform.ProviderLoader;
