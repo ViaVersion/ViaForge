@@ -59,6 +59,9 @@ repositories {
     maven {
         url = "https://repo.viaversion.com"
     }
+    maven {
+        url = "https://maven.lenni0451.net/releases"
+    }
 }
 
 configurations {
@@ -73,6 +76,7 @@ dependencies {
     include "com.viaversion:viaversion:${viaversion_version}"
     include "com.viaversion:viabackwards:${viabackwards_version}"
     include "com.viaversion:viarewind-fabric:${viarewind_version}"
+    include "net.raphimc:ViaLegacy:${vialegacy_version}"
     include "org.yaml:snakeyaml:1.29"
     include "org.spongepowered:mixin:0.7.10-SNAPSHOT"
 }
