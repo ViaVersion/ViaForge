@@ -1,6 +1,6 @@
 package de.enzaxd.viaforge.loader;
 
-import net.raphimc.vialegacy.platform.ViaLegacyPlayform;
+import net.raphimc.vialegacy.platform.ViaLegacyPlatform;
 import de.enzaxd.viaforge.ViaForge;
 
 import java.io.File;
