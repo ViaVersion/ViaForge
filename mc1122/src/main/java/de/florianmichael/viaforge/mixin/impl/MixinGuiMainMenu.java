@@ -7,10 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = {
-        GuiMainMenu.class, GuiMultiplayer.class, GuiScreenServerList.class
-})
-public class MixinGuiMainMenuGuiMultiplayerGuiServerList extends GuiScreen {
+@Mixin(GuiMainMenu.class)
+public class MixinGuiMainMenu extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
     public void hookCustomButton(CallbackInfo ci) {

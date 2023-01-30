@@ -2,7 +2,8 @@ package de.florianmichael.viaforge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viaprotocolhack.util.VersionList;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.api.version.InternalProtocolList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,9 +14,8 @@ import java.io.IOException;
 
 public class GuiProtocolSelector extends GuiScreen {
 
-    public SlotList list;
-
-    private GuiScreen parent;
+    private final GuiScreen parent;
+    private SlotList list;
 
     public GuiProtocolSelector(GuiScreen parent) {
         this.parent = parent;
@@ -24,9 +24,7 @@ public class GuiProtocolSelector extends GuiScreen {
     @Override
     public void initGui() {
         super.initGui();
-        buttonList.add(new GuiButton(1, width / 2 - 100, height - 27, 200,
-                20, "Back"));
-
+        buttonList.add(new GuiButton(1, width / 2 - 100, height - 27, 200, 20, "Back"));
         list = new SlotList(mc, width, height, 32, height - 32, 10);
     }
 
@@ -34,8 +32,7 @@ public class GuiProtocolSelector extends GuiScreen {
     protected void actionPerformed(GuiButton p_actionPerformed_1_) throws IOException {
         list.actionPerformed(p_actionPerformed_1_);
 
-        if (p_actionPerformed_1_.id == 1)
-            mc.displayGuiScreen(parent);
+        if (p_actionPerformed_1_.id == 1) mc.displayGuiScreen(parent);
     }
 
     @Override
@@ -61,19 +58,18 @@ public class GuiProtocolSelector extends GuiScreen {
 
     class SlotList extends GuiSlot {
 
-
         public SlotList(Minecraft p_i1052_1_, int p_i1052_2_, int p_i1052_3_, int p_i1052_4_, int p_i1052_5_, int p_i1052_6_) {
             super(p_i1052_1_, p_i1052_2_, p_i1052_3_, p_i1052_4_, p_i1052_5_, p_i1052_6_);
         }
 
         @Override
         protected int getSize() {
-            return VersionList.getProtocols().size();
+            return InternalProtocolList.getProtocols().size();
         }
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaForge.targetVersion = VersionList.getProtocols().get(i).getVersion();
+            ViaLoadingBase.getClassWrapper().reload(InternalProtocolList.getProtocols().get(i));
         }
 
         @Override
@@ -88,9 +84,9 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5, float v) {
-            final ProtocolVersion version = VersionList.getProtocols().get(i);
+            final ProtocolVersion version = InternalProtocolList.getProtocols().get(i);
 
-            drawCenteredString(mc.fontRenderer,(ViaForge.targetVersion == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
+            drawCenteredString(mc.fontRenderer,(ViaLoadingBase.getTargetVersion().getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
     }
 }

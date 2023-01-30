@@ -92,7 +92,7 @@ def viaLibs = [
         "com.viaversion:viarewind-core:${project.viarewind_version}",
         "org.yaml:snakeyaml:1.29",
 
-        "com.github.RejectedVia:ViaProtocolHack:${project.viaprotocolhack_version}"
+        "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 ]
 
 dependencies {

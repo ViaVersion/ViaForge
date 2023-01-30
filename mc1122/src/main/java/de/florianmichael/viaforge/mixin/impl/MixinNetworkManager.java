@@ -1,6 +1,6 @@
 package de.florianmichael.viaforge.mixin.impl;
 
-import de.florianmichael.viaprotocolhack.event.PipelineReorderEvent;
+import de.florianmichael.vialoadingbase.event.PipelineReorderEvent;
 import io.netty.channel.Channel;
 import net.minecraft.network.NetworkManager;
 import org.spongepowered.asm.mixin.Mixin;

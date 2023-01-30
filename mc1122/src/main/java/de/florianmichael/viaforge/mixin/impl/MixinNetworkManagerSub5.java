@@ -3,10 +3,10 @@ package de.florianmichael.viaforge.mixin.impl;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import de.florianmichael.viaforge.ViaForge;
-import de.florianmichael.viaprotocolhack.netty.CustomViaDecodeHandler;
-import de.florianmichael.viaprotocolhack.netty.CustomViaEncodeHandler;
-import de.florianmichael.viaprotocolhack.netty.NettyConstants;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.netty.CustomViaDecodeHandler;
+import de.florianmichael.vialoadingbase.netty.CustomViaEncodeHandler;
+import de.florianmichael.vialoadingbase.netty.NettyConstants;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
 import net.minecraft.realms.RealmsSharedConstants;
@@ -20,7 +20,7 @@ public class MixinNetworkManagerSub5 {
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(Channel channel, CallbackInfo ci) {
-        if (channel instanceof SocketChannel && ViaForge.targetVersion != RealmsSharedConstants.NETWORK_PROTOCOL_VERSION) {
+        if (channel instanceof SocketChannel && ViaLoadingBase.getTargetVersion().getVersion() != RealmsSharedConstants.NETWORK_PROTOCOL_VERSION) {
 
             UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);

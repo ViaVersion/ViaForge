@@ -6,10 +6,10 @@
   "refmap": "mixins.viaforge.refmap.json",
   "mixins": [
     "MixinNetworkManager",
-    "MixinNetworkManagerSub5"
+    "MixinNetworkManagerSub5",
+    "MixinGuiMainMenu",
+    "MixinGuiMultiplayer",
+    "MixinGuiScreenServerList"
   ],
-  "verbose": true,
-  "client": [
-    "MixinGuiMainMenuGuiMultiplayerGuiServerList"
-  ]
+  "verbose": true
 }
