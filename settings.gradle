@@ -1,3 +1,26 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url = "https://maven.minecraftforge.net/" }
+        maven { url = "https://jitpack.io/" }
+        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+        maven { url = "https://repo.viaversion.com" }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            switch (requested.id.id) {
+                case "net.minecraftforge.gradle.forge":
+                    useModule("com.github.ccbluex:ForgeGradle:${forgegradle_version}")
+                    break
+                case "org.spongepowered.mixin":
+                    useModule("com.github.xcfrg:mixingradle:${mixingradle_version}")
+                    break
+            }
+        }
+    }
+}
+
 rootProject.name = "ViaForge"
 include 'mc1122'
 

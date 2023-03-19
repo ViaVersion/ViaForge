@@ -2,7 +2,8 @@ package de.florianmichael.viaforge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viaprotocolhack.util.VersionList;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -68,12 +69,12 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return VersionList.getProtocols().size();
+            return InternalProtocolList.getProtocols().size();
         }
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaForge.targetVersion = VersionList.getProtocols().get(i).getVersion();
+            ViaLoadingBase.getClassWrapper().reload(InternalProtocolList.getProtocols().get(i));
         }
 
         @Override
@@ -88,9 +89,9 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5) {
-            final ProtocolVersion version = VersionList.getProtocols().get(i);
+            final ProtocolVersion version = InternalProtocolList.getProtocols().get(i);
 
-            drawCenteredString(mc.fontRendererObj,(ViaForge.targetVersion == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
+            drawCenteredString(mc.fontRendererObj, (ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
     }
 }

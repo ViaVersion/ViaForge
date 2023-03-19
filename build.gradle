@@ -1,22 +1,9 @@
-buildscript {
-    repositories {
-        maven { url = "https://repo.viaversion.com" }
-        maven { url = "https://maven.minecraftforge.net/" }
-        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
-        maven { url = "https://jitpack.io/" }
-    }
-
-    dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
-        classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
-        classpath "com.github.johnrengelman:shadow:4.0.4"
-    }
+plugins {
+    id "java"
+    id "net.minecraftforge.gradle.forge"
+    id "org.spongepowered.mixin"
+    id "com.github.johnrengelman.shadow" version "4.0.4"
 }
-
-apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: "org.spongepowered.mixin"
-apply plugin: "com.github.johnrengelman.shadow"
-apply plugin: "java"
 
 version = "1.8.9-${mod_version}"
 group = "${mod_base_package}.${mod_id}"
@@ -27,10 +14,11 @@ targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
-    maven { url = "https://repo.viaversion.com" }
-    maven { url = "https://maven.minecraftforge.net/" }
+    mavenLocal()
+    mavenCentral()
     maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
     maven { url = "https://jitpack.io/" }
+    maven { url = "https://repo.viaversion.com" }
 }
 
 minecraft {
@@ -57,9 +45,9 @@ def viaLibs = [
         "com.viaversion:viaversion:${project.viaversion_version}",
         "com.viaversion:viabackwards:${project.viabackwards_version}",
         "com.viaversion:viarewind-core:${project.viarewind_version}",
-        "org.yaml:snakeyaml:1.29",
+        "org.yaml:snakeyaml:${project.snake_yml_version}",
 
-        "com.github.RejectedVia:ViaProtocolHack:${project.viaprotocolhack_version}"
+        "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 ]
 
 dependencies {
