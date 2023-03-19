@@ -11,13 +11,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class ViaForge {
 
     @Mod.EventHandler
-    public void init(FMLPreInitializationEvent event) throws Exception {
+    public void init(FMLPreInitializationEvent event) {
         ViaLoadingBase.ViaLoadingBaseBuilder.
                 create().
                 runDirectory(Minecraft.getMinecraft().gameDir).
                 nativeVersion(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION).
-                singlePlayerProvider(() -> Minecraft.getMinecraft().isSingleplayer()).
-                eventLoop(new DefaultEventLoop(ViaLoadingBase.EXECUTOR_SERVICE)).
+                forceNativeVersionCondition(() -> Minecraft.getMinecraft().isSingleplayer()).
                 build();
     }
 }

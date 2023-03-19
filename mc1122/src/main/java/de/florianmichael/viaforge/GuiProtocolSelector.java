@@ -3,7 +3,7 @@ package de.florianmichael.viaforge;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.api.version.InternalProtocolList;
+import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -86,7 +86,7 @@ public class GuiProtocolSelector extends GuiScreen {
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5, float v) {
             final ProtocolVersion version = InternalProtocolList.getProtocols().get(i);
 
-            drawCenteredString(mc.fontRenderer,(ViaLoadingBase.getTargetVersion().getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
+            drawCenteredString(mc.fontRenderer,(ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
     }
 }

@@ -90,7 +90,7 @@ def viaLibs = [
         "com.viaversion:viaversion:${project.viaversion_version}",
         "com.viaversion:viabackwards:${project.viabackwards_version}",
         "com.viaversion:viarewind-core:${project.viarewind_version}",
-        "org.yaml:snakeyaml:1.29",
+        "org.yaml:snakeyaml:${project.snake_yml_version}",
 
         "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 ]
