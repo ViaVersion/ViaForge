@@ -1,63 +1,34 @@
+/*
+ * This file is part of ViaForge - https://github.com/FlorianMichael/ViaForge
+ * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.florianmichael.viaforge;
 
-import com.viaversion.viaversion.libs.gson.JsonObject;
-import de.florianmichael.viaprotocolhack.INativeProvider;
-import de.florianmichael.viaprotocolhack.ViaProtocolHack;
-import io.netty.channel.EventLoop;
-import io.netty.channel.local.LocalEventLoopGroup;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 
-import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadFactory;
-
-public class ViaForge implements INativeProvider {
-
-    public static int targetVersion = RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
+public class ViaForge {
 
     public static void start() {
-        try {
-            ViaProtocolHack.instance().init(new ViaForge(), () -> System.out.println("ViaProtocolHack loaded successfully"));
-        } catch (Exception ignored) {
-        }
-    }
-    
-    @Override
-    public boolean isSinglePlayer() {
-        return Minecraft.getMinecraft().isSingleplayer();
-    }
-
-    @Override
-    public int nativeVersion() {
-        return RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
-    }
-
-    @Override
-    public int targetVersion() {
-        return targetVersion;
-    }
-
-    @Override
-    public String[] nettyOrder() {
-        return new String[] {
-                "decompress",
-                "compress"
-        };
-    }
-
-    @Override
-    public File run() {
-        return Minecraft.getMinecraft().mcDataDir;
-    }
-
-    @Override
-    public JsonObject createDump() {
-        return new JsonObject();
-    }
-
-    @Override
-    public EventLoop eventLoop(ThreadFactory threadFactory, ExecutorService executorService) {
-        return new LocalEventLoopGroup(1, threadFactory).next();
+        ViaLoadingBase.ViaLoadingBaseBuilder.
+                create().
+                runDirectory(Minecraft.getMinecraft().mcDataDir).
+                nativeVersion(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION).
+                forceNativeVersionCondition(() -> Minecraft.getMinecraft().isSingleplayer()).
+                build();
     }
 }

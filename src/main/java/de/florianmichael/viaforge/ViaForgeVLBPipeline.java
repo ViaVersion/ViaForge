@@ -15,21 +15,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viaforge.mixin.impl;
+package de.florianmichael.viaforge;
 
-import de.florianmichael.viaforge.ViaForge;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.main.GameConfiguration;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.vialoadingbase.netty.VLBPipeline;
 
-@Mixin(Minecraft.class)
-public class MixinMinecraft {
+public class ViaForgeVLBPipeline extends VLBPipeline {
+    public ViaForgeVLBPipeline(UserConnection info) {
+        super(info);
+    }
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    public void startVia(GameConfiguration p_i45547_1_, CallbackInfo ci) {
-        ViaForge.start();
+    @Override
+    public String getDecoderHandlerName() {
+        return "decoder";
+    }
+
+    @Override
+    public String getEncoderHandlerName() {
+        return "encoder";
+    }
+
+    @Override
+    public String getDecompressionHandlerName() {
+        return "decompress";
+    }
+
+    @Override
+    public String getCompressionHandlerName() {
+        return "compress";
     }
 }

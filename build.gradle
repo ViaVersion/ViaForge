@@ -1,8 +1,9 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = "https://repo.viaversion.com" }
+        maven { url = "https://maven.minecraftforge.net/" }
         maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+        maven { url = "https://repo.viaversion.com" }
         maven { url = "https://jitpack.io/" }
     }
 
@@ -28,9 +29,9 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    maven { url = "https://repo.viaversion.com" }
     maven { url = "https://maven.minecraftforge.net/" }
     maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+    maven { url = "https://repo.viaversion.com" }
     maven { url = "https://jitpack.io/" }
 }
 
@@ -53,14 +54,13 @@ configurations {
     implementation.extendsFrom(include)
 }
 
-// ViaProtocolHack READ-ME
 def viaLibs = [
         "com.viaversion:viaversion:${project.viaversion_version}",
         "com.viaversion:viabackwards:${project.viabackwards_version}",
         "com.viaversion:viarewind-core:${project.viarewind_version}",
-        "org.yaml:snakeyaml:1.29",
+        "org.yaml:snakeyaml:${project.snake_yml_version}",
 
-        "com.github.RejectedVia:ViaProtocolHack:${project.viaprotocolhack_version}"
+        "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
 ]
 
 dependencies {

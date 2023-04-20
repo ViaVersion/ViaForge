@@ -17,19 +17,29 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
-import de.florianmichael.viaforge.ViaForge;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.main.GameConfiguration;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.connection.UserConnectionImpl;
+import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import de.florianmichael.viaforge.ViaForgeVLBPipeline;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import io.netty.channel.Channel;
+import io.netty.channel.socket.SocketChannel;
+import net.minecraft.realms.RealmsSharedConstants;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Minecraft.class)
-public class MixinMinecraft {
+@Mixin(targets = "net.minecraft.network.NetworkManager$5")
+public class MixinNetworkManager_5 {
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    public void startVia(GameConfiguration p_i45547_1_, CallbackInfo ci) {
-        ViaForge.start();
+    @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
+    private void onInitChannel(Channel channel, CallbackInfo ci) {
+        if (channel instanceof SocketChannel && ViaLoadingBase.getInstance().getTargetVersion().getVersion() != RealmsSharedConstants.NETWORK_PROTOCOL_VERSION) {
+            final UserConnection user = new UserConnectionImpl(channel, true);
+            new ProtocolPipelineImpl(user);
+
+            channel.pipeline().addLast(new ViaForgeVLBPipeline(user));
+        }
     }
 }
