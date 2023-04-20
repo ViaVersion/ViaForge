@@ -1,7 +1,7 @@
 buildscript {
     repositories {
+        mavenCentral()
         maven { url = "https://repo.viaversion.com" }
-        maven { url = "https://maven.minecraftforge.net/" }
         maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
         maven { url = "https://jitpack.io/" }
     }
@@ -27,6 +27,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
+    mavenCentral()
     maven { url = "https://repo.viaversion.com" }
     maven { url = "https://maven.minecraftforge.net/" }
     maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
