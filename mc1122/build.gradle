@@ -6,8 +6,8 @@ buildscript {
         maven { url = "https://maven.minecraftforge.net/" }
         maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
         maven { url = "https://jitpack.io/" }
-        maven { url 'https://files.minecraftforge.net/maven' }
-        maven { url 'https://plugins.gradle.org/m2' }
+        maven { url = "https://files.minecraftforge.net/maven" }
+        maven { url = "https://plugins.gradle.org/m2" }
     }
 
     dependencies {
@@ -65,7 +65,7 @@ minecraft {
 }
 
 sourceSets.main.resources {
-    srcDir 'src/generated/resources'
+    srcDir "src/generated/resources"
 }
 
 repositories {
@@ -85,7 +85,6 @@ configurations {
     implementation.extendsFrom(include)
 }
 
-// ViaProtocolHack READ-ME
 def viaLibs = [
         "com.viaversion:viaversion:${project.viaversion_version}",
         "com.viaversion:viabackwards:${project.viabackwards_version}",

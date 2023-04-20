@@ -1,12 +1,27 @@
+/*
+ * This file is part of ViaForge - https://github.com/FlorianMichael/ViaForge
+ * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.florianmichael.viaforge.mixin.impl;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import de.florianmichael.viaforge.ViaForgeVLBPipeline;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.netty.NettyConstants;
-import de.florianmichael.vialoadingbase.netty.VLBViaDecodeHandler;
-import de.florianmichael.vialoadingbase.netty.VLBViaEncodeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
 import net.minecraft.realms.RealmsSharedConstants;
@@ -20,14 +35,11 @@ public class MixinNetworkManagerSub5 {
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(Channel channel, CallbackInfo ci) {
-        if (channel instanceof SocketChannel && ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion() != RealmsSharedConstants.NETWORK_PROTOCOL_VERSION) {
-
-            UserConnection user = new UserConnectionImpl(channel, true);
+        if (channel instanceof SocketChannel && ViaLoadingBase.getInstance().getTargetVersion().getVersion() != RealmsSharedConstants.NETWORK_PROTOCOL_VERSION) {
+            final UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);
 
-            channel.pipeline()
-                    .addBefore("encoder", NettyConstants.HANDLER_ENCODER_NAME, new VLBViaEncodeHandler(user))
-                    .addBefore("decoder", NettyConstants.HANDLER_DECODER_NAME, new VLBViaDecodeHandler(user));
+            channel.pipeline().addLast(new ViaForgeVLBPipeline(user));
         }
     }
 }

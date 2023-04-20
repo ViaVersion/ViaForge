@@ -1,9 +1,25 @@
-package de.florianmichael.viaforge;
+/*
+ * This file is part of ViaForge - https://github.com/FlorianMichael/ViaForge
+ * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package de.florianmichael.viaforge.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.vialoadingbase.platform.InternalProtocolList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -64,12 +80,12 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return InternalProtocolList.getProtocols().size();
+            return ViaLoadingBase.getProtocols().size();
         }
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaLoadingBase.getClassWrapper().reload(InternalProtocolList.getProtocols().get(i));
+            ViaLoadingBase.getInstance().reload(ViaLoadingBase.getProtocols().get(i));
         }
 
         @Override
@@ -84,9 +100,9 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5, float v) {
-            final ProtocolVersion version = InternalProtocolList.getProtocols().get(i);
+            final ProtocolVersion version = ViaLoadingBase.getProtocols().get(i);
 
-            drawCenteredString(mc.fontRenderer,(ViaLoadingBase.getClassWrapper().getTargetVersion().getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
+            drawCenteredString(mc.fontRenderer,(ViaLoadingBase.getInstance().getTargetVersion().getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
     }
 }

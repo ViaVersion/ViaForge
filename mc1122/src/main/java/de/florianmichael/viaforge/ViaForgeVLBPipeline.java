@@ -17,23 +17,31 @@
  */
 package de.florianmichael.viaforge;
 
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import io.netty.channel.DefaultEventLoop;
-import net.minecraft.client.Minecraft;
-import net.minecraft.realms.RealmsSharedConstants;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.vialoadingbase.netty.VLBPipeline;
 
-@Mod(modid = "viaforge", name = "ViaForge", version = "3.0.0")
-public class ViaForge {
+public class ViaForgeVLBPipeline extends VLBPipeline {
+    public ViaForgeVLBPipeline(UserConnection info) {
+        super(info);
+    }
 
-    @Mod.EventHandler
-    public void init(FMLPreInitializationEvent event) {
-        ViaLoadingBase.ViaLoadingBaseBuilder.
-                create().
-                runDirectory(Minecraft.getMinecraft().gameDir).
-                nativeVersion(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION).
-                forceNativeVersionCondition(() -> Minecraft.getMinecraft().isSingleplayer()).
-                build();
+    @Override
+    public String getDecoderHandlerName() {
+        return "decoder";
+    }
+
+    @Override
+    public String getEncoderHandlerName() {
+        return "encoder";
+    }
+
+    @Override
+    public String getDecompressionHandlerName() {
+        return "decompress";
+    }
+
+    @Override
+    public String getCompressionHandlerName() {
+        return "compress";
     }
 }
