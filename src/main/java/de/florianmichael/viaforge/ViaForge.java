@@ -11,7 +11,7 @@ public class ViaForge {
     public static void start() {
         ViaLoadingBase.ViaLoadingBaseBuilder.
                 create().
-                runDirectory(Minecraft.getMinecraft().dataDir). // gameDir -> dataDir
+                runDirectory(Minecraft.getMinecraft().mcDataDir). // gameDir -> mcDataDir
                 nativeVersion(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION).
                 forceNativeVersionCondition(() -> Minecraft.getMinecraft().isSingleplayer()).
                 build();
