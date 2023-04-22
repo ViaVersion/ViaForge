@@ -33,7 +33,7 @@ The names of the submodules indicate the version, they are always given in the f
 Since ForgeGradle for Minecraft 1.8 is too old, it has its own branch called `legacy-1.8`
 
 ### I want ViaForge in my own utility mod
-Just take a look at our other Project called `ViaMCP`: https://github.com/RejectedVia/ViaMCP-Reborn
+Just take a look at my other Project called `ViaMCP`: https://github.com/FlorianMichael/ViaMCP-Reborn
 
 ## Other Via related Projects
 ViaFabric - Clientside Via implementation for Fabric: https://www.curseforge.com/minecraft/mc-mods/viafabric
