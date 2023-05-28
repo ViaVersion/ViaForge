@@ -17,23 +17,27 @@
  */
 package de.florianmichael.viaforge;
 
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import io.netty.channel.DefaultEventLoop;
-import net.minecraft.client.Minecraft;
-import net.minecraft.realms.RealmsSharedConstants;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.raphimc.vialoader.ViaLoader;
+import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
+import net.raphimc.vialoader.util.VersionEnum;
 
-@Mod(modid = "viaforge", name = "ViaForge", version = "3.0.0")
+@Mod(modid = "viaforge", name = "ViaForge", version = "3.2.2")
 public class ViaForge {
+    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_12_2;
+
+    public static VersionEnum targetVersion = VersionEnum.r1_12_2;
 
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent event) {
-        ViaLoadingBase.ViaLoadingBaseBuilder.
-                create().
-                runDirectory(Minecraft.getMinecraft().gameDir).
-                nativeVersion(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION).
-                forceNativeVersionCondition(() -> Minecraft.getMinecraft().isSingleplayer()).
-                build();
+        ViaLoader.init(
+                null,
+                null,
+                null,
+                null,
+                ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new
+        );
     }
 }

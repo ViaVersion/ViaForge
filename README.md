@@ -1,11 +1,11 @@
 # ViaForge
-Clientside Implementation of ViaVersion for Forge
+Client-side Implementation of ViaVersion for Forge
 
 ## Contact
 If you encounter any issues, please report them on the
 [issue tracker](https://github.com/FlorianMichael/ViaForge/issues).  
-If you just want to talk or need help with ViaForge feel free to join my
-[Discord](https://discord.gg/BwWhCHUKDf).
+If you just want to talk or need help with ViaForge feel free to join the ViaVersion
+[Discord](https://discord.gg/viaversion).
 
 ## For users
 ### Where can I download the latest version?

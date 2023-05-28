@@ -18,30 +18,42 @@
 package de.florianmichael.viaforge;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.vialoadingbase.netty.VLBPipeline;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import net.raphimc.vialoader.util.VersionEnum;
 
-public class ViaForgeVLBPipeline extends VLBPipeline {
-    public ViaForgeVLBPipeline(UserConnection info) {
-        super(info);
+public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
+
+    public ViaForgeVLLegacyPipeline(UserConnection user, VersionEnum version) {
+        super(user, version);
     }
 
     @Override
-    public String getDecoderHandlerName() {
-        return "decoder";
-    }
-
-    @Override
-    public String getEncoderHandlerName() {
-        return "encoder";
-    }
-
-    @Override
-    public String getDecompressionHandlerName() {
+    protected String decompressName() {
         return "decompress";
     }
 
     @Override
-    public String getCompressionHandlerName() {
+    protected String compressName() {
         return "compress";
+    }
+
+    @Override
+    protected String packetDecoderName() {
+        return "decoder";
+    }
+
+    @Override
+    protected String packetEncoderName() {
+        return "encoder";
+    }
+
+    @Override
+    protected String lengthSplitterName() {
+        return "splitter";
+    }
+
+    @Override
+    protected String lengthPrependerName() {
+        return "prepender";
     }
 }

@@ -75,9 +75,6 @@ repositories {
     maven {
         url = "https://repo.viaversion.com"
     }
-    maven {
-        url = "https://jitpack.io"
-    }
 }
 
 configurations {
@@ -91,7 +88,7 @@ def viaLibs = [
         "com.viaversion:viarewind-core:${project.viarewind_version}",
         "org.yaml:snakeyaml:${project.snake_yml_version}",
 
-        "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
+        "net.raphimc:ViaLoader:${project.vialoader_version}"
 ]
 
 dependencies {
