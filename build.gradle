@@ -38,7 +38,7 @@ repositories {
 minecraft {
     version = "1.8.9-11.15.1.2318-1.8.9"
     runDir = "run"
-    mappings = "stable_22"
+    mappings = "stable_20"
     makeObfSourceJar = false
     clientJvmArgs += ["-Dfml.coreMods.load=de.florianmichael.viaforge.mixin.MixinLoader"]
 }
@@ -60,7 +60,7 @@ def viaLibs = [
         "com.viaversion:viarewind-core:${project.viarewind_version}",
         "org.yaml:snakeyaml:${project.snake_yml_version}",
 
-        "com.github.FlorianMichael:ViaLoadingBase:${project.vialoadingbase_version}"
+        "net.raphimc:ViaLoader:${project.vialoader_version}"
 ]
 
 dependencies {

@@ -17,18 +17,23 @@
  */
 package de.florianmichael.viaforge;
 
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import net.minecraft.client.Minecraft;
-import net.minecraft.realms.RealmsSharedConstants;
+import net.raphimc.vialoader.ViaLoader;
+import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
+import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaForge {
+    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_12_2;
+
+    public static VersionEnum targetVersion = VersionEnum.r1_12_2;
 
     public static void start() {
-        ViaLoadingBase.ViaLoadingBaseBuilder.
-                create().
-                runDirectory(Minecraft.getMinecraft().mcDataDir).
-                nativeVersion(RealmsSharedConstants.NETWORK_PROTOCOL_VERSION).
-                forceNativeVersionCondition(() -> Minecraft.getMinecraft().isSingleplayer()).
-                build();
+        ViaLoader.init(
+                null,
+                null,
+                null,
+                null,
+                ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new
+        );
     }
 }
