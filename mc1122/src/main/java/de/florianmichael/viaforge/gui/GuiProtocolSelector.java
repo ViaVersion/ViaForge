@@ -80,12 +80,12 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return VersionEnum.SORTED_VERSIONS.size();
+            return VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS.size();
         }
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaForge.targetVersion = VersionEnum.SORTED_VERSIONS.get(i);
+            ViaForge.targetVersion = VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS.get(i);
         }
 
         @Override
@@ -100,7 +100,7 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5, float v) {
-            final VersionEnum version = VersionEnum.SORTED_VERSIONS.get(i);
+            final VersionEnum version = VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS.get(i);
 
             drawCenteredString(mc.fontRenderer,(ViaForge.targetVersion.getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
