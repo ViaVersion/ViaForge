@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
       - name: Make Gradle wrapper runnable on Unix
         run: chmod +x ./gradlew
-      - name: build
+      - name: Build
         run: ./gradlew build
       - name: Upload Build Artifacts
         if: ${{ runner.os == 'Linux' && matrix.java == '8' }}
