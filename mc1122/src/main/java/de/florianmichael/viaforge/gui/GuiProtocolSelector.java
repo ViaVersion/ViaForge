@@ -66,7 +66,7 @@ public class GuiProtocolSelector extends GuiScreen {
         this.drawCenteredString(this.fontRenderer, ChatFormatting.GOLD + "ViaForge", this.width / 4, 6, 16777215);
         GL11.glPopMatrix();
 
-        drawString(this.fontRenderer, "by EnZaXD/Flori2007", 1, 1, -1);
+        drawString(this.fontRenderer, "by https://github.com/FlorianMichael/ViaForge", 1, 1, -1);
         drawString(this.fontRenderer, "Discord: EnZaXD#6257", 1, 11, -1);
 
         super.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
