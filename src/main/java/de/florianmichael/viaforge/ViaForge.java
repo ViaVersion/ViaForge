@@ -29,9 +29,9 @@ import net.raphimc.vialoader.impl.viaversion.VLLoader;
 import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaForge {
-    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_12_2;
+    public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_8;
 
-    public static VersionEnum targetVersion = VersionEnum.r1_12_2;
+    public static VersionEnum targetVersion = VersionEnum.r1_8;
 
     public static void start() {
         ViaLoader.init(
