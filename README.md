@@ -9,13 +9,14 @@ If you just want to talk or need help with ViaForge feel free to join the ViaVer
 
 ## For users
 ### Where can I download the latest version?
-Just take a look at Curse-forge: https://www.curseforge.com/minecraft/mc-mods/viaforge
+CurseForge: https://www.curseforge.com/minecraft/mc-mods/viaforge
+Modrinth: https://modrinth.com/mod/viaforge
 
 ### Can you add new textures and blocks from higher versions?
 No, because it is too time-consuming
 
 ### ViaVersion throws an error, or I can't access a server, what should I do?
-First of all see if it's because of an installed mod, otherwise come to my Discord and tell me logs, mc version etc.
+First of all see if it's because of an installed mod, otherwise come to the support Discord and tell me logs, mc version etc.
 
 ### Certain collisions or other items bug, can you fix it?
 No
@@ -33,7 +34,7 @@ The names of the submodules indicate the version, they are always given in the f
 Since ForgeGradle for Minecraft 1.8 is too old, it has its own branch called `legacy-1.8`
 
 ### I want ViaForge in my own utility mod
-Just take a look at my other Project called `ViaMCP`: https://github.com/FlorianMichael/ViaMCP-Reborn
+Just take a look at my other Project called `ViaMCP`: https://github.com/FlorianMichael/ViaMCP
 
 ## Other Via related Projects
 ViaFabric - Clientside Via implementation for Fabric: https://www.curseforge.com/minecraft/mc-mods/viafabric
