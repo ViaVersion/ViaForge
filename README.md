@@ -36,5 +36,8 @@ Since ForgeGradle for Minecraft 1.8 is too old, it has its own branch called `le
 ### I want ViaForge in my own utility mod
 Just take a look at my other Project called `ViaMCP`: https://github.com/FlorianMichael/ViaMCP
 
-## Other Via related Projects
-ViaFabric - Clientside Via implementation for Fabric: https://www.curseforge.com/minecraft/mc-mods/viafabric
+## Other ViaVersion Mods / Platforms
+- ViaFabric - https://modrinth.com/mod/viafabric
+- ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus#readme (Includes additional modifications to make the experience better)
+- ViaProxy (App) - https://github.com/ViaVersion/ViaProxy/#readme
+- ViaaaS (Proxy) - https://github.com/ViaVersion/ViaaaS#readme 
