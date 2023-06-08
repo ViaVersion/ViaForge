@@ -25,7 +25,9 @@ import net.minecraft.client.Minecraft;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
+import net.raphimc.vialoader.impl.viaversion.VLInjector;
 import net.raphimc.vialoader.impl.viaversion.VLLoader;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
 import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaForge {
@@ -54,7 +56,17 @@ public class ViaForge {
                         });
                     }
                 },
-                null,
+                new VLInjector() {
+                    @Override
+                    public String getDecoderName() {
+                        return VLLegacyPipeline.VIA_DECODER_NAME;
+                    }
+
+                    @Override
+                    public String getEncoderName() {
+                        return VLLegacyPipeline.VIA_ENCODER_NAME;
+                    }
+                },
                 null,
                 ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new
         );
