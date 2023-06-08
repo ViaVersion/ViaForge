@@ -30,7 +30,7 @@ import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
 import net.raphimc.vialoader.impl.viaversion.VLLoader;
 import net.raphimc.vialoader.util.VersionEnum;
 
-@Mod(modid = "viaforge", name = "ViaForge", version = "3.3.2")
+@Mod(modid = "viaforge", name = "ViaForge", version = "3.3.3")
 public class ViaForge {
     public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_12_2;
 
