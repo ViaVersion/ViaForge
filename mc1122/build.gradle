@@ -98,7 +98,7 @@ dependencies {
     include "org.spongepowered:mixin:${mixin_version}"
 
     for (final def via in viaLibs) {
-        implementation(via)
+        include(via)
     }
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"

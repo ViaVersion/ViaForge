@@ -22,24 +22,22 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
+import net.raphimc.vialoader.impl.viaversion.VLInjector;
 import net.raphimc.vialoader.impl.viaversion.VLLoader;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
 import net.raphimc.vialoader.util.VersionEnum;
 
-@Mod(modid = "viaforge", name = "ViaForge", version = "3.3.3")
 public class ViaForge {
     public final static VersionEnum NATIVE_VERSION = VersionEnum.r1_12_2;
-
     public static VersionEnum targetVersion = VersionEnum.r1_12_2;
 
-    @Mod.EventHandler
-    public void init(FMLPreInitializationEvent event) {
-        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_6tor1_7_10);
-        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_2tor1_7_5);
+    private static boolean loaded;
+
+    public static void initViaVersion() {
+        if (loaded) return;
 
         ViaLoader.init(
                 null,
@@ -56,11 +54,25 @@ public class ViaForge {
                                 return super.getClosestServerProtocol(connection);
                             }
                         });
+
+                        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_6tor1_7_10);
+                        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_2tor1_7_5);
+                    }
+                },
+                new VLInjector() {
+                    @Override
+                    public String getDecoderName() {
+                        return VLLegacyPipeline.VIA_DECODER_NAME;
+                    }
+
+                    @Override
+                    public String getEncoderName() {
+                        return VLLegacyPipeline.VIA_ENCODER_NAME;
                     }
                 },
                 null,
-                null,
                 ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new
         );
+        loaded = true;
     }
 }

@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
+import de.florianmichael.viaforge.ViaForge;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,6 +31,8 @@ public class MixinGuiMainMenu extends GuiScreen {
     @Inject(method = "initGui", at = @At("RETURN"))
     public void hookCustomButton(CallbackInfo ci) {
         buttonList.add(new GuiButton(1337, 5, 6, 98, 20, "ViaForge"));
+
+        ViaForge.initViaVersion();
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))
