@@ -34,6 +34,9 @@ public class ViaForge {
     public static VersionEnum targetVersion = VersionEnum.r1_8;
 
     public static void start() {
+        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_6tor1_7_10);
+        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_2tor1_7_5);
+
         ViaLoader.init(
                 null,
                 new VLLoader() {

@@ -78,19 +78,18 @@ public class GuiProtocolSelector extends GuiScreen {
 
     class SlotList extends GuiSlot {
 
-
         public SlotList(Minecraft p_i1052_1_, int p_i1052_2_, int p_i1052_3_, int p_i1052_4_, int p_i1052_5_, int p_i1052_6_) {
             super(p_i1052_1_, p_i1052_2_, p_i1052_3_, p_i1052_4_, p_i1052_5_, p_i1052_6_);
         }
 
         @Override
         protected int getSize() {
-            return VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS.size();
+            return VersionEnum.SORTED_VERSIONS.size();
         }
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaForge.targetVersion = VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS.get(i);
+            ViaForge.targetVersion = VersionEnum.SORTED_VERSIONS.get(i);
         }
 
         @Override
@@ -105,7 +104,7 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5) {
-            final VersionEnum version = VersionEnum.OFFICIAL_SUPPORTED_PROTOCOLS.get(i);
+            final VersionEnum version = VersionEnum.SORTED_VERSIONS.get(i);
 
             drawCenteredString(mc.fontRendererObj, (ViaForge.targetVersion.getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
