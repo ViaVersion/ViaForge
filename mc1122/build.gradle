@@ -88,7 +88,8 @@ def viaLibs = [
         "com.viaversion:viarewind-core:${project.viarewind_version}",
         "org.yaml:snakeyaml:${project.snake_yml_version}",
 
-        "net.raphimc:ViaLoader:${project.vialoader_version}"
+        "net.raphimc:ViaLoader:${project.vialoader_version}",
+        "org.slf4j:slf4j-api:${project.slf4j_version}"
 ]
 
 dependencies {

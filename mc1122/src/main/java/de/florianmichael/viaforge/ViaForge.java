@@ -38,6 +38,9 @@ public class ViaForge {
 
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent event) {
+        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_6tor1_7_10);
+        VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_2tor1_7_5);
+
         ViaLoader.init(
                 null,
                 new VLLoader() {

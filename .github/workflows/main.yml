@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ViaForge-1.12.2
-          path: build/libs/
+          path: mc1122/build/libs/
