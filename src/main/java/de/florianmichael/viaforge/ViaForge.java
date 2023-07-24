@@ -21,6 +21,8 @@ import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
+
+import de.florianmichael.viaforge.gui.AsyncVersionSlider;
 import net.minecraft.client.Minecraft;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
@@ -38,6 +40,8 @@ public class ViaForge {
     public static void start() {
         VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_6tor1_7_10);
         VersionEnum.SORTED_VERSIONS.remove(VersionEnum.r1_7_2tor1_7_5);
+        
+        initAsyncSlider();
 
         ViaLoader.init(
                 null,
@@ -70,5 +74,19 @@ public class ViaForge {
                 null,
                 ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new
         );
+    }
+
+    private static AsyncVersionSlider asyncVersionSlider;
+
+    public static void initAsyncSlider() {
+        initAsyncSlider(5, 5, 110, 20);
+    }
+
+    public static void initAsyncSlider(int x, int y, int width, int height) {
+        asyncVersionSlider = new AsyncVersionSlider(-1, x, y, Math.max(width, 110), height);
+    }
+
+    public static AsyncVersionSlider getAsyncVersionSlider() {
+        return asyncVersionSlider;
     }
 }
