@@ -56,6 +56,12 @@ public class GuiProtocolSelector extends GuiScreen {
     }
 
     @Override
+    protected void keyTyped(char p_keyTyped_1_, int p_keyTyped_2_) throws IOException {
+        if (p_keyTyped_2_ == 1) //esc key
+           this.mc.displayGuiScreen(parent);
+    }
+
+    @Override
     public void handleMouseInput() throws IOException {
         list.handleMouseInput();
         super.handleMouseInput();
