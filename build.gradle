@@ -57,7 +57,7 @@ configurations {
 def viaLibs = [
         "com.viaversion:viaversion:${project.viaversion_version}",
         "com.viaversion:viabackwards:${project.viabackwards_version}",
-        "com.viaversion:viarewind-core:${project.viarewind_version}",
+        "com.viaversion:viarewind-universal:${project.viarewind_version}",
         "org.yaml:snakeyaml:${project.snake_yml_version}",
 
         "net.raphimc:ViaLoader:${project.vialoader_version}",
