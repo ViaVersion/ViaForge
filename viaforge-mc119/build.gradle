@@ -1,0 +1,14 @@
+plugins {
+    id "florianmichael.viaforge.base-conventions"
+    id "florianmichael.viaforge.forge-conventions"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: "official", version: "1.19.4"
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:1.19.4-45.2.0"
+}

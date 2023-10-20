@@ -24,3 +24,7 @@ jobs:
           path: | 
             viaforge-mc112/build/libs/
             viaforge-mc116/build/libs/
+            viaforge-mc117/build/libs/
+            viaforge-mc118/build/libs/
+            viaforge-mc119/build/libs/
+            viaforge-mc120/build/libs/

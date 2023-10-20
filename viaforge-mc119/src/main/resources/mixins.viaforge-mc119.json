@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.7.5",
+  "compatibilityLevel": "JAVA_8",
+  "package": "de.florianmichael.viaforge.mixin",
+  "mixins": [
+    "MixinConnection",
+    "MixinNetworkManager_1",
+    "MixinTitleScreen",
+    "MixinJoinMultiplayerScreen",
+    "MixinDirectJoinServerScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "mixins.viaforge-mc119.refmap.json"
+}
