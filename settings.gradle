@@ -7,11 +7,17 @@ pluginManagement {
         maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
         maven { url = "https://jitpack.io/" }
         maven { url = "https://files.minecraftforge.net/maven" }
-        maven { url = "https://plugins.gradle.org/m2" }
+    }
+
+    plugins {
+        id "com.github.johnrengelman.shadow" version "7.1.2"
+        id "net.minecraftforge.gradle" version "5.+"
+        id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
     }
 }
 
 rootProject.name = "ViaForge"
 include "viaforge-mc112"
-include 'viaforge-mc116'
+include "viaforge-mc116"
+include "viaforge-mc117"
 

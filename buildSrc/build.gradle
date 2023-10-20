@@ -1,0 +1,22 @@
+plugins {
+    id "groovy-gradle-plugin"
+}
+
+repositories {
+    gradlePluginPortal()
+    maven {
+        url = "https://repo.spongepowered.org/repository/maven-public/"
+    }
+    maven {
+        url = "https://jitpack.io/"
+    }
+    maven {
+        url = "https://files.minecraftforge.net/maven"
+    }
+}
+
+dependencies {
+    implementation "com.github.johnrengelman:shadow:7.1.2"
+    implementation "net.minecraftforge.gradle:ForgeGradle:5.1.+"
+    implementation "org.spongepowered:mixingradle:0.7-SNAPSHOT"
+}
