@@ -23,7 +23,7 @@ No
 
 ## For developers
 ### How does it work?
-![](images/via-expl.png)
+![](.github/images/via-expl.png)
 
 ### Project Structure
 All ViaForge versions from Minecraft version 1.12 onwards are on the `master` branch. <br>

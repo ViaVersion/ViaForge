@@ -1,0 +1,73 @@
+plugins {
+    id "net.minecraftforge.gradle" version "5.1.+"
+    id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+compileJava.options.encoding = "UTF-8"
+
+minecraft {
+    mappings channel: "stable", version: "39-1.12"
+
+    runs {
+        client {
+            workingDirectory project.file("run")
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property "forge.logging.console.level", "debug"
+
+            // mixin
+            property 'mixin.debug.export', 'true'
+            property "mixin.hotSwap", "true"
+            property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader"
+            args '-mixin.config=' + 'mixins.' + project.getProperty('maven_name') + '.json'
+
+            mods {
+                "ViaForge" {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+sourceSets.main.resources {
+    srcDir "src/generated/resources"
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2859"
+
+    library "org.spongepowered:mixin:${mixin_version}"
+    library "org.slf4j:slf4j-api:${project.slf4j_version}"
+
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+}
+
+mixin {
+    add sourceSets.main, "mixins.${maven_name}.refmap.json"
+}
+
+jar {
+    manifest.attributes(
+            "Specification-Title": "viaforge",
+            "Specification-Vendor": "viaforge",
+            "Specification-Version": "1",
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${archiveVersion}",
+            "Implementation-Vendor" :"viaforge",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
+            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "TweakOrder": "0",
+            "FMLCorePluginContainsFMLMod": "true",
+            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
+            "MixinConfigs": "mixins.${maven_name}.json",
+            "ForceLoadAsMod": "true"
+    )
+    enabled = false
+}
+
+reobf {
+    shadowJar {}
+}
+
