@@ -10,25 +10,20 @@ If you just want to talk or need help with ViaForge feel free to join the ViaVer
 ## For users
 ### Where can I download the latest version?
 CurseForge: https://www.curseforge.com/minecraft/mc-mods/viaforge
+
 Modrinth: https://modrinth.com/mod/viaforge
 
-### Can you add new textures and blocks from higher versions?
-No, because it is too time-consuming
+GitHub Releases: https://github.com/ViaVersion/ViaForge
 
-### ViaVersion throws an error, or I can't access a server, what should I do?
-First of all see if it's because of an installed mod, otherwise come to the support Discord and tell me logs, mc version etc.
-
-### Certain collisions or other items bug, can you fix it?
-No
+### How does it work?
+![](.github/images/ViaVersion.png)
 
 ## For developers
-### How does it work?
-![](.github/images/via-expl.png)
-
 ### Project Structure
 All ViaForge versions from Minecraft version 1.12 onwards are on the `master` branch. <br>
 The names of the submodules indicate the version, they are always given in the format `mc-<version name without .>`. <br>
-`Minecraft 1.12.2` - `mc1122`
+`Minecraft 1.12.2` - `mc112` <br>
+`Minecraft 1.16.4/5` - `mc116`
 
 ### ViaForge for Minecraft 1.8
 Since ForgeGradle for Minecraft 1.8 is too old, it has its own branch called `legacy-1.8`
@@ -38,6 +33,8 @@ Just take a look at my other Project called `ViaMCP`: https://github.com/Florian
 
 ## Other ViaVersion Mods / Platforms
 - ViaFabric - https://modrinth.com/mod/viafabric
-- ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus#readme (Includes additional modifications to make the experience better)
-- ViaProxy (App) - https://github.com/ViaVersion/ViaProxy/#readme
-- ViaaaS (Proxy) - https://github.com/ViaVersion/ViaaaS#readme 
+- ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus (Includes additional modifications to make the experience better)
+- ViaProxy (App) - https://github.com/ViaVersion/ViaProxy/
+- ViaaaS (Proxy) - https://github.com/ViaVersion/ViaaaS 
+
+### If you want to talk with me, feel free to join my [Discord](https://discord.gg/BwWhCHUKDf)
