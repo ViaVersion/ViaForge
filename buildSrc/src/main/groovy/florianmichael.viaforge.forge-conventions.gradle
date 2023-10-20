@@ -8,15 +8,16 @@ minecraft {
         client {
             workingDirectory project.file("run")
 
-            property 'forge.logging.markers', 'REGISTRIES'
+            property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
 
             // mixin
-            property 'mixin.debug.export', 'true'
+            property "mixin.debug.export", "true"
             property "mixin.hotSwap", "true"
             property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader"
-            args '-mixin.config=' + 'mixins.' + project.getProperty('maven_name') + '.json'
+            args '-mixin.config=' + 'mixins.' + project.getProperty('maven_name') + ".json"
 
+            // source set
             mods {
                 "ViaForge" {
                     source sourceSets.main
