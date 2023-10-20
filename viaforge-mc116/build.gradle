@@ -1,5 +1,5 @@
 plugins {
-    id "net.minecraftforge.gradle" version "5.1.+"
+    id "net.minecraftforge.gradle" version "5.+"
     id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
 }
 
@@ -36,7 +36,7 @@ sourceSets.main.resources {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.5-36.2.34"
+    minecraft "net.minecraftforge:forge:1.16.5-36.2.39"
 
     include "org.spongepowered:mixin:${mixin_version}"
     include "org.slf4j:slf4j-api:${project.slf4j_version}"
