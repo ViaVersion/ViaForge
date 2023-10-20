@@ -36,7 +36,7 @@ sourceSets.main.resources {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2859"
+    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
 
     include "org.spongepowered:mixin:${mixin_version}"
     include "org.slf4j:slf4j-api:${project.slf4j_version}"

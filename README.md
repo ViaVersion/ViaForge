@@ -3,7 +3,7 @@ Client-side Implementation of ViaVersion, ViaBackwards and ViaRewind for Legacy 
 
 ## Contact
 If you encounter any issues, please report them on the
-[issue tracker](https://github.com/FlorianMichael/ViaForge/issues).  
+[issue tracker](https://github.com/ViaVersion/ViaForge/issues).  
 If you just want to talk or need help with ViaForge feel free to join the ViaVersion
 [Discord](https://discord.gg/viaversion).
 
