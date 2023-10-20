@@ -67,7 +67,7 @@ public class GuiProtocolSelector extends GuiScreen {
         GL11.glPopMatrix();
 
         drawString(this.fontRenderer, "by https://github.com/FlorianMichael/ViaForge", 1, 1, -1);
-        drawString(this.fontRenderer, "Discord: EnZaXD#6257", 1, 11, -1);
+        drawString(this.fontRenderer, "Discord: florianmichael", 1, 11, -1);
 
         super.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
     }

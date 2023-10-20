@@ -21,7 +21,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.ViaForge;
-import de.florianmichael.viaforge.ViaForgeVLLegacyPipeline;
+import de.florianmichael.viaforge.protocolhack.ViaForgeVLLegacyPipeline;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
 import org.spongepowered.asm.mixin.Mixin;

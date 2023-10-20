@@ -15,24 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viaforge.mixin.impl;
+package de.florianmichael.viaforge.protocolhack;
 
-import io.netty.channel.Channel;
-import net.minecraft.network.NetworkManager;
-import net.raphimc.vialoader.netty.CompressionReorderEvent;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.raphimc.vialoader.impl.viaversion.VLInjector;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
-@Mixin(NetworkManager.class)
-public class MixinNetworkManager {
+public class ViaForgeVLInjector extends VLInjector {
 
-    @Shadow private Channel channel;
+    @Override
+    public String getDecoderName() {
+        return VLLegacyPipeline.VIA_DECODER_NAME;
+    }
 
-    @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
-    public void reorderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
-        channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
+    @Override
+    public String getEncoderName() {
+        return VLLegacyPipeline.VIA_ENCODER_NAME;
     }
 }

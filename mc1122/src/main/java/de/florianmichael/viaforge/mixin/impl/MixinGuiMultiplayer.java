@@ -30,12 +30,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGuiMultiplayer extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
-    public void hookCustomButton(CallbackInfo ci) {
+    public void hookViaForgeButton(CallbackInfo ci) {
         buttonList.add(new GuiButton(1337, 5, 6, 98, 20, "ViaForge"));
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))
-    public void handleCustomButtonAction(GuiButton p_actionPerformed_1_, CallbackInfo ci) {
+    public void handleViaForgeButtonClicking(GuiButton p_actionPerformed_1_, CallbackInfo ci) {
         if (p_actionPerformed_1_.id == 1337) {
             mc.displayGuiScreen(new GuiProtocolSelector(this));
         }
