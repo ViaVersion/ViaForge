@@ -38,8 +38,8 @@ sourceSets.main.resources {
 dependencies {
     minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2859"
 
-    library "org.spongepowered:mixin:${mixin_version}"
-    library "org.slf4j:slf4j-api:${project.slf4j_version}"
+    include "org.spongepowered:mixin:${mixin_version}"
+    include "org.slf4j:slf4j-api:${project.slf4j_version}"
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
@@ -48,26 +48,13 @@ mixin {
     add sourceSets.main, "mixins.${maven_name}.refmap.json"
 }
 
-jar {
-    manifest.attributes(
-            "Specification-Title": "viaforge",
-            "Specification-Vendor": "viaforge",
-            "Specification-Version": "1",
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${archiveVersion}",
-            "Implementation-Vendor" :"viaforge",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
-            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-            "TweakOrder": "0",
-            "FMLCorePluginContainsFMLMod": "true",
-            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
-            "MixinConfigs": "mixins.${maven_name}.json",
-            "ForceLoadAsMod": "true"
-    )
-    enabled = false
+shadowJar {
+    archiveFileName = jar.archiveFileName
+    configurations = [project.configurations.include]
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
 }
 
 reobf {
-    shadowJar {}
+    shadowJar {
+    }
 }
-

@@ -1,4 +1,4 @@
-name: ViaForge build
+name: ViaForge CI
 on: [pull_request, push, workflow_dispatch]
 
 jobs:
@@ -21,10 +21,10 @@ jobs:
       - name: Make Gradle wrapper runnable on Unix
         run: chmod +x ./gradlew
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew shadowJar
       - name: Upload Build Artifacts
         if: ${{ runner.os == 'Linux' && matrix.java == '8' }}
         uses: actions/upload-artifact@v3
         with:
           name: ViaForge-1.12.2
-          path: mc1122/build/libs/
+          path: viaforge-mc112/build/libs/

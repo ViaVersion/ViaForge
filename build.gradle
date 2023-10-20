@@ -6,13 +6,13 @@ plugins {
 subprojects {
     apply plugin: "com.github.johnrengelman.shadow"
 
-    archivesBaseName = "ViaForge-" + project.maven_name
+    archivesBaseName = project.maven_name
     version = maven_version + project.mc_version
     group = maven_group
 
     configurations {
-        library
-        implementation.extendsFrom(library)
+        include
+        implementation.extendsFrom(include)
     }
 
     repositories {
@@ -25,21 +25,30 @@ subprojects {
     }
 
     dependencies {
-        library "com.viaversion:viaversion:${project.viaversion_version}"
-        library "com.viaversion:viabackwards:${project.viabackwards_version}"
-        library "com.viaversion:viarewind-universal:${project.viarewind_version}"
-        library "org.yaml:snakeyaml:${project.snake_yml_version}"
+        include "com.viaversion:viaversion:${project.viaversion_version}"
+        include "com.viaversion:viabackwards:${project.viabackwards_version}"
+        include "com.viaversion:viarewind-universal:${project.viarewind_version}"
+        include "org.yaml:snakeyaml:${project.snake_yml_version}"
 
-        library "net.raphimc:ViaLoader:${project.vialoader_version}"
+        include "net.raphimc:ViaLoader:${project.vialoader_version}"
     }
 
-    shadowJar {
-        archiveFileName = jar.archiveFileName
-        compileJava.options.encoding = "UTF-8"
-        exclude "native-binaries/*"
-
-        configurations = [project.configurations.compileClasspath]
+    jar {
+        manifest.attributes(
+                "Specification-Title": "viaforge",
+                "Specification-Vendor": "viaforge",
+                "Specification-Version": "1",
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${archiveVersion}",
+                "Implementation-Vendor" :"viaforge",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                "TweakOrder": "0",
+                "FMLCorePluginContainsFMLMod": "true",
+                "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
+                "MixinConfigs": "mixins.${maven_name}.json",
+                "ForceLoadAsMod": "true"
+        )
+        enabled = false
     }
-
-    jar.dependsOn("shadowJar")
 }
