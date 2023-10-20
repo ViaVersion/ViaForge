@@ -26,5 +26,7 @@ jobs:
         if: ${{ runner.os == 'Linux' && matrix.java == '8' }}
         uses: actions/upload-artifact@v3
         with:
-          name: ViaForge-1.12.2
-          path: viaforge-mc112/build/libs/
+          name: ViaForge All-in-One
+          path: | 
+            - viaforge-mc112/build/libs/
+            - viaforge-mc116/build/libs/

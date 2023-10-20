@@ -7,7 +7,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 compileJava.options.encoding = "UTF-8"
 
 minecraft {
-    mappings channel: "stable", version: "39-1.12"
+    mappings channel: "official", version: "1.16.5"
 
     runs {
         client {
@@ -36,7 +36,7 @@ sourceSets.main.resources {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2859"
+    minecraft "net.minecraftforge:forge:1.16.5-36.2.34"
 
     include "org.spongepowered:mixin:${mixin_version}"
     include "org.slf4j:slf4j-api:${project.slf4j_version}"
@@ -59,8 +59,6 @@ jar {
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
-            "FMLCorePluginContainsFMLMod": "true",
-            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
             "MixinConfigs": "mixins.${maven_name}.json",
             "ForceLoadAsMod": "true"
     )
@@ -71,9 +69,14 @@ shadowJar {
     archiveFileName = jar.archiveFileName
     configurations = [project.configurations.include]
     duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
+    exclude("META-INF/maven/**")
+    exclude("META-INF/services/**")
+    exclude("META-INF/versions/**")
 }
 
 reobf {
-    shadowJar {
-    }
+    shadowJar {}
 }
+
+jar.dependsOn("shadowJar")

@@ -5,10 +5,12 @@
     "description": "Client-side Implementation of ViaVersion, ViaBackwards and ViaRewind for Legacy Minecraft Forge",
     "version": "3.3.3",
     "mcversion": "[1.8,1.12.2]",
-    "url": "https://github.com/FlorianMichael/ViaForge",
+    "url": "https://github.com/ViaVersion/ViaForge",
     "updateUrl": "",
-    "authorList": [],
-    "credits": "",
+    "authorList": [
+      "FlorianMichael/EnZaXD"
+    ],
+    "credits": "https://github.com/FlorianMichael/",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []

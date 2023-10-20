@@ -15,44 +15,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viaforge.mixin;
+package de.florianmichael.viaforge.protocolhack;
 
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import org.spongepowered.asm.launch.MixinBootstrap;
-import org.spongepowered.asm.mixin.MixinEnvironment;
-import org.spongepowered.asm.mixin.Mixins;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import net.raphimc.vialoader.util.VersionEnum;
 
-import java.util.Map;
+public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
 
-public class MixinLoader implements IFMLLoadingPlugin {
-
-    public MixinLoader() {
-        MixinBootstrap.init();
-        Mixins.addConfiguration("mixins.viaforge-mc112.json");
-        MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
+    public ViaForgeVLLegacyPipeline(UserConnection user, VersionEnum version) {
+        super(user, version);
     }
 
     @Override
-    public String[] getASMTransformerClass() {
-        return new String[0];
+    protected String decompressName() {
+        return "decompress";
     }
 
     @Override
-    public String getModContainerClass() {
-        return null;
+    protected String compressName() {
+        return "compress";
     }
 
     @Override
-    public String getSetupClass() {
-        return null;
+    protected String packetDecoderName() {
+        return "decoder";
     }
 
     @Override
-    public void injectData(Map<String, Object> data) {
+    protected String packetEncoderName() {
+        return "encoder";
     }
 
     @Override
-    public String getAccessTransformerClass() {
-        return null;
+    protected String lengthSplitterName() {
+        return "splitter";
+    }
+
+    @Override
+    protected String lengthPrependerName() {
+        return "prepender";
     }
 }

@@ -32,23 +32,4 @@ subprojects {
 
         include "net.raphimc:ViaLoader:${project.vialoader_version}"
     }
-
-    jar {
-        manifest.attributes(
-                "Specification-Title": "viaforge",
-                "Specification-Vendor": "viaforge",
-                "Specification-Version": "1",
-                "Implementation-Title": project.name,
-                "Implementation-Version": "${archiveVersion}",
-                "Implementation-Vendor" :"viaforge",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
-                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-                "TweakOrder": "0",
-                "FMLCorePluginContainsFMLMod": "true",
-                "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
-                "MixinConfigs": "mixins.${maven_name}.json",
-                "ForceLoadAsMod": "true"
-        )
-        enabled = false
-    }
 }
