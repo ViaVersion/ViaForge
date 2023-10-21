@@ -15,22 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viaforge.common.protocolhack;
+package de.florianmichael.viaforge.common.protocolhack.provider;
 
-import com.viaversion.viaversion.api.Via;
-import com.viaversion.viaversion.api.platform.providers.ViaProviders;
-import com.viaversion.viaversion.api.protocol.version.VersionProvider;
-import de.florianmichael.viaforge.common.protocolhack.provider.ViaForgeVersionProvider;
-import net.raphimc.vialoader.impl.viaversion.VLLoader;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 
-public class ViaForgeVLLoader extends VLLoader {
+public class ViaForgeVersionProvider extends BaseVersionProvider {
 
     @Override
-    public void load() {
-        super.load();
+    public int getClosestServerProtocol(UserConnection connection) throws Exception {
+        if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer().get()) {
+            return ViaForgeCommon.getManager().getTargetVersion().getVersion();
+        }
 
-        final ViaProviders providers = Via.getManager().getProviders();
-
-        providers.use(VersionProvider.class, new ViaForgeVersionProvider());
+        return super.getClosestServerProtocol(connection);
     }
 }
