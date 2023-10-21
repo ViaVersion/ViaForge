@@ -17,28 +17,28 @@
  */
 package de.florianmichael.viaforge.mixin;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.connection.UserConnectionImpl;
-import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.ViaForge;
-import de.florianmichael.viaforge.protocolhack.ViaForgeVLLegacyPipeline;
-import io.netty.channel.Channel;
-import io.netty.channel.socket.SocketChannel;
+import de.florianmichael.viaforge.gui.GuiProtocolSelector;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ServerListScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.text.ITextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(targets = "net.minecraft.network.NetworkManager$1", remap = false)
-public class MixinNetworkManager_1 {
+@Mixin(ServerListScreen.class)
+public class MixinServerListScreen extends Screen {
 
-    @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
-    private void onInitChannel(Channel channel, CallbackInfo ci) {
-        if (channel instanceof SocketChannel && ViaForge.targetVersion != ViaForge.NATIVE_VERSION) {
-            final UserConnection user = new UserConnectionImpl(channel, true);
-            new ProtocolPipelineImpl(user);
+    protected MixinServerListScreen(ITextComponent p_i51108_1_) {
+        super(p_i51108_1_);
+    }
 
-            channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, ViaForge.targetVersion));
-        }
+    @Inject(method = "init", at = @At("RETURN"))
+    public void hookViaForgeButton(CallbackInfo ci) {
+        addButton(new Button(5, 6, 98, 20,"ViaForge", b -> GuiProtocolSelector.open(minecraft)));
+
+        ViaForge.initViaVersion();
     }
 }

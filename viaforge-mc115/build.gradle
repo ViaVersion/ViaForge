@@ -1,0 +1,12 @@
+plugins {
+    id "florianmichael.viaforge.base-conventions"
+    id "florianmichael.viaforge.forge-conventions"
+}
+
+minecraft {
+    mappings channel: "official", version: "1.15.2"
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:1.15.2-31.2.57"
+}

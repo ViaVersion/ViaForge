@@ -23,10 +23,13 @@ GitHub Releases: https://github.com/ViaVersion/ViaForge
 All ViaForge versions from Minecraft version 1.12 onwards are on the `master` branch. <br>
 The names of the submodules indicate the version, they are always given in the format `mc-<version name without .>`. <br>
 `Minecraft 1.12.2` - `mc112` <br>
+`Minecraft 1.14.4` - `mc114` <br>
+`Minecraft 1.15.2` - `mc115` <br>
 `Minecraft 1.16.4/5` - `mc116` <br>
-`Minecraft 1.17.2` - `mc117` <br>
+`Minecraft 1.17.1` - `mc117` <br>
 `Minecraft 1.18.2` - `mc118` <br>
 `Minecraft 1.19.4` - `mc119` <br>
+`Minecraft 1.20.2` - `mc120` <br>
 
 ### ViaForge for Minecraft 1.8
 Since ForgeGradle for Minecraft 1.8 is too old, it has its own branch called `legacy-1.8`
