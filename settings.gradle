@@ -9,6 +9,7 @@ pluginManagement {
         maven { url = "https://files.minecraftforge.net/maven" }
     }
 
+    // If you update these versions, also update the versions in buildSrc/build.gradle
     plugins {
         id "com.github.johnrengelman.shadow" version "7.1.2"
         id "net.minecraftforge.gradle" version "5.+"

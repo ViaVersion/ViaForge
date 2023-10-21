@@ -1,14 +1,18 @@
 plugins {
+    id "viaforge.base-conventions" // Include the base conventions, to get the dependencies
+
     id "com.github.johnrengelman.shadow"
-    id "viaforge.base-conventions"
 }
 
+// Define the jar output attributes for all platforms
 archivesBaseName = project.maven_name
 version = maven_version + "-" + project.mc_version
 group = maven_group
 
 compileJava.options.encoding = "UTF-8"
 
+// Replace the version in the mcmod.info and mods.toml files with the project version
+// Since this depends on the platform version, we can't define it in the global scope :(
 processResources {
     inputs.property "version", project.version
 

@@ -3,4 +3,5 @@ plugins {
     id "viaforge.conflicting-conventions"
 }
 
+// Minecraft 1.17+ required Java 16/17 to compile
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)

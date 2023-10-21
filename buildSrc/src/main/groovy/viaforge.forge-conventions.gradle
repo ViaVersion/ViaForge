@@ -1,6 +1,7 @@
 plugins {
     id "net.minecraftforge.gradle"
     id "org.spongepowered.mixin"
+
     id "viaforge.shadow-conventions"
 }
 
@@ -15,8 +16,8 @@ minecraft {
             // mixin
             property "mixin.debug.export", "true"
             property "mixin.hotSwap", "true"
-            property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader"
-            args '-mixin.config=' + 'mixins.' + project.getProperty('maven_name') + ".json"
+            property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader" // Only required for MC 1.12, but modern Forges skips this anyway
+            args "-mixin.config=" + "mixins." + project.getProperty('maven_name') + ".json"
 
             // source set
             mods {
@@ -33,12 +34,12 @@ sourceSets.main.resources {
 }
 
 dependencies {
-    include "org.spongepowered:mixin:0.8.3"
-    include "org.slf4j:slf4j-api:${project.slf4j_version}"
+    include "org.spongepowered:mixin:${mixin_version}"
+    include "org.slf4j:slf4j-api:${slf4j_version}"
 
-    annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
-    include project(":")
+    include project(":") // Include the base project, to get Common-ViaForge
 }
 
 mixin {
@@ -56,8 +57,8 @@ jar {
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
-            "FMLCorePluginContainsFMLMod": "true",
-            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
+            "FMLCorePluginContainsFMLMod": "true", // Only required for MC 1.12, but modern Forges skips this anyway
+            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader", // Counterpart to the above
             "MixinConfigs": "mixins.${maven_name}.json",
             "ForceLoadAsMod": "true"
     )
@@ -66,9 +67,10 @@ jar {
 
 shadowJar {
     archiveFileName = jar.archiveFileName
-    configurations = [project.configurations.include]
+    configurations = [project.configurations.include] // Include the dependencies from the include configuration
     duplicatesStrategy DuplicatesStrategy.EXCLUDE
 
+    // Prevent conflicts with Forge's weird service loading
     exclude("META-INF/maven/**")
     exclude("META-INF/versions/**")
 }
