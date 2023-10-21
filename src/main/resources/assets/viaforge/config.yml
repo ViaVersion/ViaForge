@@ -1,0 +1,14 @@
+# Disclaimer:
+# It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat plugins, (USE ONLY WITH CAUTION!)
+#
+# This option sets the protocol version to be used when connecting to servers. (can also be changed in-game)
+client-side-version: -1
+#
+# This option indicates if the ViaForge button should be shown in the main menu.
+show-main-menu-button: true
+#
+# This option indicates if the ViaForge button should be shown in the multiplayer.
+show-multiplayer-button: true
+#
+# This option indicates if the ViaForge button should be shown in the direct connect screen.
+show-direct-connect-button: true

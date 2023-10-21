@@ -38,8 +38,10 @@ public class MixinMainMenuScreen extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        addButton(new Button(5, 6, 98, 20,"ViaForge", b -> GuiProtocolSelector.open(minecraft)));
-
         ViaForgeCommon.init(ViaForge115.PLATFORM);
+
+        if (ViaForgeCommon.getManager().getConfig().isShowMainMenuButton()) {
+            addButton(new Button(5, 6, 98, 20, "ViaForge", b -> GuiProtocolSelector.open(minecraft)));
+        }
     }
 }

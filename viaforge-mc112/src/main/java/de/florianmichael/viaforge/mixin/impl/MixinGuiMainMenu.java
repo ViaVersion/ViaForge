@@ -31,15 +31,19 @@ public class MixinGuiMainMenu extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        buttonList.add(new GuiButton(1337, 5, 6, 98, 20, "ViaForge"));
-
         ViaForgeCommon.init(ViaForge112.PLATFORM);
+
+        if (ViaForgeCommon.getManager().getConfig().isShowMainMenuButton()) {
+            buttonList.add(new GuiButton(1_000_000_000, 5, 6, 98, 20, "ViaForge"));
+        }
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))
     public void handleViaForgeButtonClicking(GuiButton p_actionPerformed_1_, CallbackInfo ci) {
-        if (p_actionPerformed_1_.id == 1337) {
-            mc.displayGuiScreen(new GuiProtocolSelector(this));
+        if (ViaForgeCommon.getManager().getConfig().isShowMainMenuButton()) {
+            if (p_actionPerformed_1_.id == 1_000_000_000) {
+                mc.displayGuiScreen(new GuiProtocolSelector(this));
+            }
         }
     }
 }

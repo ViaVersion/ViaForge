@@ -39,8 +39,10 @@ public class MixinTitleScreen extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        addRenderableWidget(new Button(5, 6, 98, 20, new TextComponent("ViaForge"), b -> GuiProtocolSelector.open(minecraft)));
-
         ViaForgeCommon.init(ViaForge117.PLATFORM);
+
+        if (ViaForgeCommon.getManager().getConfig().isShowMainMenuButton()) {
+            addRenderableWidget(new Button(5, 6, 98, 20, new TextComponent("ViaForge"), b -> GuiProtocolSelector.open(minecraft)));
+        }
     }
 }

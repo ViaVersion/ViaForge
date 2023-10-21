@@ -15,13 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viaforge.common;
+package de.florianmichael.viaforge.common.platform;
 
+import java.io.File;
 import java.util.function.Supplier;
 
-public interface PlatformFields {
+/**
+ * This interface is used to access platform specific fields.
+ */
+public interface VFPlatform {
 
+    /**
+     * @return the native version of the platform
+     */
     int getGameVersion();
 
+    /**
+     * @return if the client is in singleplayer
+     */
     Supplier<Boolean> isSingleplayer();
+
+    /**
+     * @return the leading directory of the platform
+     */
+    File getLeadingDirectory();
 }

@@ -17,15 +17,16 @@
  */
 package de.florianmichael.viaforge;
 
-import de.florianmichael.viaforge.common.PlatformFields;
+import de.florianmichael.viaforge.common.platform.VFPlatform;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
 
+import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge119 implements PlatformFields {
+public class ViaForge119 implements VFPlatform {
 
     public final static ViaForge119 PLATFORM = new ViaForge119();
 
@@ -37,5 +38,10 @@ public class ViaForge119 implements PlatformFields {
     @Override
     public Supplier<Boolean> isSingleplayer() {
         return () -> Minecraft.getInstance().isSingleplayer();
+    }
+
+    @Override
+    public File getLeadingDirectory() {
+        return Minecraft.getInstance().gameDirectory;
     }
 }

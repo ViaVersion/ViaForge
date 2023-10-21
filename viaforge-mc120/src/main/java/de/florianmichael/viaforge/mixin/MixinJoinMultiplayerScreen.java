@@ -18,6 +18,7 @@
 package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.ViaForge120;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -37,6 +38,8 @@ public class MixinJoinMultiplayerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        addRenderableWidget(new Button.Builder(Component.literal("ViaForge"), b -> minecraft.setScreen(new GuiProtocolSelector(this))).bounds(5, 6, 98, 20).build());
+        if (ViaForgeCommon.getManager().getConfig().isShowMultiplayerButton()) {
+            addRenderableWidget(new Button.Builder(Component.literal("ViaForge"), b -> minecraft.setScreen(new GuiProtocolSelector(this))).bounds(5, 6, 98, 20).build());
+        }
     }
 }

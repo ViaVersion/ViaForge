@@ -20,6 +20,8 @@ package de.florianmichael.viaforge.common;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import de.florianmichael.viaforge.common.platform.VFPlatform;
+import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLInjector;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLLegacyPipeline;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLLoader;
@@ -28,20 +30,34 @@ import io.netty.channel.socket.SocketChannel;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
 import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
+import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.util.VersionEnum;
 
+import java.io.File;
+
+/**
+ * This class is used to manage the common code between the different ViaForge versions.
+ * It is used to inject the ViaVersion pipeline into the netty pipeline. It also manages the target version.
+ */
 public class ViaForgeCommon {
     private static ViaForgeCommon manager;
 
-    private final PlatformFields platform;
+    private final VFPlatform platform;
     private VersionEnum targetVersion;
 
-    public ViaForgeCommon(PlatformFields platform) {
+    private ViaForgeConfig config;
+
+    public ViaForgeCommon(VFPlatform platform) {
         this.platform = platform;
     }
 
-    public static void init(final PlatformFields platform) {
+    /**
+     * Initializes the manager.
+     *
+     * @param platform the platform fields
+     */
+    public static void init(final VFPlatform platform) {
         if (manager != null) {
             return; // Already initialized, ignore it then :tm:
         }
@@ -51,11 +67,25 @@ public class ViaForgeCommon {
         }
 
         manager = new ViaForgeCommon(platform);
-        manager.setTargetVersion(version);
 
-        ViaLoader.init(null, new ViaForgeVLLoader(), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new);
+        final File mainFolder = new File(platform.getLeadingDirectory(), "ViaForge");
+
+        ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new);
+        manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"));
+
+        final VersionEnum configVersion = VersionEnum.fromProtocolId(manager.config.getClientSideVersion());
+        if (configVersion != VersionEnum.UNKNOWN) {
+            manager.setTargetVersion(configVersion);
+        } else {
+            manager.setTargetVersion(version);
+        }
     }
 
+    /**
+     * Injects the ViaVersion pipeline into the netty pipeline.
+     *
+     * @param channel the channel to inject the pipeline into
+     */
     public void inject(final Channel channel) {
         if (channel instanceof SocketChannel && targetVersion != getNativeVersion()) {
             final UserConnection user = new UserConnectionImpl(channel, true);
@@ -65,6 +95,11 @@ public class ViaForgeCommon {
         }
     }
 
+    /**
+     * Reorders the compression channel.
+     *
+     * @param channel the channel to reorder the compression for
+     */
     public void reorderCompression(final Channel channel) {
         channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
     }
@@ -79,10 +114,15 @@ public class ViaForgeCommon {
 
     public void setTargetVersion(VersionEnum targetVersion) {
         this.targetVersion = targetVersion;
+        config.setClientSideVersion(targetVersion.getVersion());
     }
 
-    public PlatformFields getPlatform() {
+    public VFPlatform getPlatform() {
         return platform;
+    }
+
+    public ViaForgeConfig getConfig() {
+        return config;
     }
 
     public static ViaForgeCommon getManager() {

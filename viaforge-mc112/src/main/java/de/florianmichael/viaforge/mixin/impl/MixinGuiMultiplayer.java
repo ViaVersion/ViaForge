@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
@@ -31,13 +32,17 @@ public class MixinGuiMultiplayer extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        buttonList.add(new GuiButton(1337, 5, 6, 98, 20, "ViaForge"));
+        if (ViaForgeCommon.getManager().getConfig().isShowMultiplayerButton()) {
+            buttonList.add(new GuiButton(1_000_000_000, 5, 6, 98, 20, "ViaForge"));
+        }
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))
     public void handleViaForgeButtonClicking(GuiButton p_actionPerformed_1_, CallbackInfo ci) {
-        if (p_actionPerformed_1_.id == 1337) {
-            mc.displayGuiScreen(new GuiProtocolSelector(this));
+        if (ViaForgeCommon.getManager().getConfig().isShowMultiplayerButton()) {
+            if (p_actionPerformed_1_.id == 1_000_000_000) {
+                mc.displayGuiScreen(new GuiProtocolSelector(this));
+            }
         }
     }
 }
