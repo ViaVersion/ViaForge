@@ -21,12 +21,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ViaForge All-in-One
-          path: | 
-            viaforge-mc112/build/libs/
-            viaforge-mc114/build/libs/
-            viaforge-mc115/build/libs/
-            viaforge-mc116/build/libs/
-            viaforge-mc117/build/libs/
-            viaforge-mc118/build/libs/
-            viaforge-mc119/build/libs/
-            viaforge-mc120/build/libs/
+          path: viaforge-mc*/build/libs/
