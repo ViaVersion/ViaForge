@@ -17,13 +17,8 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.connection.UserConnectionImpl;
-import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import de.florianmichael.viaforge.ViaForge;
-import de.florianmichael.viaforge.protocolhack.ViaForgeVLLegacyPipeline;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import io.netty.channel.Channel;
-import io.netty.channel.socket.SocketChannel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,11 +29,6 @@ public class MixinNetworkManager_5 {
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(Channel channel, CallbackInfo ci) {
-        if (channel instanceof SocketChannel && ViaForge.targetVersion != ViaForge.NATIVE_VERSION) {
-            final UserConnection user = new UserConnectionImpl(channel, true);
-            new ProtocolPipelineImpl(user);
-
-            channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, ViaForge.targetVersion));
-        }
+        ViaForgeCommon.getManager().inject(channel);
     }
 }

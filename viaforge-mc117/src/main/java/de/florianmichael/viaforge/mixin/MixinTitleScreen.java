@@ -17,7 +17,8 @@
  */
 package de.florianmichael.viaforge.mixin;
 
-import de.florianmichael.viaforge.ViaForge;
+import de.florianmichael.viaforge.ViaForge117;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -40,6 +41,6 @@ public class MixinTitleScreen extends Screen {
     public void hookViaForgeButton(CallbackInfo ci) {
         addRenderableWidget(new Button(5, 6, 98, 20, new TextComponent("ViaForge"), b -> GuiProtocolSelector.open(minecraft)));
 
-        ViaForge.initViaVersion();
+        ViaForgeCommon.init(ViaForge117.PLATFORM);
     }
 }

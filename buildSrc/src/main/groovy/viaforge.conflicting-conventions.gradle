@@ -1,0 +1,7 @@
+plugins {
+    id "viaforge.shadow-conventions"
+}
+
+shadowJar {
+    exclude("META-INF/services/**")
+}

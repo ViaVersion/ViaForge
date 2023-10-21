@@ -5,7 +5,7 @@
   "package": "de.florianmichael.viaforge.mixin",
   "mixins": [
     "MixinConnection",
-    "MixinNetworkManager_1",
+    "MixinConnection_1",
     "MixinTitleScreen",
     "MixinJoinMultiplayerScreen",
     "MixinDirectJoinServerScreen"

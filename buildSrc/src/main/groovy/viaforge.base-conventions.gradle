@@ -1,0 +1,26 @@
+plugins {
+    id "java-library"
+}
+
+configurations {
+    include
+    implementation.extendsFrom(include)
+}
+
+repositories {
+    maven {
+        url = "https://repo.spongepowered.org/repository/maven-public"
+    }
+    maven {
+        url = "https://repo.viaversion.com"
+    }
+}
+
+dependencies {
+    include "com.viaversion:viaversion:${project.viaversion_version}"
+    include "com.viaversion:viabackwards:${project.viabackwards_version}"
+    include "com.viaversion:viarewind-universal:${project.viarewind_version}"
+    include "org.yaml:snakeyaml:${project.snake_yml_version}"
+
+    include "net.raphimc:ViaLoader:${project.vialoader_version}"
+}

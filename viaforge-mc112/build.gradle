@@ -1,6 +1,5 @@
 plugins {
-    id "florianmichael.viaforge.base-conventions"
-    id "florianmichael.viaforge.forge-conventions"
+    id "viaforge.forge-conventions"
 }
 
 minecraft {
@@ -8,5 +7,5 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
+    minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2859"
 }

@@ -17,7 +17,8 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
-import de.florianmichael.viaforge.ViaForge;
+import de.florianmichael.viaforge.ViaForge112;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,7 +33,7 @@ public class MixinGuiMainMenu extends GuiScreen {
     public void hookViaForgeButton(CallbackInfo ci) {
         buttonList.add(new GuiButton(1337, 5, 6, 98, 20, "ViaForge"));
 
-        ViaForge.initViaVersion();
+        ViaForgeCommon.init(ViaForge112.PLATFORM);
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))

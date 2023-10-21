@@ -17,6 +17,7 @@
  */
 package de.florianmichael.viaforge.mixin;
 
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import io.netty.channel.Channel;
 import net.minecraft.network.Connection;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
@@ -33,6 +34,6 @@ public class MixinConnection {
 
     @Inject(method = "setupCompression", at = @At("RETURN"))
     public void reorderPipeline(int p_129485_, boolean p_182682_, CallbackInfo ci) {
-        channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
+        ViaForgeCommon.getManager().reorderCompression(channel);
     }
 }

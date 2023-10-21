@@ -1,9 +1,6 @@
 plugins {
-    id "florianmichael.viaforge.base-conventions"
-    id "florianmichael.viaforge.forge-conventions"
+    id "viaforge.modern-conventions"
 }
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     mappings channel: "official", version: "1.18.2"

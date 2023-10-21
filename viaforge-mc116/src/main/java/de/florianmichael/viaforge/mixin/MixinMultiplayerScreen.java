@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viaforge.mixin;
 
-import de.florianmichael.viaforge.ViaForge;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.screen.MultiplayerScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -38,7 +37,5 @@ public class MixinMultiplayerScreen extends Screen {
     @Inject(method = "init", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
         addButton(new Button(5, 6, 98, 20, ITextComponent.nullToEmpty("ViaForge"), b -> minecraft.setScreen(new GuiProtocolSelector(this))));
-
-        ViaForge.initViaVersion();
     }
 }

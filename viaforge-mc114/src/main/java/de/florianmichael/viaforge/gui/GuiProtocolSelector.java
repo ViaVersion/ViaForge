@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viaforge.gui;
 
-import de.florianmichael.viaforge.ViaForge;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -87,14 +87,14 @@ public class GuiProtocolSelector extends Screen {
 
             @Override
             public boolean mouseClicked(double p_231044_1_, double p_231044_3_, int p_231044_5_) {
-                ViaForge.targetVersion = versionEnum;
+                ViaForgeCommon.getManager().setTargetVersion(versionEnum);
                 return super.mouseClicked(p_231044_1_, p_231044_3_, p_231044_5_);
             }
 
             @Override
             public void render(int p_230432_2_, int p_230432_3_, int p_230432_4_, int p_230432_5_, int p_230432_6_, int p_230432_7_, int p_230432_8_, boolean p_230432_9_, float p_230432_10_) {
                 drawCenteredString(Minecraft.getInstance().font,
-                        (ViaForge.targetVersion.getVersion() == versionEnum.getVersion() ? TextFormatting.GREEN.toString() : TextFormatting.DARK_RED.toString()) + versionEnum.getName(), width / 2, p_230432_3_, -1);
+                        (ViaForgeCommon.getManager().getTargetVersion() == versionEnum ? TextFormatting.GREEN.toString() : TextFormatting.DARK_RED.toString()) + versionEnum.getName(), width / 2, p_230432_3_, -1);
             }
         }
     }

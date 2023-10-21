@@ -18,7 +18,7 @@
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import de.florianmichael.viaforge.ViaForge;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -85,7 +85,7 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaForge.targetVersion = VersionEnum.SORTED_VERSIONS.get(i);
+            ViaForgeCommon.getManager().setTargetVersion(VersionEnum.SORTED_VERSIONS.get(i));
         }
 
         @Override
@@ -100,9 +100,10 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5, float v) {
+            final VersionEnum targetVersion = ViaForgeCommon.getManager().getTargetVersion();
             final VersionEnum version = VersionEnum.SORTED_VERSIONS.get(i);
 
-            drawCenteredString(mc.fontRenderer,(ViaForge.targetVersion.getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
+            drawCenteredString(mc.fontRenderer,(targetVersion == version ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
         }
     }
 }

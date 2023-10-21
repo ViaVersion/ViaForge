@@ -1,0 +1,21 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+    id "viaforge.base-conventions"
+}
+
+archivesBaseName = project.maven_name
+version = maven_version + "-" + project.mc_version
+group = maven_group
+
+compileJava.options.encoding = "UTF-8"
+
+processResources {
+    inputs.property "version", project.version
+
+
+    for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
+        filesMatching(file) {
+            expand "version": project.version
+        }
+    }
+}

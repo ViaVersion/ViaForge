@@ -1,6 +1,5 @@
 plugins {
-    id "florianmichael.viaforge.base-conventions"
-    id "florianmichael.viaforge.forge-conventions"
+    id "viaforge.forge-conventions"
 }
 
 minecraft {

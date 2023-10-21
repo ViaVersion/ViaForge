@@ -17,13 +17,13 @@
  */
 package de.florianmichael.viaforge.mixin;
 
-import de.florianmichael.viaforge.ViaForge;
+import de.florianmichael.viaforge.ViaForge115;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -40,6 +40,6 @@ public class MixinMainMenuScreen extends Screen {
     public void hookViaForgeButton(CallbackInfo ci) {
         addButton(new Button(5, 6, 98, 20,"ViaForge", b -> GuiProtocolSelector.open(minecraft)));
 
-        ViaForge.initViaVersion();
+        ViaForgeCommon.init(ViaForge115.PLATFORM);
     }
 }

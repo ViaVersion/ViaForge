@@ -17,7 +17,7 @@
  */
 package de.florianmichael.viaforge.mixin;
 
-import de.florianmichael.viaforge.ViaForge;
+import de.florianmichael.viaforge.ViaForge119;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.DirectJoinServerScreen;
@@ -38,7 +38,5 @@ public class MixinDirectJoinServerScreen extends Screen {
     @Inject(method = "init", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
         addRenderableWidget(new Button.Builder(Component.literal("ViaForge"), b -> minecraft.setScreen(new GuiProtocolSelector(this))).bounds(5, 6, 98, 20).build());
-
-        ViaForge.initViaVersion();
     }
 }
