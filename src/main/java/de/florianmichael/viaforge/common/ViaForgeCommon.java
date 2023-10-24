@@ -23,14 +23,14 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLInjector;
+import de.florianmichael.viaforge.common.protocolhack.netty.IEncryptionSetup;
 import de.florianmichael.viaforge.common.protocolhack.netty.ViaForgeVLLegacyPipeline;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLLoader;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.util.AttributeKey;
 import net.raphimc.vialoader.ViaLoader;
-import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
-import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
-import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
+import net.raphimc.vialoader.impl.platform.*;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.util.VersionEnum;
 
@@ -41,6 +41,9 @@ import java.io.File;
  * It is used to inject the ViaVersion pipeline into the netty pipeline. It also manages the target version.
  */
 public class ViaForgeCommon {
+    public final static AttributeKey<UserConnection> LOCAL_VIA_USER = AttributeKey.valueOf("local_via_user");
+    public final static AttributeKey<IEncryptionSetup> ENCRYPTION_SETUP = AttributeKey.valueOf("encryption_setup");
+
     private static ViaForgeCommon manager;
 
     private final VFPlatform platform;
@@ -70,7 +73,7 @@ public class ViaForgeCommon {
 
         final File mainFolder = new File(platform.getLeadingDirectory(), "ViaForge");
 
-        ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new);
+        ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
         manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"));
 
         final VersionEnum configVersion = VersionEnum.fromProtocolId(manager.config.getClientSideVersion());
@@ -90,6 +93,8 @@ public class ViaForgeCommon {
         if (channel instanceof SocketChannel && targetVersion != getNativeVersion()) {
             final UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);
+
+            channel.attr(LOCAL_VIA_USER).set(user);
 
             channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
         }

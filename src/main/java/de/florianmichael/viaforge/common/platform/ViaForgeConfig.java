@@ -15,6 +15,8 @@ public class ViaForgeConfig extends Config {
     public final static String SHOW_MULTIPLAYER_BUTTON = "show-multiplayer-button";
     public final static String SHOW_DIRECT_CONNECT_BUTTON = "show-direct-connect-button";
 
+    public final static String VERIFY_SESSION_IN_OLD_VERSIONS = "verify-session-in-old-versions";
+
     /**
      * @param configFile The location of where the config is loaded/saved.
      */
@@ -61,5 +63,9 @@ public class ViaForgeConfig extends Config {
 
     public boolean isShowDirectConnectButton() {
         return getBoolean(SHOW_DIRECT_CONNECT_BUTTON, true);
+    }
+
+    public boolean isVerifySessionInOldVersions() {
+        return getBoolean(VERIFY_SESSION_IN_OLD_VERSIONS, true);
     }
 }

@@ -12,3 +12,6 @@ show-multiplayer-button: true
 #
 # This option indicates if the ViaForge button should be shown in the direct connect screen.
 show-direct-connect-button: true
+#
+# Manually sends the joinServer request when connecting to <= 1.2.5 servers.
+verify-session-in-old-versions: true

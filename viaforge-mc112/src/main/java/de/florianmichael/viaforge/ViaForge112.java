@@ -18,9 +18,12 @@
 package de.florianmichael.viaforge;
 
 import de.florianmichael.viaforge.common.platform.VFPlatform;
+import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
+import net.minecraft.util.Session;
 import net.minecraftforge.fml.common.Mod;
+import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;
@@ -42,5 +45,17 @@ public class ViaForge112 implements VFPlatform {
     @Override
     public File getLeadingDirectory() {
         return Minecraft.getMinecraft().gameDir;
+    }
+
+    @Override
+    public void joinServer(String serverId) throws Throwable {
+        final Session session = Minecraft.getMinecraft().getSession();
+
+        Minecraft.getMinecraft().getSessionService().joinServer(session.getProfile(), session.getToken(), serverId);
+    }
+
+    @Override
+    public GameProfileFetcher getGameProfileFetcher() {
+        return new ViaForgeGameProfileFetcher();
     }
 }

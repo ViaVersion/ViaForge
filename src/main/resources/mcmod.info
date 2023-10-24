@@ -2,7 +2,7 @@
   {
     "modid": "viaforge",
     "name": "ViaForge",
-    "description": "Client-side Implementation of ViaVersion, ViaBackwards and ViaRewind for Legacy Minecraft Forge",
+    "description": "Client-side Implementation of the Via* projects for Minecraft Forge",
     "version": "${version}",
     "mcversion": "[1.12.2]",
     "url": "https://github.com/ViaVersion/ViaForge",

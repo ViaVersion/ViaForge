@@ -8,6 +8,7 @@
     "MixinGuiMainMenu",
     "MixinGuiMultiplayer",
     "MixinGuiScreenServerList",
+    "MixinNetHandlerLoginClient",
     "MixinNetworkManager",
     "MixinNetworkManager_5",
     "fixes.MixinEntityPlayerSP"
