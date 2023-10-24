@@ -37,13 +37,18 @@ public class ViaForgeConfig extends Config {
         return Collections.emptyList();
     }
 
+    @Override
+    public void set(String path, Object value) {
+        super.set(path, value);
+        save(); // Automatically save the config when something changes
+    }
+
     public int getClientSideVersion() {
         return getInt(CLIENT_SIDE_VERSION, 0);
     }
 
     public void setClientSideVersion(final int version) {
         set(CLIENT_SIDE_VERSION, version);
-        save();
     }
 
     public boolean isShowMainMenuButton() {

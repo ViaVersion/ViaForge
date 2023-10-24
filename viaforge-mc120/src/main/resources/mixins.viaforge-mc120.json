@@ -6,12 +6,15 @@
   "mixins": [
     "MixinConnection",
     "MixinConnection_1",
-    "MixinTitleScreen",
+    "MixinDirectJoinServerScreen",
     "MixinJoinMultiplayerScreen",
-    "MixinDirectJoinServerScreen"
+    "MixinTitleScreen"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "mixins.viaforge-mc120.refmap.json"
+  "refmap": "mixins.viaforge-mc120.refmap.json",
+  "client": [
+    "fixes.MixinLocalPlayer"
+  ]
 }

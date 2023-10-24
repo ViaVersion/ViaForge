@@ -6,9 +6,10 @@
   "mixins": [
     "MixinConnection",
     "MixinConnection_1",
-    "MixinTitleScreen",
+    "MixinDirectJoinServerScreen",
     "MixinJoinMultiplayerScreen",
-    "MixinDirectJoinServerScreen"
+    "MixinTitleScreen",
+    "fixes.MixinLocalPlayer"
   ],
   "injectors": {
     "defaultRequire": 1
