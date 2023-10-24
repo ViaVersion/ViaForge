@@ -18,10 +18,10 @@
 package de.florianmichael.viaforge.common.protocolhack;
 
 import com.viaversion.viaversion.api.Via;
-import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.platform.providers.ViaProviders;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
+import de.florianmichael.viaforge.common.protocolhack.provider.DummyMovementTransmitter;
 import de.florianmichael.viaforge.common.protocolhack.provider.ViaForgeVersionProvider;
 import net.raphimc.vialoader.impl.viaversion.VLLoader;
 
@@ -34,12 +34,6 @@ public class ViaForgeVLLoader extends VLLoader {
         final ViaProviders providers = Via.getManager().getProviders();
 
         providers.use(VersionProvider.class, new ViaForgeVersionProvider());
-        providers.use(MovementTransmitterProvider.class, new MovementTransmitterProvider() {
-
-            @Override
-            public void sendPlayer(UserConnection userConnection) {
-                // We are on the client side, so we can handle the idle packet properly
-            }
-        });
+        providers.use(MovementTransmitterProvider.class, new DummyMovementTransmitter());
     }
 }

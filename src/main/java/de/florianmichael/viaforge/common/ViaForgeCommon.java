@@ -23,7 +23,7 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLInjector;
-import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLLegacyPipeline;
+import de.florianmichael.viaforge.common.protocolhack.netty.ViaForgeVLLegacyPipeline;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLLoader;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
