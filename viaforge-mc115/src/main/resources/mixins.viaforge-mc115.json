@@ -3,18 +3,16 @@
   "minVersion": "0.7.5",
   "compatibilityLevel": "JAVA_8",
   "package": "de.florianmichael.viaforge.mixin",
-  "mixins": [
+  "client": [
     "MixinMainMenuScreen",
     "MixinMultiplayerScreen",
     "MixinNetworkManager",
     "MixinNetworkManager_1",
-    "MixinServerListScreen"
+    "MixinServerListScreen",
+    "fixes.MixinClientPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "mixins.viaforge-mc115.refmap.json",
-  "client": [
-    "fixes.MixinClientPlayerEntity"
-  ]
+  "refmap": "mixins.viaforge-mc115.refmap.json"
 }

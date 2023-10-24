@@ -3,7 +3,7 @@
   "minVersion": "0.7.5",
   "compatibilityLevel": "JAVA_8",
   "package": "de.florianmichael.viaforge.mixin",
-  "mixins": [
+  "client": [
     "MixinConnection",
     "MixinConnection_1",
     "MixinDirectJoinServerScreen",

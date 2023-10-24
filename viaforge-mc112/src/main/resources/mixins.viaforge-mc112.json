@@ -4,15 +4,13 @@
   "compatibilityLevel": "JAVA_8",
   "package": "de.florianmichael.viaforge.mixin.impl",
   "refmap": "mixins.viaforge-mc112.refmap.json",
-  "mixins": [
+  "client": [
     "MixinGuiMainMenu",
     "MixinGuiMultiplayer",
     "MixinGuiScreenServerList",
     "MixinNetworkManager",
-    "MixinNetworkManager_5"
-  ],
-  "verbose": true,
-  "client": [
+    "MixinNetworkManager_5",
     "fixes.MixinEntityPlayerSP"
-  ]
+  ],
+  "verbose": true
 }
