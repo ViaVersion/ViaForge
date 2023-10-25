@@ -35,12 +35,6 @@ public class MixinNetworkManager_5 {
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(Channel channel, CallbackInfo ci) {
-        // We need to access this class later to call the viaforge_setupPreNettyDecryption method.
-        // In one of the ViaLegacy's required providers, so we track this class instance as an own
-        // attribute in the connection and later access it from there and remove it.
-        // Counterpart in {@link java/de/florianmichael/viaforge/common/protocolhack/provider/ViaForgeEncryptionProvider.java}
-        channel.attr(ViaForgeCommon.VF_NETWORK_MANAGER).set((VFNetworkManager) val$networkmanager);
-
-        ViaForgeCommon.getManager().inject(channel);
+        ViaForgeCommon.getManager().inject(channel, (VFNetworkManager) val$networkmanager);
     }
 }

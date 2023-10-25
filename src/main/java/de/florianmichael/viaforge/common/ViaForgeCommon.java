@@ -89,12 +89,14 @@ public class ViaForgeCommon {
      *
      * @param channel the channel to inject the pipeline into
      */
-    public void inject(final Channel channel) {
+    public void inject(final Channel channel, final VFNetworkManager networkManager) {
         if (channel instanceof SocketChannel) {
             final UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);
 
             channel.attr(LOCAL_VIA_USER).set(user);
+            channel.attr(VF_NETWORK_MANAGER).set(networkManager);
+
             channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
         }
     }
