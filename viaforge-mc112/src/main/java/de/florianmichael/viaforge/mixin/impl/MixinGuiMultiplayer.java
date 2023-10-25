@@ -34,9 +34,6 @@ public class MixinGuiMultiplayer extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        // If the previous server forced a version, we need to restore the version to the default one.
-        ViaForgeCommon.getManager().restoreVersion();
-
         final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
         if (config.isShowMultiplayerButton()) {
             final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);

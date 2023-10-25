@@ -10,7 +10,15 @@ public interface VFNetworkManager {
      */
     void viaforge_setupPreNettyDecryption();
 
+    /**
+     * @return the target version of the connection
+     */
     VersionEnum viaforge_getTrackedVersion();
 
+    /**
+     * Sets the target version of the connection.
+     *
+     * @param version the target version
+     */
     void viaforge_setTrackedVersion(final VersionEnum version);
 }

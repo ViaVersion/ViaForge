@@ -36,6 +36,7 @@ import java.util.concurrent.ExecutionException;
 public class GuiProtocolSelector extends GuiScreen {
 
     private final GuiScreen parent;
+    private final boolean simple;
     private final FinishedCallback finishedCallback;
 
     private SlotList list;
@@ -44,14 +45,15 @@ public class GuiProtocolSelector extends GuiScreen {
     private long time;
 
     public GuiProtocolSelector(final GuiScreen parent) {
-        this(parent, (version, unused) -> {
+        this(parent, false, (version, unused) -> {
             // Default action is to set the target version and go back to the parent screen.
             ViaForgeCommon.getManager().setTargetVersion(version);
         });
     }
 
-    public GuiProtocolSelector(final GuiScreen parent, final FinishedCallback finishedCallback) {
+    public GuiProtocolSelector(final GuiScreen parent, final boolean simple, final FinishedCallback finishedCallback) {
         this.parent = parent;
+        this.simple = simple;
         this.finishedCallback = finishedCallback;
     }
 
@@ -59,8 +61,10 @@ public class GuiProtocolSelector extends GuiScreen {
     public void initGui() {
         super.initGui();
         buttonList.add(new GuiButton(1, 5, height - 25, 20, 20, "<-"));
-        buttonList.add(new GuiButton(2, width - 105, 5, 100, 20, "Create dump"));
-        buttonList.add(new GuiButton(3, width - 105, height - 25, 100, 20, "Reload configs"));
+        if (!this.simple) {
+            buttonList.add(new GuiButton(2, width - 105, 5, 100, 20, "Create dump"));
+            buttonList.add(new GuiButton(3, width - 105, height - 25, 100, 20, "Reload configs"));
+        }
 
         list = new SlotList(mc, width, height, 3 + 3 /* start offset */ + (fontRenderer.FONT_HEIGHT + 2) * 3 /* title is 2 */, height - 30, fontRenderer.FONT_HEIGHT + 2);
     }
@@ -151,7 +155,14 @@ public class GuiProtocolSelector extends GuiScreen {
             final VersionEnum targetVersion = ViaForgeCommon.getManager().getTargetVersion();
             final VersionEnum version = VersionEnum.SORTED_VERSIONS.get(index);
 
-            drawCenteredString(mc.fontRenderer,(targetVersion == version ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, y, -1);
+            String color;
+            if (targetVersion == version) {
+                color = GuiProtocolSelector.this.simple ? ChatFormatting.GOLD.toString() : ChatFormatting.GREEN.toString();
+            } else {
+                color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
+            }
+
+            drawCenteredString(mc.fontRenderer,(color) + version.getName(), width / 2, y, -1);
         }
     }
 

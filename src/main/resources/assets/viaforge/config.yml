@@ -18,6 +18,9 @@ verify-session-in-old-versions: true
 # Allow ViaForge to authenticate with BetaCraft's MP-Pass system for <= c0.30 servers.
 allow-betacraft-authentication: true
 #
+# If enabled, ViaForge will show the current protocol version in the F3 menu.
+show-protocol-version-in-f3: true
+#
 #----------------------------------------------------------#
 #                       GUI OPTIONS                        #
 #----------------------------------------------------------#

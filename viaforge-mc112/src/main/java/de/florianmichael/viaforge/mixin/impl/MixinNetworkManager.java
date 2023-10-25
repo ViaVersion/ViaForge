@@ -20,12 +20,12 @@ package de.florianmichael.viaforge.mixin.impl;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.NettyEncryptingDecoder;
 import net.minecraft.network.NettyEncryptingEncoder;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.util.CryptManager;
 import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.text.ITextComponent;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,6 +48,9 @@ public class MixinNetworkManager implements VFNetworkManager {
 
     @Unique
     private Cipher viaforge_decryptionCipher;
+
+    @Unique
+    private VersionEnum viaforge_targetVersion;
 
     @Inject(method = "createNetworkManagerAndConnect", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void trackSelfTarget(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
@@ -74,6 +77,12 @@ public class MixinNetworkManager implements VFNetworkManager {
         }
     }
 
+    @Inject(method = "closeChannel", at = @At("HEAD"))
+    public void restoreTargetVersion(ITextComponent message, CallbackInfo ci) {
+        // If the previous server forced a version, we need to restore the version to the default one.
+        ViaForgeCommon.getManager().restoreVersion();
+    }
+
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     public void reorderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
         ViaForgeCommon.getManager().reorderCompression(channel);
@@ -84,9 +93,6 @@ public class MixinNetworkManager implements VFNetworkManager {
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
         this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new NettyEncryptingDecoder(this.viaforge_decryptionCipher));
     }
-
-    @Unique
-    private VersionEnum viaforge_targetVersion;
 
     @Override
     public VersionEnum viaforge_getTrackedVersion() {

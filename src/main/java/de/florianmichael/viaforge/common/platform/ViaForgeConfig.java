@@ -11,14 +11,14 @@ import java.util.Map;
 
 public class ViaForgeConfig extends Config {
     public final static String CLIENT_SIDE_VERSION = "client-side-version";
+    public final static String VERIFY_SESSION_IN_OLD_VERSIONS = "verify-session-in-old-versions";
+    public final static String ALLOW_BETACRAFT_AUTHENTICATION = "allow-betacraft-authentication";
+    public final static String SHOW_PROTOCOL_VERSION_IN_F3 = "show-protocol-version-in-f3";
 
     public final static String SHOW_MAIN_MENU_BUTTON = "show-main-menu-button";
     public final static String SHOW_MULTIPLAYER_BUTTON = "show-multiplayer-button";
     public final static String SHOW_DIRECT_CONNECT_BUTTON = "show-direct-connect-button";
     public final static String SHOW_ADD_SERVER_BUTTON = "show-add-server-button";
-
-    public final static String VERIFY_SESSION_IN_OLD_VERSIONS = "verify-session-in-old-versions";
-    public final static String ALLOW_BETACRAFT_AUTHENTICATION = "allow-betacraft-authentication";
 
     public final static String VIA_FORGE_BUTTON_POSITION = "via-forge-button-position";
     public final static String ADD_SERVER_SCREEN_BUTTON_POSITION = "add-server-screen-button-position";
@@ -59,6 +59,18 @@ public class ViaForgeConfig extends Config {
         set(CLIENT_SIDE_VERSION, version);
     }
 
+    public boolean isVerifySessionInOldVersions() {
+        return getBoolean(VERIFY_SESSION_IN_OLD_VERSIONS, true);
+    }
+
+    public boolean isAllowBetacraftAuthentication() {
+        return getBoolean(ALLOW_BETACRAFT_AUTHENTICATION, true);
+    }
+
+    public boolean isShowProtocolVersionInF3() {
+        return getBoolean(SHOW_PROTOCOL_VERSION_IN_F3, true);
+    }
+
     public boolean isShowMainMenuButton() {
         return getBoolean(SHOW_MAIN_MENU_BUTTON, true);
     }
@@ -73,14 +85,6 @@ public class ViaForgeConfig extends Config {
 
     public boolean isShowAddServerButton() {
         return getBoolean(SHOW_ADD_SERVER_BUTTON, true);
-    }
-
-    public boolean isVerifySessionInOldVersions() {
-        return getBoolean(VERIFY_SESSION_IN_OLD_VERSIONS, true);
-    }
-
-    public boolean isAllowBetacraftAuthentication() {
-        return getBoolean(ALLOW_BETACRAFT_AUTHENTICATION, true);
     }
 
     public ButtonPosition getViaForgeButtonPosition() {

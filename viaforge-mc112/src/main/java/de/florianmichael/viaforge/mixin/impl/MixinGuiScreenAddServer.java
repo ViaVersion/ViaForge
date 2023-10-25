@@ -55,7 +55,7 @@ public class MixinGuiScreenAddServer extends GuiScreen {
     public void actionPerformed(GuiButton button, CallbackInfo ci) {
         if (ViaForgeCommon.getManager().getConfig().isShowAddServerButton()) {
             if (button.id == 1_000_000_000) {
-                mc.displayGuiScreen(new GuiProtocolSelector(this, (version, parent) -> {
+                mc.displayGuiScreen(new GuiProtocolSelector(this, true, (version, parent) -> {
                     // Set version and go back to the parent screen.
                     ((ExtendedServerData) serverData).viaforge_setVersion(version);
                     mc.displayGuiScreen(parent);
