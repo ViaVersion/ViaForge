@@ -17,8 +17,9 @@
  */
 package de.florianmichael.viaforge.mixin;
 
-import de.florianmichael.viaforge.ViaForge118;
+import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -33,14 +34,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(JoinMultiplayerScreen.class)
 public class MixinJoinMultiplayerScreen extends Screen {
 
-    protected MixinJoinMultiplayerScreen(Component p_96550_) {
-        super(p_96550_);
+    public MixinJoinMultiplayerScreen(Component title) {
+        super(title);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        if (ViaForgeCommon.getManager().getConfig().isShowMultiplayerButton()) {
-            addRenderableWidget(new Button(5, 6, 98, 20, new TextComponent("ViaForge"), b -> minecraft.setScreen(new GuiProtocolSelector(this))));
+        final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
+        if (config.isShowMainMenuButton()) {
+            final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);
+
+            addRenderableWidget(new Button(pos.key(), pos.value(), 100, 20, new TextComponent("ViaForge"), buttons -> GuiProtocolSelector.open(minecraft)));
         }
     }
 }

@@ -18,8 +18,10 @@
 package de.florianmichael.viaforge.mixin.impl;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
 import io.netty.channel.Channel;
-import org.spongepowered.asm.mixin.Mixin;
+import net.minecraft.network.NetworkManager;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,8 +29,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "net.minecraft.network.NetworkManager$5")
 public class MixinNetworkManager_5 {
 
+    @Final
+    @Mutable
+    NetworkManager val$networkmanager;
+
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(Channel channel, CallbackInfo ci) {
-        ViaForgeCommon.getManager().inject(channel);
+        ViaForgeCommon.getManager().inject(channel, (VFNetworkManager) val$networkmanager);
     }
 }

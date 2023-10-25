@@ -17,6 +17,9 @@
  */
 package de.florianmichael.viaforge.common.platform;
 
+import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
+import net.raphimc.vialoader.util.VersionEnum;
+
 import java.io.File;
 import java.util.function.Supplier;
 
@@ -39,4 +42,16 @@ public interface VFPlatform {
      * @return the leading directory of the platform
      */
     File getLeadingDirectory();
+
+    /**
+     * Sends the joinServer API request to Mojang's authentication servers.
+     *
+     * @param serverId    the server id of the server
+     */
+    void joinServer(final String serverId) throws Throwable;
+
+    /**
+     * @return the game profile fetcher of the platform for ViaLegacy
+     */
+    GameProfileFetcher getGameProfileFetcher();
 }

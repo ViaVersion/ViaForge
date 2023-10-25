@@ -23,14 +23,14 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLInjector;
-import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLLegacyPipeline;
+import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocolhack.netty.ViaForgeVLLegacyPipeline;
 import de.florianmichael.viaforge.common.protocolhack.ViaForgeVLLoader;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.util.AttributeKey;
 import net.raphimc.vialoader.ViaLoader;
-import net.raphimc.vialoader.impl.platform.ViaBackwardsPlatformImpl;
-import net.raphimc.vialoader.impl.platform.ViaRewindPlatformImpl;
-import net.raphimc.vialoader.impl.platform.ViaVersionPlatformImpl;
+import net.raphimc.vialoader.impl.platform.*;
 import net.raphimc.vialoader.netty.CompressionReorderEvent;
 import net.raphimc.vialoader.util.VersionEnum;
 
@@ -41,6 +41,9 @@ import java.io.File;
  * It is used to inject the ViaVersion pipeline into the netty pipeline. It also manages the target version.
  */
 public class ViaForgeCommon {
+    public final static AttributeKey<UserConnection> LOCAL_VIA_USER = AttributeKey.valueOf("local_via_user");
+    public final static AttributeKey<VFNetworkManager> VF_NETWORK_MANAGER = AttributeKey.valueOf("encryption_setup");
+
     private static ViaForgeCommon manager;
 
     private final VFPlatform platform;
@@ -70,7 +73,7 @@ public class ViaForgeCommon {
 
         final File mainFolder = new File(platform.getLeadingDirectory(), "ViaForge");
 
-        ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new);
+        ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
         manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"));
 
         final VersionEnum configVersion = VersionEnum.fromProtocolId(manager.config.getClientSideVersion());
@@ -86,10 +89,13 @@ public class ViaForgeCommon {
      *
      * @param channel the channel to inject the pipeline into
      */
-    public void inject(final Channel channel) {
-        if (channel instanceof SocketChannel && targetVersion != getNativeVersion()) {
+    public void inject(final Channel channel, final VFNetworkManager networkManager) {
+        if (channel instanceof SocketChannel) {
             final UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);
+
+            channel.attr(LOCAL_VIA_USER).set(user);
+            channel.attr(VF_NETWORK_MANAGER).set(networkManager);
 
             channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
         }
@@ -101,6 +107,8 @@ public class ViaForgeCommon {
      * @param channel the channel to reorder the compression for
      */
     public void reorderCompression(final Channel channel) {
+        // When Minecraft enables compression, we need to reorder the pipeline
+        // to match the counterparts of via-decoder <-> encoder and via-encoder <-> encoder
         channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
     }
 
@@ -112,7 +120,15 @@ public class ViaForgeCommon {
         return targetVersion;
     }
 
-    public void setTargetVersion(VersionEnum targetVersion) {
+    public void restoreVersion() {
+        this.targetVersion = VersionEnum.fromProtocolId(config.getClientSideVersion());
+    }
+
+    public void setTargetVersionSilent(final VersionEnum targetVersion) {
+        this.targetVersion = targetVersion;
+    }
+
+    public void setTargetVersion(final VersionEnum targetVersion) {
         this.targetVersion = targetVersion;
         config.setClientSideVersion(targetVersion.getVersion());
     }

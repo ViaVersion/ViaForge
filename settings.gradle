@@ -19,11 +19,11 @@ pluginManagement {
 
 rootProject.name = "ViaForge"
 include "viaforge-mc112"
+include "viaforge-mc114"
+include "viaforge-mc115"
 include "viaforge-mc116"
 include "viaforge-mc117"
 include "viaforge-mc118"
 include "viaforge-mc119"
 include "viaforge-mc120"
-include 'viaforge-mc115'
-include 'viaforge-mc114'
 

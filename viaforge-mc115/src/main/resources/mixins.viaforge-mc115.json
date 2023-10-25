@@ -3,12 +3,19 @@
   "minVersion": "0.7.5",
   "compatibilityLevel": "JAVA_8",
   "package": "de.florianmichael.viaforge.mixin",
-  "mixins": [
-    "MixinNetworkManager",
-    "MixinNetworkManager_1",
+  "client": [
+    "MixinAddServerScreen",
+    "MixinClientLoginNetHandler",
+    "MixinConnectingScreen_1",
+    "MixinDebugOverlayGui",
     "MixinMainMenuScreen",
     "MixinMultiplayerScreen",
-    "MixinServerListScreen"
+    "MixinNetworkManager",
+    "MixinNetworkManager_1",
+    "MixinServerData",
+    "MixinServerListScreen",
+    "MixinServerPinger",
+    "fixes.MixinClientPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1

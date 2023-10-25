@@ -17,8 +17,10 @@
  */
 package de.florianmichael.viaforge.mixin;
 
+import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.ViaForge120;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -32,16 +34,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(TitleScreen.class)
 public class MixinTitleScreen extends Screen {
 
-    protected MixinTitleScreen(Component p_96550_) {
-        super(p_96550_);
+    public MixinTitleScreen(Component title) {
+        super(title);
     }
 
-    @Inject(method = "init", at = @At("HEAD"))
+    @Inject(method = "init", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
         ViaForgeCommon.init(ViaForge120.PLATFORM);
 
-        if (ViaForgeCommon.getManager().getConfig().isShowMainMenuButton()) {
-            addRenderableWidget(new Button.Builder(Component.literal("ViaForge"), b -> minecraft.setScreen(new GuiProtocolSelector(this))).bounds(5, 6, 98, 20).build());
+        final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
+        if (config.isShowMainMenuButton()) {
+            final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);
+
+            addRenderableWidget(Button.builder(Component.literal("ViaForge"), buttons -> GuiProtocolSelector.open(minecraft)).bounds(pos.key(), pos.value(), 100, 20).build());
         }
     }
 }

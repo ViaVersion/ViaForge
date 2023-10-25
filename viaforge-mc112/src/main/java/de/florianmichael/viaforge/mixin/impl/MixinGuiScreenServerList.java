@@ -17,7 +17,9 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -32,8 +34,11 @@ public class MixinGuiScreenServerList extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        if (ViaForgeCommon.getManager().getConfig().isShowDirectConnectButton()) {
-            buttonList.add(new GuiButton(1_000_000_000, 5, 6, 98, 20, "ViaForge"));
+        final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
+        if (config.isShowDirectConnectButton()) {
+            final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);
+
+            buttonList.add(new GuiButton(1_000_000_000, pos.key(), pos.value(), 100, 20, "ViaForge"));
         }
     }
 

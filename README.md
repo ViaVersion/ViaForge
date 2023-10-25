@@ -1,5 +1,5 @@
 # ViaForge
-Client-side Implementation of ViaVersion, ViaBackwards and ViaRewind for Legacy Minecraft Forge
+Client-side Implementation of the Via* projects for Minecraft Forge
 
 ## Contact
 If you encounter any issues, please report them on the
