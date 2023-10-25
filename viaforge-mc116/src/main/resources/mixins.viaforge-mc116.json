@@ -4,11 +4,17 @@
   "compatibilityLevel": "JAVA_8",
   "package": "de.florianmichael.viaforge.mixin",
   "client": [
+    "MixinAddServerScreen",
+    "MixinClientLoginNetHandler",
+    "MixinConnectingScreen_1",
+    "MixinDebugOverlayGui",
     "MixinMainMenuScreen",
     "MixinMultiplayerScreen",
     "MixinNetworkManager",
     "MixinNetworkManager_1",
+    "MixinServerData",
     "MixinServerListScreen",
+    "MixinServerPinger",
     "fixes.MixinClientPlayerEntity"
   ],
   "injectors": {

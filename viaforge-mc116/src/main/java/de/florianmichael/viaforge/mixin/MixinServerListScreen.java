@@ -17,13 +17,15 @@
  */
 package de.florianmichael.viaforge.mixin;
 
-import de.florianmichael.viaforge.ViaForge116;
+import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ServerListScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,14 +34,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerListScreen.class)
 public class MixinServerListScreen extends Screen {
 
-    protected MixinServerListScreen(ITextComponent p_i51108_1_) {
-        super(p_i51108_1_);
+    public MixinServerListScreen(ITextComponent title) {
+        super(title);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        if (ViaForgeCommon.getManager().getConfig().isShowDirectConnectButton()) {
-            addButton(new Button(5, 6, 98, 20, ITextComponent.nullToEmpty("ViaForge"), b -> minecraft.setScreen(new GuiProtocolSelector(this))));
+        final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
+        if (config.isShowDirectConnectButton()) {
+            final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);
+
+            addButton(new Button(pos.key(), pos.value(), 100, 20, new StringTextComponent("ViaForge"), b -> GuiProtocolSelector.open(minecraft)));
         }
     }
 }

@@ -18,17 +18,25 @@
 package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
 import io.netty.channel.Channel;
+import net.minecraft.network.Connection;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(targets = "net.minecraft.network.Connection$1", remap = false)
+@Mixin(targets = "net.minecraft.network.Connection$1")
 public class MixinConnection_1 {
+
+    @Final
+    @Mutable
+    Connection val$connection;
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(Channel channel, CallbackInfo ci) {
-        ViaForgeCommon.getManager().inject(channel);
+        ViaForgeCommon.getManager().inject(channel, (VFNetworkManager) val$connection);
     }
 }
