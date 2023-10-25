@@ -17,7 +17,6 @@
  */
 package de.florianmichael.viaforge.gui;
 
-import de.florianmichael.viaforge.ViaForge115;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;

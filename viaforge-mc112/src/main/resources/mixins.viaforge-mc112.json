@@ -5,12 +5,16 @@
   "package": "de.florianmichael.viaforge.mixin.impl",
   "refmap": "mixins.viaforge-mc112.refmap.json",
   "client": [
+    "MixinGuiConnecting_1",
     "MixinGuiMainMenu",
     "MixinGuiMultiplayer",
+    "MixinGuiScreenAddServer",
     "MixinGuiScreenServerList",
     "MixinNetHandlerLoginClient",
     "MixinNetworkManager",
     "MixinNetworkManager_5",
+    "MixinServerData",
+    "MixinServerPinger",
     "fixes.MixinEntityPlayerSP"
   ],
   "verbose": true

@@ -18,13 +18,14 @@
 package de.florianmichael.viaforge.mixin.impl;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.protocolhack.netty.IEncryptionSetup;
+import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.NettyEncryptingDecoder;
 import net.minecraft.network.NettyEncryptingEncoder;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.util.CryptManager;
+import net.minecraft.util.LazyLoadBase;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,25 +34,28 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import java.net.InetAddress;
 
 @Mixin(NetworkManager.class)
-public class MixinNetworkManager implements IEncryptionSetup {
+public class MixinNetworkManager implements VFNetworkManager {
 
     @Shadow private Channel channel;
 
     @Unique
     private Cipher viaforge_decryptionCipher;
 
-    @Inject(method = "channelActive", at = @At("RETURN"))
-    public void trackThisClass(ChannelHandlerContext p_channelActive_1_, CallbackInfo ci) {
-        // We need to access this class later to call the viaforge_setupPreNettyDecryption method.
-        // In one of the ViaLegacy's required providers, so we track this class instance as an own
-        // attribute in the connection and later access it from there and remove it.
-        // Counterpart in {@link java/de/florianmichael/viaforge/common/protocolhack/provider/ViaForgeEncryptionProvider.java}
-        channel.attr(ViaForgeCommon.ENCRYPTION_SETUP).set(this);
+    @Inject(method = "createNetworkManagerAndConnect", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void trackSelfTarget(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
+        // The connecting screen and server pinger are setting the main target version when a specific version for a server is set,
+        // This works for joining perfect since we can simply restore the version when the server doesn't have a specific one set,
+        // but for the server pinger we need to store the target version and force the pinging to use the target version.
+        // Due to the fact that the server pinger is being called multiple times.
+        ((VFNetworkManager) networkmanager).viaforge_setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
     }
 
     @Inject(method = "enableEncryption", at = @At("HEAD"), cancellable = true)
@@ -72,8 +76,6 @@ public class MixinNetworkManager implements IEncryptionSetup {
 
     @Inject(method = "setCompressionThreshold", at = @At("RETURN"))
     public void reorderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
-        // When Minecraft enables compression, we need to reorder the pipeline
-        // to match the counterparts of via-decoder <-> encoder and via-encoder <-> encoder
         ViaForgeCommon.getManager().reorderCompression(channel);
     }
 
@@ -81,5 +83,18 @@ public class MixinNetworkManager implements IEncryptionSetup {
     public void viaforge_setupPreNettyDecryption() {
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
         this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new NettyEncryptingDecoder(this.viaforge_decryptionCipher));
+    }
+
+    @Unique
+    private VersionEnum viaforge_targetVersion;
+
+    @Override
+    public VersionEnum viaforge_getTrackedVersion() {
+        return viaforge_targetVersion;
+    }
+
+    @Override
+    public void viaforge_setTrackedVersion(VersionEnum version) {
+        viaforge_targetVersion = version;
     }
 }

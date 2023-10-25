@@ -8,6 +8,6 @@ public class ViaForgeEncryptionProvider extends EncryptionProvider {
 
     @Override
     public void enableDecryption(UserConnection user) {
-        user.getChannel().attr(ViaForgeCommon.ENCRYPTION_SETUP).getAndRemove().viaforge_setupPreNettyDecryption();
+        user.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).getAndRemove().viaforge_setupPreNettyDecryption();
     }
 }

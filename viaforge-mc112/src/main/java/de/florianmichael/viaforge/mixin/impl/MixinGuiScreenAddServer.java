@@ -19,34 +19,47 @@ package de.florianmichael.viaforge.mixin.impl;
 
 import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiScreenServerList;
+import net.minecraft.client.gui.GuiScreenAddServer;
+import net.minecraft.client.multiplayer.ServerData;
+import net.raphimc.vialoader.util.VersionEnum;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GuiScreenServerList.class)
-public class MixinGuiScreenServerList extends GuiScreen {
+@Mixin(GuiScreenAddServer.class)
+public class MixinGuiScreenAddServer extends GuiScreen {
+
+    @Shadow @Final private ServerData serverData;
 
     @Inject(method = "initGui", at = @At("RETURN"))
-    public void hookViaForgeButton(CallbackInfo ci) {
+    public void initGui(CallbackInfo ci) {
         final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
-        if (config.isShowDirectConnectButton()) {
-            final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);
 
-            buttonList.add(new GuiButton(1_000_000_000, pos.key(), pos.value(), 100, 20, "ViaForge"));
+        if (config.isShowAddServerButton()) {
+            final Pair<Integer, Integer> pos = config.getAddServerScreenButtonPosition().getPosition(this.width, this.height);
+
+            final VersionEnum target = ((ExtendedServerData) serverData).viaforge_getVersion();
+            buttonList.add(new GuiButton(1_000_000_000, pos.key(), pos.value(), 100, 20, target != null ? target.getName() : "Set Version"));
         }
     }
 
-    @Inject(method = "actionPerformed", at = @At("RETURN"))
-    public void handleViaForgeButtonClicking(GuiButton p_actionPerformed_1_, CallbackInfo ci) {
-        if (ViaForgeCommon.getManager().getConfig().isShowDirectConnectButton()) {
-            if (p_actionPerformed_1_.id == 1_000_000_000) {
-                mc.displayGuiScreen(new GuiProtocolSelector(this));
+    @Inject(method = "actionPerformed", at = @At("HEAD"))
+    public void actionPerformed(GuiButton button, CallbackInfo ci) {
+        if (ViaForgeCommon.getManager().getConfig().isShowAddServerButton()) {
+            if (button.id == 1_000_000_000) {
+                mc.displayGuiScreen(new GuiProtocolSelector(this, (version, parent) -> {
+                    // Set version and go back to the parent screen.
+                    ((ExtendedServerData) serverData).viaforge_setVersion(version);
+                    mc.displayGuiScreen(parent);
+                }));
             }
         }
     }

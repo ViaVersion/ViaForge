@@ -18,7 +18,6 @@
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import de.florianmichael.viaforge.ViaForge117;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

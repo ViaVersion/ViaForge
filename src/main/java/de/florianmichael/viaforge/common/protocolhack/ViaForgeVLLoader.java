@@ -22,10 +22,8 @@ import com.viaversion.viaversion.api.platform.providers.ViaProviders;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
-import de.florianmichael.viaforge.common.protocolhack.provider.DummyMovementTransmitter;
-import de.florianmichael.viaforge.common.protocolhack.provider.ViaForgeEncryptionProvider;
-import de.florianmichael.viaforge.common.protocolhack.provider.ViaForgeOldAuthProvider;
-import de.florianmichael.viaforge.common.protocolhack.provider.ViaForgeVersionProvider;
+import de.florianmichael.viaforge.common.protocolhack.provider.*;
+import net.raphimc.vialegacy.protocols.classic.protocola1_0_15toc0_28_30.providers.ClassicMPPassProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
@@ -50,5 +48,6 @@ public class ViaForgeVLLoader extends VLLoader {
         providers.use(OldAuthProvider.class, new ViaForgeOldAuthProvider());
         providers.use(GameProfileFetcher.class, platform.getGameProfileFetcher());
         providers.use(EncryptionProvider.class, new ViaForgeEncryptionProvider());
+        providers.use(ClassicMPPassProvider.class, new ViaForgeClassicMPPassProvider());
     }
 }

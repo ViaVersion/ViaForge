@@ -29,8 +29,6 @@ import net.raphimc.vialoader.util.VersionEnum;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -38,13 +36,23 @@ import java.util.concurrent.ExecutionException;
 public class GuiProtocolSelector extends GuiScreen {
 
     private final GuiScreen parent;
+    private final FinishedCallback finishedCallback;
+
     private SlotList list;
 
     private String status;
     private long time;
 
-    public GuiProtocolSelector(GuiScreen parent) {
+    public GuiProtocolSelector(final GuiScreen parent) {
+        this(parent, (version, unused) -> {
+            // Default action is to set the target version and go back to the parent screen.
+            ViaForgeCommon.getManager().setTargetVersion(version);
+        });
+    }
+
+    public GuiProtocolSelector(final GuiScreen parent, final FinishedCallback finishedCallback) {
         this.parent = parent;
+        this.finishedCallback = finishedCallback;
     }
 
     @Override
@@ -125,7 +133,7 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void elementClicked(int index, boolean b, int i1, int i2) {
-            ViaForgeCommon.getManager().setTargetVersion(VersionEnum.SORTED_VERSIONS.get(index));
+            finishedCallback.finished(VersionEnum.SORTED_VERSIONS.get(index), parent);
         }
 
         @Override
@@ -145,5 +153,10 @@ public class GuiProtocolSelector extends GuiScreen {
 
             drawCenteredString(mc.fontRenderer,(targetVersion == version ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, y, -1);
         }
+    }
+
+    public interface FinishedCallback {
+
+        void finished(final VersionEnum version, final GuiScreen parent);
     }
 }

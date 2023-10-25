@@ -18,7 +18,6 @@
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import de.florianmichael.viaforge.ViaForge116;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
