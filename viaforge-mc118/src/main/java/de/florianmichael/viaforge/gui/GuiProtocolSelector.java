@@ -80,7 +80,7 @@ public class GuiProtocolSelector extends Screen {
             addRenderableWidget(new Button(width - 105, height - 25, 100, 20, new TextComponent("Reload configs"), b -> Via.getManager().getConfigurationProvider().reloadConfigs()));
         }
 
-        list = new SlotList(minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, height - 30, font.lineHeight + 2);
+        addWidget(list = new SlotList(minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, height - 30, font.lineHeight + 2));
     }
 
     public void setStatus(final String status) {
