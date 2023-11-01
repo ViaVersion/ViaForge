@@ -21,7 +21,7 @@ minecraft {
 
             // source set
             mods {
-                "ViaForge" {
+                "${maven_name}" {
                     source sourceSets.main
                 }
             }
