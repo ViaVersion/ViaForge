@@ -1,23 +1,5 @@
-pluginManagement {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-
-        maven { url = "https://maven.minecraftforge.net/" }
-        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
-        maven { url = "https://jitpack.io/" }
-        maven { url = "https://files.minecraftforge.net/maven" }
-    }
-
-    // If you update these versions, also update the versions in buildSrc/build.gradle
-    plugins {
-        id "com.github.johnrengelman.shadow" version "7.1.2"
-        id "net.minecraftforge.gradle" version "5.+"
-        id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
-    }
-}
-
 rootProject.name = "ViaForge"
+
 include "viaforge-mc112"
 include "viaforge-mc114"
 include "viaforge-mc115"
