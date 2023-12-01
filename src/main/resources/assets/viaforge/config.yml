@@ -1,0 +1,46 @@
+# Thanks for downloading ViaForge!
+# If you need help, you can join our Discord - https://viaversion.com/discord
+#
+# Disclaimer:
+# It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat plugins
+# (USE ONLY WITH CAUTION!)
+#
+#----------------------------------------------------------#
+#                     GLOBAL OPTIONS                       #
+#----------------------------------------------------------#
+#
+# This option sets the protocol version to be used when connecting to servers. (can also be changed in-game)
+client-side-version: -1
+#
+# Manually sends the joinServer request when connecting to <= 1.2.5 servers.
+verify-session-in-old-versions: true
+#
+# Allow ViaForge to authenticate with BetaCraft's MP-Pass system for <= c0.30 servers.
+allow-betacraft-authentication: true
+#
+# If enabled, ViaForge will show the current protocol version in the F3 menu.
+show-protocol-version-in-f3: true
+#
+#----------------------------------------------------------#
+#                       GUI OPTIONS                        #
+#----------------------------------------------------------#
+#
+# This option indicates if the ViaForge button should be shown in the main menu.
+show-main-menu-button: true
+#
+# This option indicates if the ViaForge button should be shown in the multiplayer.
+show-multiplayer-button: true
+#
+# This option indicates if the ViaForge button should be shown in the direct connect screen.
+show-direct-connect-button: true
+#
+# This option indicates if the ViaForge set version button should be shown in the server list.
+show-add-server-button: true
+#
+# This option indicates where the ViaForge button should be located in all screens.
+# Possible options: TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
+via-forge-button-position: "TOP_LEFT"
+#
+# This option indicates where the ViaForge set version button should be located in the add server screen.
+# Possible options: TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
+add-server-screen-button-position: "TOP_LEFT"
