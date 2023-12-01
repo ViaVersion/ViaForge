@@ -13,6 +13,7 @@
     "MixinNetHandlerLoginClient",
     "MixinNetworkManager",
     "MixinNetworkManager_5",
+    "MixinServerData",
     "MixinServerPinger",
     "fixes.MixinEntityPlayerSP"
   ],

@@ -19,18 +19,13 @@
 package de.florianmichael.viaforge.common.protocolhack.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viaforge.common.ViaForgeCommon;
-import net.raphimc.vialegacy.protocols.release.protocol1_3_1_2to1_2_4_5.providers.OldAuthProvider;
+import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 
-public class ViaForgeOldAuthProvider extends OldAuthProvider {
+public class ViaForgeMovementTransmitterProvider extends MovementTransmitterProvider {
 
     @Override
-    public void sendAuthRequest(UserConnection user, String serverId) throws Throwable {
-        final ViaForgeCommon common = ViaForgeCommon.getManager();
-        if (!common.getConfig().isVerifySessionInOldVersions()) {
-            return;
-        }
-        common.getPlatform().joinServer(serverId);
+    public void sendPlayer(UserConnection userConnection) {
+        // We are on the client side, so we can handle the idle packet properly
     }
 
 }

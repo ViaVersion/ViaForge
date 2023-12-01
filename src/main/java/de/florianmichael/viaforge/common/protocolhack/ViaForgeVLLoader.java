@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.common.protocolhack;
 
 import com.viaversion.viaversion.api.Via;
@@ -44,10 +45,11 @@ public class ViaForgeVLLoader extends VLLoader {
         final ViaProviders providers = Via.getManager().getProviders();
 
         providers.use(VersionProvider.class, new ViaForgeVersionProvider());
-        providers.use(MovementTransmitterProvider.class, new DummyMovementTransmitter());
+        providers.use(MovementTransmitterProvider.class, new ViaForgeMovementTransmitterProvider());
         providers.use(OldAuthProvider.class, new ViaForgeOldAuthProvider());
         providers.use(GameProfileFetcher.class, platform.getGameProfileFetcher());
         providers.use(EncryptionProvider.class, new ViaForgeEncryptionProvider());
         providers.use(ClassicMPPassProvider.class, new ViaForgeClassicMPPassProvider());
     }
+    
 }

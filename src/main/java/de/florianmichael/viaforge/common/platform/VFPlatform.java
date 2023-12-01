@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.common.platform;
 
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
@@ -54,4 +55,5 @@ public interface VFPlatform {
      * @return the game profile fetcher of the platform for ViaLegacy
      */
     GameProfileFetcher getGameProfileFetcher();
+
 }

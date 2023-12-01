@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin.impl;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
@@ -103,4 +104,5 @@ public class MixinNetworkManager implements VFNetworkManager {
     public void viaForge$setTrackedVersion(VersionEnum version) {
         viaForge$targetVersion = version;
     }
+    
 }
