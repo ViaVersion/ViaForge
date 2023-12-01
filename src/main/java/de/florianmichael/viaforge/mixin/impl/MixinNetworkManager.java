@@ -17,22 +17,90 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
+import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
 import io.netty.channel.Channel;
+import net.minecraft.network.NettyEncryptingDecoder;
+import net.minecraft.network.NettyEncryptingEncoder;
 import net.minecraft.network.NetworkManager;
-import net.raphimc.vialoader.netty.CompressionReorderEvent;
+import net.minecraft.util.CryptManager;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.LazyLoadBase;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import java.net.InetAddress;
 
 @Mixin(NetworkManager.class)
-public class MixinNetworkManager {
+public class MixinNetworkManager implements VFNetworkManager {
 
     @Shadow private Channel channel;
 
+    @Unique
+    private Cipher viaForge$decryptionCipher;
+
+    @Unique
+    private VersionEnum viaForge$targetVersion;
+
+    @Inject(method = "func_181124_a", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void trackSelfTarget(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
+        // The connecting screen and server pinger are setting the main target version when a specific version for a server is set,
+        // This works for joining perfect since we can simply restore the version when the server doesn't have a specific one set,
+        // but for the server pinger we need to store the target version and force the pinging to use the target version.
+        // Due to the fact that the server pinger is being called multiple times.
+        ((VFNetworkManager) networkmanager).viaForge$setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
+    }
+
+    @Inject(method = "enableEncryption", at = @At("HEAD"), cancellable = true)
+    private void storeEncryptionCiphers(SecretKey key, CallbackInfo ci) {
+        if (ViaForgeCommon.getManager().getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+            // Minecraft's encryption code is bad for us, we need to reorder the pipeline
+            ci.cancel();
+
+            // Minecraft 1.6.4 supports tile encryption which means the server can only disable one side of the encryption
+            // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
+            // tells us to do, therefore we need to store the cipher instance.
+            this.viaForge$decryptionCipher = CryptManager.createNetCipherInstance(2, key);
+
+            // Enabling the encryption side
+            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new NettyEncryptingEncoder(CryptManager.createNetCipherInstance(1, key)));
+        }
+    }
+
+    @Inject(method = "closeChannel", at = @At("HEAD"))
+    public void restoreTargetVersion(IChatComponent message, CallbackInfo ci) {
+        // If the previous server forced a version, we need to restore the version to the default one.
+        ViaForgeCommon.getManager().restoreVersion();
+    }
+
     @Inject(method = "setCompressionTreshold", at = @At("RETURN"))
-    public void reOrderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
-        channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
+    public void reorderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
+        ViaForgeCommon.getManager().reorderCompression(channel);
+    }
+
+    @Override
+    public void viaForge$setupPreNettyDecryption() {
+        // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new NettyEncryptingDecoder(this.viaForge$decryptionCipher));
+    }
+
+    @Override
+    public VersionEnum viaForge$getTrackedVersion() {
+        return viaForge$targetVersion;
+    }
+
+    @Override
+    public void viaForge$setTrackedVersion(VersionEnum version) {
+        viaForge$targetVersion = version;
     }
 }

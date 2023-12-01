@@ -1,3 +1,3 @@
-# ViaForge
-## For more information switch to the master branch
-Startup VM Options: -Dfml.coreMods.load=de.florianmichael.viaforge.mixin.MixinLoader
+# Legacy development branch for ViaForge 1.8
+
+Upstream changes are merged into this branch every release.

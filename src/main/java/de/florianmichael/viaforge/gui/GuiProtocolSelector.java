@@ -18,47 +18,85 @@
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import de.florianmichael.viaforge.ViaForge;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.util.DumpUtil;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import net.raphimc.vialoader.util.VersionEnum;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public class GuiProtocolSelector extends GuiScreen {
 
     private final GuiScreen parent;
+    private final boolean simple;
+    private final FinishedCallback finishedCallback;
 
-    public SlotList list;
+    private SlotList list;
 
-    public GuiProtocolSelector(GuiScreen parent) {
+    private String status;
+    private long time;
+
+    public GuiProtocolSelector(final GuiScreen parent) {
+        this(parent, false, (version, unused) -> {
+            // Default action is to set the target version and go back to the parent screen.
+            ViaForgeCommon.getManager().setTargetVersion(version);
+        });
+    }
+
+    public GuiProtocolSelector(final GuiScreen parent, final boolean simple, final FinishedCallback finishedCallback) {
         this.parent = parent;
+        this.simple = simple;
+        this.finishedCallback = finishedCallback;
     }
 
     @Override
     public void initGui() {
         super.initGui();
-        buttonList.add(new GuiButton(1, width / 2 - 100, height - 27, 200,
-                20, "Back"));
+        buttonList.add(new GuiButton(1, 5, height - 25, 20, 20, "<-"));
+        if (!this.simple) {
+            buttonList.add(new GuiButton(2, width - 105, 5, 100, 20, "Create dump"));
+            buttonList.add(new GuiButton(3, width - 105, height - 25, 100, 20, "Reload configs"));
+        }
 
-        list = new SlotList(mc, width, height, 32, height - 32, 10);
+        list = new SlotList(mc, width, height, 3 + 3 /* start offset */ + (fontRendererObj.FONT_HEIGHT + 2) * 3 /* title is 2 */, height - 30, fontRendererObj.FONT_HEIGHT + 2);
+    }
+
+    public void setStatus(final String status) {
+        this.status = status;
+        this.time = System.currentTimeMillis();
     }
 
     @Override
-    protected void actionPerformed(GuiButton p_actionPerformed_1_) throws IOException {
-        list.actionPerformed(p_actionPerformed_1_);
+    protected void actionPerformed(GuiButton button) {
+        list.actionPerformed(button);
 
-        if (p_actionPerformed_1_.id == 1)
+        if (button.id == 1) {
             mc.displayGuiScreen(parent);
+        } else if (button.id == 2) {
+            try {
+                GuiScreen.setClipboardString(DumpUtil.postDump(UUID.randomUUID()).get());
+                setStatus(ChatFormatting.GREEN + "Dump created and copied to clipboard");
+            } catch (InterruptedException | ExecutionException e) {
+                setStatus(ChatFormatting.RED + "Failed to create dump: " + e.getMessage());
+            }
+        } else {
+            Via.getManager().getConfigurationProvider().reloadConfigs();
+        }
     }
 
     @Override
-    protected void keyTyped(char p_keyTyped_1_, int p_keyTyped_2_) throws IOException {
-        if (p_keyTyped_2_ == 1) //esc key
-           this.mc.displayGuiScreen(parent);
+    protected void keyTyped(char typedChar, int keyCode) {
+        if (keyCode == Keyboard.KEY_ESCAPE) {
+            mc.displayGuiScreen(parent);
+        }
     }
 
     @Override
@@ -68,24 +106,28 @@ public class GuiProtocolSelector extends GuiScreen {
     }
 
     @Override
-    public void drawScreen(int p_drawScreen_1_, int p_drawScreen_2_, float p_drawScreen_3_) {
-        list.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if (System.currentTimeMillis() - this.time >= 10_000) {
+            this.status = null;
+        }
+
+        list.drawScreen(mouseX, mouseY, partialTicks);
 
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
-        this.drawCenteredString(this.fontRendererObj, ChatFormatting.GOLD + "ViaForge", this.width / 4, 6, 16777215);
+        drawCenteredString(fontRendererObj, ChatFormatting.GOLD + "ViaForge", width / 4, 3, 16777215);
         GL11.glPopMatrix();
 
-        drawString(this.fontRendererObj, "https://github.com/FlorianMichael/ViaForge", 1, 1, -1);
-        drawString(this.fontRendererObj, "Discord: EnZaXD#6257", 1, 11, -1);
+        drawCenteredString(fontRendererObj, "https://github.com/ViaVersion/ViaForge", width / 2, (fontRendererObj.FONT_HEIGHT + 2) * 2 + 3, -1);
+        drawString(fontRendererObj, status != null ? status : "Discord: florianmichael", 3, 3, -1);
 
-        super.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     class SlotList extends GuiSlot {
 
-        public SlotList(Minecraft p_i1052_1_, int p_i1052_2_, int p_i1052_3_, int p_i1052_4_, int p_i1052_5_, int p_i1052_6_) {
-            super(p_i1052_1_, p_i1052_2_, p_i1052_3_, p_i1052_4_, p_i1052_5_, p_i1052_6_);
+        public SlotList(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
+            super(client, width, height, top, bottom, slotHeight);
         }
 
         @Override
@@ -94,12 +136,12 @@ public class GuiProtocolSelector extends GuiScreen {
         }
 
         @Override
-        protected void elementClicked(int i, boolean b, int i1, int i2) {
-            ViaForge.targetVersion = VersionEnum.SORTED_VERSIONS.get(i);
+        protected void elementClicked(int index, boolean b, int i1, int i2) {
+            finishedCallback.finished(VersionEnum.SORTED_VERSIONS.get(index), parent);
         }
 
         @Override
-        protected boolean isSelected(int i) {
+        protected boolean isSelected(int index) {
             return false;
         }
 
@@ -109,10 +151,23 @@ public class GuiProtocolSelector extends GuiScreen {
         }
 
         @Override
-        protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5) {
-            final VersionEnum version = VersionEnum.SORTED_VERSIONS.get(i);
+        protected void drawSlot(int index, int x, int y, int slotHeight, int mouseX, int mouseY) {
+            final VersionEnum targetVersion = ViaForgeCommon.getManager().getTargetVersion();
+            final VersionEnum version = VersionEnum.SORTED_VERSIONS.get(index);
 
-            drawCenteredString(mc.fontRendererObj, (ViaForge.targetVersion.getVersion() == version.getVersion() ? ChatFormatting.GREEN.toString() : ChatFormatting.DARK_RED.toString()) + version.getName(), width / 2, i2, -1);
+            String color;
+            if (targetVersion == version) {
+                color = GuiProtocolSelector.this.simple ? ChatFormatting.GOLD.toString() : ChatFormatting.GREEN.toString();
+            } else {
+                color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
+            }
+
+            drawCenteredString(mc.fontRendererObj,(color) + version.getName(), width / 2, y, -1);
         }
+    }
+
+    public interface FinishedCallback {
+
+        void finished(final VersionEnum version, final GuiScreen parent);
     }
 }

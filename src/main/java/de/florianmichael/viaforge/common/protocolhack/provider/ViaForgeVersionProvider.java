@@ -15,45 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viaforge;
+package de.florianmichael.viaforge.common.protocolhack.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.raphimc.vialoader.util.VersionEnum;
 
-public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
-
-    public ViaForgeVLLegacyPipeline(UserConnection user, VersionEnum version) {
-        super(user, version);
-    }
+public class ViaForgeVersionProvider extends BaseVersionProvider {
 
     @Override
-    protected String decompressName() {
-        return "decompress";
-    }
+    public int getClosestServerProtocol(UserConnection connection) throws Exception {
+        if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer().get()) {
+            try {
+                System.out.println(connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion().getVersion();
+        }
 
-    @Override
-    protected String compressName() {
-        return "compress";
-    }
-
-    @Override
-    protected String packetDecoderName() {
-        return "decoder";
-    }
-
-    @Override
-    protected String packetEncoderName() {
-        return "encoder";
-    }
-
-    @Override
-    protected String lengthSplitterName() {
-        return "splitter";
-    }
-
-    @Override
-    protected String lengthPrependerName() {
-        return "prepender";
+        return super.getClosestServerProtocol(connection);
     }
 }

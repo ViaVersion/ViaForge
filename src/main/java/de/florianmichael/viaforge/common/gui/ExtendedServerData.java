@@ -15,21 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.viaforge.mixin.impl;
+package de.florianmichael.viaforge.common.gui;
 
-import de.florianmichael.viaforge.ViaForge;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.main.GameConfiguration;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.raphimc.vialoader.util.VersionEnum;
 
-@Mixin(Minecraft.class)
-public class MixinMinecraft {
+/**
+ * This interface is used to store the target version for a specific server in the server list.
+ */
+public interface ExtendedServerData {
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    public void startVia(GameConfiguration p_i45547_1_, CallbackInfo ci) {
-        ViaForge.start();
-    }
+    VersionEnum viaForge$getVersion();
+
+    void viaForge$setVersion(final VersionEnum version);
 }

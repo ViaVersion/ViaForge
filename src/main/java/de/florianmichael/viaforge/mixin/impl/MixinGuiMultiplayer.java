@@ -17,27 +17,37 @@
  */
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.util.Pair;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMultiplayer;
+import net.minecraft.client.gui.GuiScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = {
-        GuiMainMenu.class, GuiMultiplayer.class, GuiScreenServerList.class
-})
-public class MixinGuiMainMenuGuiMultiplayerGuiServerList extends GuiScreen {
+@Mixin(GuiMultiplayer.class)
+public class MixinGuiMultiplayer extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("RETURN"))
-    public void hookCustomButton(CallbackInfo ci) {
-        buttonList.add(new GuiButton(1337, 5, 6, 98, 20, "ViaForge"));
+    public void hookViaForgeButton(CallbackInfo ci) {
+        final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
+        if (config.isShowMultiplayerButton()) {
+            final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);
+
+            buttonList.add(new GuiButton(1_000_000_000, pos.key(), pos.value(), 100, 20, "ViaForge"));
+        }
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))
-    public void handleCustomButtonAction(GuiButton p_actionPerformed_1_, CallbackInfo ci) {
-        if (p_actionPerformed_1_.id == 1337) {
-            mc.displayGuiScreen(new GuiProtocolSelector(this));
+    public void handleViaForgeButtonClicking(GuiButton p_actionPerformed_1_, CallbackInfo ci) {
+        if (ViaForgeCommon.getManager().getConfig().isShowMultiplayerButton()) {
+            if (p_actionPerformed_1_.id == 1_000_000_000) {
+                mc.displayGuiScreen(new GuiProtocolSelector(this));
+            }
         }
     }
 }

@@ -18,14 +18,15 @@ apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "org.spongepowered.mixin"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "java"
+apply plugin: "idea"
 
-version = "1.8.9-${mod_version}"
-group = "${mod_base_package}.${mod_id}"
-archivesBaseName = mod_id
+version = "1.8.9-${maven_version}"
+group = "${maven_group}.${maven_name}"
+archivesBaseName = maven_name
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-compileJava.options.encoding = 'UTF-8'
+compileJava.options.encoding = "UTF-8"
 
 repositories {
     mavenCentral()
@@ -54,51 +55,47 @@ configurations {
     implementation.extendsFrom(include)
 }
 
-def viaLibs = [
-        "com.viaversion:viaversion:${project.viaversion_version}",
-        "com.viaversion:viabackwards:${project.viabackwards_version}",
-        "com.viaversion:viarewind-universal:${project.viarewind_version}",
-        "org.yaml:snakeyaml:${project.snake_yml_version}",
-
-        "net.raphimc:ViaLoader:${project.vialoader_version}",
-        "org.slf4j:slf4j-api:${project.slf4j_version}"
-]
-
 dependencies {
-    compile ("org.spongepowered:mixin:0.7.10-SNAPSHOT") {
+    include compile ("org.spongepowered:mixin:${project.mixin_version}") {
         exclude module: "launchwrapper"
     }
-    include "org.spongepowered:mixin:0.7.10-SNAPSHOT"
 
-    for (final def via in viaLibs) {
-        include(via)
+    include "com.viaversion:viaversion:${project.viaversion_version}"
+    include "com.viaversion:viabackwards:${project.viabackwards_version}"
+    include "com.viaversion:viarewind-universal:${project.viarewind_version}"
+    include ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
+        exclude group: "com.google.code.gson", module: "gson"
     }
+    include "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+    include "net.raphimc:ViaLoader:${project.vialoader_version}"
+
+    include "org.slf4j:slf4j-api:${project.slf4j_version}"
+    include "org.yaml:snakeyaml:${project.snake_yml_version}"
 }
 
 processResources {
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+        include "mcmod.info"
 
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand "version": project.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude "mcmod.info"
     }
 
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 mixin {
-    add sourceSets.main, "mixins.${mod_id}.refmap.json"
+    add sourceSets.main, "mixins.${maven_name}-mc18.refmap.json"
 }
 
 jar {
     manifest.attributes(
-            "MixinConfigs": "mixins.viaforge.json",
+            "MixinConfigs": "mixins.${maven_name}-mc18.json",
             "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": 0,
             "FMLCorePluginContainsFMLMod": "de.florianmichael.viaforge.mixin.MixinLoader"
@@ -106,8 +103,6 @@ jar {
 
     enabled = false
 }
-
-apply plugin: "idea"
 
 idea {
     module {
@@ -117,17 +112,12 @@ idea {
 
 shadowJar {
     archiveName = jar.archiveName
-    configurations = [project.configurations.include]
-    compileJava.options.encoding = "UTF-8"
-    exclude "native-binaries/*"
-    exclude "META-INF/versions/**"
+    configurations = [project.configurations.include] // Include the dependencies from the include configuration
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
 
-    dependencies {
-        for (final def lib in viaLibs) {
-            include(dependency(lib))
-        }
-        include(dependency("org.spongepowered:mixin:0.7.10-SNAPSHOT"))
-    }
+    // Prevent conflicts with Forge's weird service loading
+    exclude("META-INF/maven/**")
+    exclude("META-INF/versions/**")
 }
 
 reobf {
