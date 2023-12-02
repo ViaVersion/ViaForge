@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
@@ -39,4 +40,5 @@ public class MixinConnection_1 {
     private void onInitChannel(Channel channel, CallbackInfo ci) {
         ViaForgeCommon.getManager().inject(channel, (VFNetworkManager) val$connection);
     }
+
 }

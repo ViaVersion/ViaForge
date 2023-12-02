@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge;
 
 import de.florianmichael.viaforge.common.platform.VFPlatform;
@@ -30,7 +31,8 @@ import java.util.function.Supplier;
 
 @Mod(modid = "viaforge")
 public class ViaForge112 implements VFPlatform {
-    public final static ViaForge112 PLATFORM = new ViaForge112();
+
+    public static final ViaForge112 PLATFORM = new ViaForge112();
 
     @Override
     public int getGameVersion() {
@@ -58,4 +60,5 @@ public class ViaForge112 implements VFPlatform {
     public GameProfileFetcher getGameProfileFetcher() {
         return new ViaForgeGameProfileFetcher();
     }
+
 }

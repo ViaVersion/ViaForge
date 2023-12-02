@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
@@ -55,4 +56,5 @@ public class MixinLoader implements IFMLLoadingPlugin {
     public String getAccessTransformerClass() {
         return null;
     }
+
 }

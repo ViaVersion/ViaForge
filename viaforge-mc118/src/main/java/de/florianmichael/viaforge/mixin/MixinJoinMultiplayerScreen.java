@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin;
 
 import com.viaversion.viaversion.util.Pair;
@@ -47,4 +48,5 @@ public class MixinJoinMultiplayerScreen extends Screen {
             addRenderableWidget(new Button(pos.key(), pos.value(), 100, 20, new TextComponent("ViaForge"), buttons -> GuiProtocolSelector.open(minecraft)));
         }
     }
+
 }

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.common;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -41,8 +42,9 @@ import java.io.File;
  * It is used to inject the ViaVersion pipeline into the netty pipeline. It also manages the target version.
  */
 public class ViaForgeCommon {
-    public final static AttributeKey<UserConnection> LOCAL_VIA_USER = AttributeKey.valueOf("local_via_user");
-    public final static AttributeKey<VFNetworkManager> VF_NETWORK_MANAGER = AttributeKey.valueOf("encryption_setup");
+
+    public static final AttributeKey<UserConnection> LOCAL_VIA_USER = AttributeKey.valueOf("local_via_user");
+    public static final AttributeKey<VFNetworkManager> VF_NETWORK_MANAGER = AttributeKey.valueOf("encryption_setup");
 
     private static ViaForgeCommon manager;
 
@@ -144,4 +146,5 @@ public class ViaForgeCommon {
     public static ViaForgeCommon getManager() {
         return manager;
     }
+
 }

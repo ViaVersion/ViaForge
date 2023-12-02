@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin;
 
 import com.viaversion.viaversion.util.Pair;
@@ -53,14 +54,15 @@ public class MixinEditServerScreen extends Screen {
         if (config.isShowAddServerButton()) {
             final Pair<Integer, Integer> pos = config.getAddServerScreenButtonPosition().getPosition(this.width, this.height);
 
-            final VersionEnum target = ((ExtendedServerData) serverData).viaforge_getVersion();
+            final VersionEnum target = ((ExtendedServerData) serverData).viaForge$getVersion();
             addRenderableWidget(Button.builder(Component.literal(target != null ? target.getName() : "Set Version"), b -> {
                 minecraft.setScreen(new GuiProtocolSelector(this, true, (version, parent) -> {
                     // Set version and go back to the parent screen.
-                    ((ExtendedServerData) serverData).viaforge_setVersion(version);
+                    ((ExtendedServerData) serverData).viaForge$setVersion(version);
                     minecraft.setScreen(parent);
                 }));
             }).bounds(pos.key(), pos.value(), 100, 20).build());
         }
     }
+
 }

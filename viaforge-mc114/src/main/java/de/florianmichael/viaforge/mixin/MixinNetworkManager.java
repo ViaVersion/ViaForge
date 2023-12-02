@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
@@ -47,10 +48,10 @@ public class MixinNetworkManager implements VFNetworkManager {
     @Shadow private Channel channel;
 
     @Unique
-    private Cipher viaforge_decryptionCipher;
+    private Cipher viaForge$decryptionCipher;
 
     @Unique
-    private VersionEnum viaforge_targetVersion;
+    private VersionEnum viaForge$targetVersion;
 
     @Inject(method = "connectToServer", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void trackSelfTarget(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
@@ -58,7 +59,7 @@ public class MixinNetworkManager implements VFNetworkManager {
         // This works for joining perfect since we can simply restore the version when the server doesn't have a specific one set,
         // but for the server pinger we need to store the target version and force the pinging to use the target version.
         // Due to the fact that the server pinger is being called multiple times.
-        ((VFNetworkManager) networkmanager).viaforge_setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
+        ((VFNetworkManager) networkmanager).viaForge$setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)
@@ -70,7 +71,7 @@ public class MixinNetworkManager implements VFNetworkManager {
             // Minecraft 1.6.4 supports tile encryption which means the server can only disable one side of the encryption
             // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
             // tells us to do, therefore we need to store the cipher instance.
-            this.viaforge_decryptionCipher = CryptManager.getCipher(2, key);
+            this.viaForge$decryptionCipher = CryptManager.getCipher(2, key);
 
             // Enabling the encryption side
             this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new NettyEncryptingEncoder(CryptManager.getCipher(1, key)));
@@ -89,18 +90,19 @@ public class MixinNetworkManager implements VFNetworkManager {
     }
 
     @Override
-    public void viaforge_setupPreNettyDecryption() {
+    public void viaForge$setupPreNettyDecryption() {
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new NettyEncryptingDecoder(this.viaforge_decryptionCipher));
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new NettyEncryptingDecoder(this.viaForge$decryptionCipher));
     }
 
     @Override
-    public VersionEnum viaforge_getTrackedVersion() {
-        return viaforge_targetVersion;
+    public VersionEnum viaForge$getTrackedVersion() {
+        return viaForge$targetVersion;
     }
 
     @Override
-    public void viaforge_setTrackedVersion(VersionEnum version) {
-        viaforge_targetVersion = version;
+    public void viaForge$setTrackedVersion(VersionEnum version) {
+        viaForge$targetVersion = version;
     }
+
 }

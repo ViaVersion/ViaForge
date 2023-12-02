@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -164,5 +165,7 @@ public class GuiProtocolSelector extends Screen {
     public interface FinishedCallback {
 
         void finished(final VersionEnum version, final Screen parent);
+
     }
+
 }

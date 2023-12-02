@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin.impl;
 
 import com.viaversion.viaversion.util.Pair;
@@ -46,7 +47,7 @@ public class MixinGuiScreenAddServer extends GuiScreen {
         if (config.isShowAddServerButton()) {
             final Pair<Integer, Integer> pos = config.getAddServerScreenButtonPosition().getPosition(this.width, this.height);
 
-            final VersionEnum target = ((ExtendedServerData) serverData).viaforge_getVersion();
+            final VersionEnum target = ((ExtendedServerData) serverData).viaForge$getVersion();
             buttonList.add(new GuiButton(1_000_000_000, pos.key(), pos.value(), 100, 20, target != null ? target.getName() : "Set Version"));
         }
     }
@@ -57,10 +58,11 @@ public class MixinGuiScreenAddServer extends GuiScreen {
             if (button.id == 1_000_000_000) {
                 mc.displayGuiScreen(new GuiProtocolSelector(this, true, (version, parent) -> {
                     // Set version and go back to the parent screen.
-                    ((ExtendedServerData) serverData).viaforge_setVersion(version);
+                    ((ExtendedServerData) serverData).viaForge$setVersion(version);
                     mc.displayGuiScreen(parent);
                 }));
             }
         }
     }
+
 }

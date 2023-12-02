@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.common.gui;
 
 import net.raphimc.vialoader.util.VersionEnum;
@@ -24,7 +25,8 @@ import net.raphimc.vialoader.util.VersionEnum;
  */
 public interface ExtendedServerData {
 
-    VersionEnum viaforge_getVersion();
+    VersionEnum viaForge$getVersion();
 
-    void viaforge_setVersion(final VersionEnum version);
+    void viaForge$setVersion(final VersionEnum version);
+
 }

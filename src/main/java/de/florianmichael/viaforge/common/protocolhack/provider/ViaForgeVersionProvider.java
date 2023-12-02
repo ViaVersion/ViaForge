@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.common.protocolhack.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -32,9 +33,9 @@ public class ViaForgeVersionProvider extends BaseVersionProvider {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaforge_getTrackedVersion().getVersion();
+            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion().getVersion();
         }
-
         return super.getClosestServerProtocol(connection);
     }
+
 }

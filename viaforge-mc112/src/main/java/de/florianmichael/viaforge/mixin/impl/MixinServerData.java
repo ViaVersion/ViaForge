@@ -1,3 +1,21 @@
+/*
+ * This file is part of ViaForge - https://github.com/FlorianMichael/ViaForge
+ * Copyright (C) 2021-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.florianmichael.viaforge.mixin.impl;
 
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
@@ -16,36 +34,37 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinServerData implements ExtendedServerData {
 
     @Unique
-    private VersionEnum viaforge_version;
+    private VersionEnum viaForge$version;
 
     @Inject(method = "getNBTCompound", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NBTTagCompound;setString(Ljava/lang/String;Ljava/lang/String;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     public void saveVersion(CallbackInfoReturnable<NBTTagCompound> cir, NBTTagCompound nbttagcompound) {
-        if (viaforge_version != null) {
-            nbttagcompound.setInteger("viaforge_version", viaforge_version.getVersion());
+        if (viaForge$version != null) {
+            nbttagcompound.setInteger("viaForge$version", viaForge$version.getVersion());
         }
     }
 
     @Inject(method = "getServerDataFromNBTCompound", at = @At(value = "TAIL"))
     private static void getVersion(NBTTagCompound nbtCompound, CallbackInfoReturnable<ServerData> cir) {
-        if (nbtCompound.hasKey("viaforge_version")) {
-            ((ExtendedServerData) cir.getReturnValue()).viaforge_setVersion(VersionEnum.fromProtocolId(nbtCompound.getInteger("viaforge_version")));
+        if (nbtCompound.hasKey("viaForge$version")) {
+            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(VersionEnum.fromProtocolId(nbtCompound.getInteger("viaForge$version")));
         }
     }
 
     @Inject(method = "copyFrom", at = @At("HEAD"))
     public void track(ServerData serverDataIn, CallbackInfo ci) {
         if (serverDataIn instanceof ExtendedServerData) {
-            viaforge_version = ((ExtendedServerData) serverDataIn).viaforge_getVersion();
+            viaForge$version = ((ExtendedServerData) serverDataIn).viaForge$getVersion();
         }
     }
 
     @Override
-    public VersionEnum viaforge_getVersion() {
-        return viaforge_version;
+    public VersionEnum viaForge$getVersion() {
+        return viaForge$version;
     }
 
     @Override
-    public void viaforge_setVersion(VersionEnum version) {
-        viaforge_version = version;
+    public void viaForge$setVersion(VersionEnum version) {
+        viaForge$version = version;
     }
+
 }

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
@@ -49,10 +50,10 @@ public class MixinConnection implements VFNetworkManager {
     @Shadow private Channel channel;
 
     @Unique
-    private Cipher viaforge_decryptionCipher;
+    private Cipher viaForge$decryptionCipher;
 
     @Unique
-    private VersionEnum viaforge_targetVersion;
+    private VersionEnum viaForge$targetVersion;
 
     @Inject(method = "connectToServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void trackSelfTarget(InetSocketAddress p_178301_, boolean p_178302_, SampleLogger p_300093_, CallbackInfoReturnable<Connection> cir, Connection connection) {
@@ -60,13 +61,13 @@ public class MixinConnection implements VFNetworkManager {
         // This works for joining perfect since we can simply restore the version when the server doesn't have a specific one set,
         // but for the server pinger we need to store the target version and force the pinging to use the target version.
         // Due to the fact that the server pinger is being called multiple times.
-        ((VFNetworkManager) connection).viaforge_setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
+        ((VFNetworkManager) connection).viaForge$setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
     }
 
     @Inject(method = "initiateServerboundConnection", at = @At("HEAD"))
     public void test(String p_300730_, int p_300598_, PacketListener p_298739_, ClientIntent p_297789_, CallbackInfo ci) {
         if (Minecraft.getInstance().getCurrentServer() instanceof ExtendedServerData) {
-            final VersionEnum version = ((ExtendedServerData) Minecraft.getInstance().getCurrentServer()).viaforge_getVersion();
+            final VersionEnum version = ((ExtendedServerData) Minecraft.getInstance().getCurrentServer()).viaForge$getVersion();
             if (version != null) {
                 ViaForgeCommon.getManager().setTargetVersionSilent(version);
             } else {
@@ -86,7 +87,7 @@ public class MixinConnection implements VFNetworkManager {
             // Minecraft 1.6.4 supports tile encryption which means the server can only disable one side of the encryption
             // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
             // tells us to do, therefore we need to store the cipher instance.
-            this.viaforge_decryptionCipher = p_244777_1_;
+            this.viaForge$decryptionCipher = p_244777_1_;
 
             // Enabling the encryption side
             this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new CipherEncoder(p_244777_2_));
@@ -105,18 +106,19 @@ public class MixinConnection implements VFNetworkManager {
     }
 
     @Override
-    public void viaforge_setupPreNettyDecryption() {
+    public void viaForge$setupPreNettyDecryption() {
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new CipherDecoder(this.viaforge_decryptionCipher));
+        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new CipherDecoder(this.viaForge$decryptionCipher));
     }
 
     @Override
-    public VersionEnum viaforge_getTrackedVersion() {
-        return viaforge_targetVersion;
+    public VersionEnum viaForge$getTrackedVersion() {
+        return viaForge$targetVersion;
     }
 
     @Override
-    public void viaforge_setTrackedVersion(VersionEnum version) {
-        viaforge_targetVersion = version;
+    public void viaForge$setTrackedVersion(VersionEnum version) {
+        viaForge$targetVersion = version;
     }
+
 }

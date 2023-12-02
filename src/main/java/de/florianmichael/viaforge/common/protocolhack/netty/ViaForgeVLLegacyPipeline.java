@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.florianmichael.viaforge.common.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -56,4 +57,5 @@ public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
     protected String lengthPrependerName() {
         return "prepender";
     }
+
 }
