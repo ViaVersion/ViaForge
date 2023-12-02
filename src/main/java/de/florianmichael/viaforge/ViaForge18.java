@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 @Mod(modid = "viaforge")
 public class ViaForge18 implements VFPlatform {
     
-    public final static ViaForge18 PLATFORM = new ViaForge18();
+    public static final ViaForge18 PLATFORM = new ViaForge18();
 
     @Override
     public int getGameVersion() {

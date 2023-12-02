@@ -29,18 +29,18 @@ import java.util.Map;
 
 public class ViaForgeConfig extends Config {
 
-    public final static String CLIENT_SIDE_VERSION = "client-side-version";
-    public final static String VERIFY_SESSION_IN_OLD_VERSIONS = "verify-session-in-old-versions";
-    public final static String ALLOW_BETACRAFT_AUTHENTICATION = "allow-betacraft-authentication";
-    public final static String SHOW_PROTOCOL_VERSION_IN_F3 = "show-protocol-version-in-f3";
+    public static final String CLIENT_SIDE_VERSION = "client-side-version";
+    public static final String VERIFY_SESSION_IN_OLD_VERSIONS = "verify-session-in-old-versions";
+    public static final String ALLOW_BETACRAFT_AUTHENTICATION = "allow-betacraft-authentication";
+    public static final String SHOW_PROTOCOL_VERSION_IN_F3 = "show-protocol-version-in-f3";
 
-    public final static String SHOW_MAIN_MENU_BUTTON = "show-main-menu-button";
-    public final static String SHOW_MULTIPLAYER_BUTTON = "show-multiplayer-button";
-    public final static String SHOW_DIRECT_CONNECT_BUTTON = "show-direct-connect-button";
-    public final static String SHOW_ADD_SERVER_BUTTON = "show-add-server-button";
+    public static final String SHOW_MAIN_MENU_BUTTON = "show-main-menu-button";
+    public static final String SHOW_MULTIPLAYER_BUTTON = "show-multiplayer-button";
+    public static final String SHOW_DIRECT_CONNECT_BUTTON = "show-direct-connect-button";
+    public static final String SHOW_ADD_SERVER_BUTTON = "show-add-server-button";
 
-    public final static String VIA_FORGE_BUTTON_POSITION = "via-forge-button-position";
-    public final static String ADD_SERVER_SCREEN_BUTTON_POSITION = "add-server-screen-button-position";
+    public static final String VIA_FORGE_BUTTON_POSITION = "via-forge-button-position";
+    public static final String ADD_SERVER_SCREEN_BUTTON_POSITION = "add-server-screen-button-position";
 
     /**
      * @param configFile The location of where the config is loaded/saved.
