@@ -1,0 +1,17 @@
+modLoader="javafml"
+loaderVersion="[37,)"
+
+license="GPL-3.0 license"
+issueTrackerURL="https://github.com/ViaVersion/ViaForge/issues"
+showAsResourcePack=false
+
+[[mods]]
+modId="viaforge"
+version="3.5.0"
+displayName="ViaForge"
+displayURL="https://github.com/FlorianMichael"
+credits="FlorianMichael/EnZaXD and all ViaVersion/ViaForge contributors"
+authors="FlorianMichael/EnZaXD"
+description='''
+  Client-side Implementation of the Via* projects for Minecraft Forge
+  '''

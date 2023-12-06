@@ -1,7 +1,3 @@
-plugins {
-    id "viaforge.forge-conventions"
-}
-
 minecraft {
     mappings channel: "stable", version: "39-1.12"
 }

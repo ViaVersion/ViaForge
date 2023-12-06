@@ -106,10 +106,12 @@ public class GuiProtocolSelector extends Screen {
         this.list.render(graphics, p_230430_2_, p_230430_3_, p_230430_4_);
         super.render(graphics, p_230430_2_, p_230430_3_, p_230430_4_);
 
-        GL11.glPushMatrix();
-        GL11.glScalef(2.0F, 2.0F, 2.0F);
+        final var pose = graphics.pose();
+
+        pose.pushPose();
+        pose.scale(2.0F, 2.0F, 2.0F);
         graphics.drawCenteredString(font, TextFormatting.GOLD + "ViaForge", width / 4, 3, 16777215);
-        GL11.glPopMatrix();
+        pose.popPose();
 
         graphics.drawCenteredString(font, "https://github.com/ViaVersion/ViaForge", width / 2, (font.lineHeight + 2) * 2 + 3, -1);
         graphics.drawString(font, status != null ? status : "Discord: florianmichael", 3, 3, -1);

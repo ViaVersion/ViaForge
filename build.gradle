@@ -1,8 +1,178 @@
-plugins {
-    id "java"
-    id "viaforge.base-conventions"
+buildscript {
+    // Counterpart of settings.gradle file, sadly conventions can't use those defined repositories for some reason...
+    repositories {
+        gradlePluginPortal()
+
+        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+        maven { url = "https://jitpack.io/" }
+        maven { url = "https://files.minecraftforge.net/maven" }
+    }
+
+    // Counterpart of settings.gradle file, sadly conventions can't use those defined plugins for some reason...
+    dependencies {
+        classpath "com.github.johnrengelman:shadow:7.1.2"
+        classpath "net.minecraftforge.gradle:ForgeGradle:5.+"
+        classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
+    }
 }
 
-dependencies {
-    compileOnly "io.netty:netty-all:4.0.20.Final"
+allprojects {
+    apply plugin: "java-library"
+    apply plugin: "com.github.johnrengelman.shadow"
+
+    // We define the configuration here so we can use it across all conventions and platforms
+    // To define which projects/source files should be included in the jar
+    configurations {
+        library
+        implementation.extendsFrom(library)
+    }
+
+    // Repositories for the ViaVersion dependencies defined below
+    repositories {
+        maven {
+            url = "https://repo.spongepowered.org/repository/maven-public"
+        }
+        maven {
+            url = "https://repo.viaversion.com"
+        }
+    }
+
+    // Replace the version in the mcmod.info and mods.toml files with the project version
+    // Since this depends on the platform version, we can't define it in the global scope :(
+    processResources {
+        inputs.property "version", project.version
+
+
+        for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
+            filesMatching(file) {
+                expand "version": project.version
+            }
+        }
+    }
+
+    // Including all required libraries for ViaVersion {for version numbers see gradle.properties}
+    dependencies {
+        compileOnly "io.netty:netty-all:4.0.20.Final"
+
+        library "com.viaversion:viaversion:${project.viaversion_version}"
+        library "com.viaversion:viabackwards:${project.viabackwards_version}"
+        library "com.viaversion:viarewind-universal:${project.viarewind_version}"
+        library ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
+            exclude group: "com.google.code.gson", module: "gson"
+        }
+        library "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+        library ("net.raphimc:ViaLoader:${project.vialoader_version}") {
+            exclude group: "com.google.guava"
+            exclude group: "org.slf4j"
+        }
+
+        library "org.yaml:snakeyaml:${project.snake_yml_version}"
+    }
+}
+
+subprojects {
+    apply plugin: "net.minecraftforge.gradle"
+    apply plugin: "org.spongepowered.mixin"
+
+    // Define the jar output attributes for all platforms
+    archivesBaseName = project.maven_name
+    version = maven_version + "-" + project.mc_version
+    group = maven_group
+
+    compileJava.options.encoding = "UTF-8"
+
+    minecraft {
+        runs {
+            client {
+                workingDirectory project.file("run")
+
+                property "forge.logging.markers", "REGISTRIES"
+                property "forge.logging.console.level", "debug"
+
+                // mixin
+                property "mixin.debug.export", "true"
+                property "mixin.hotSwap", "true"
+                property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader" // Only required for MC 1.12, but modern Forges skips this anyway
+                args "-mixin.config=" + "mixins." + project.getProperty('maven_name') + ".json"
+
+                // source set
+                mods {
+                    "${project.maven_name}" {
+                        source sourceSets.main
+                    }
+                }
+            }
+        }
+    }
+
+    sourceSets.main.resources {
+        srcDir "src/generated/resources"
+    }
+
+    dependencies {
+        if ((project.property("sub_module_increment") as Integer) >= 2) {
+            compileOnly "org.slf4j:slf4j-api:${slf4j_version}"
+        } else {
+            library "org.slf4j:slf4j-api:${slf4j_version}"
+        }
+
+        library "org.spongepowered:mixin:${mixin_version}"
+        annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
+        library project(":") // Include the base project, to get Common-ViaForge
+    }
+
+    mixin {
+        add sourceSets.main, "mixins.${project.maven_name}.refmap.json"
+    }
+
+    jar {
+        manifest.attributes(
+                "Specification-Title": "viaforge",
+                "Specification-Vendor": "viaforge",
+                "Specification-Version": "1",
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${archiveVersion}",
+                "Implementation-Vendor" :"viaforge",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                "TweakOrder": "0",
+                "FMLCorePluginContainsFMLMod": "true", // Only required for MC 1.12, but modern Forges skips this anyway
+                "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader", // Counterpart to the above
+                "MixinConfigs": "mixins.${project.maven_name}.json",
+                "ForceLoadAsMod": "true"
+        )
+        enabled = false
+    }
+
+    java {
+        if ((project.property("sub_module_increment") as Integer) >= 2) {
+            // Minecraft 1.17+ required Java 16/17 to compile
+            toolchain.languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    shadowJar {
+        archiveFileName = jar.archiveFileName
+        configurations = [project.configurations.library] // Include the dependencies from the include configuration
+        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
+        // Prevent conflicts with Forge's weird service loading
+        exclude("META-INF/maven/**")
+        exclude("META-INF/versions/**")
+
+        if ((project.property("sub_module_increment") as Integer) >= 1) {
+            // Get rid of the services folder, since Forge 1.16+ would conflict with some of the ForgeDev Environment's services
+            // And since we don't need them for Mixins anyway, we can just exclude them from the shadowJar
+            exclude("META-INF/services/**")
+            // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
+            exclude("org/spongepowered/**")
+        }
+    }
+
+    reobf {
+        shadowJar {}
+    }
+
+    jar.dependsOn("shadowJar")
 }

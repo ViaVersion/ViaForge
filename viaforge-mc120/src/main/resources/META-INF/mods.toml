@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[1,)"
+loaderVersion="[48,)"
 
 license="GPL-3.0 license"
 issueTrackerURL="https://github.com/ViaVersion/ViaForge/issues"
@@ -7,7 +7,7 @@ showAsResourcePack=false
 
 [[mods]]
 modId="viaforge"
-version="${version}"
+version="3.5.0"
 displayName="ViaForge"
 displayURL="https://github.com/FlorianMichael"
 credits="FlorianMichael/EnZaXD and all ViaVersion/ViaForge contributors"

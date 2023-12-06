@@ -1,9 +1,0 @@
-plugins {
-    id "viaforge.shadow-conventions"
-}
-
-// Get rid of the services folder, since Forge 1.16+ would conflict with some of the ForgeDev Environment's services
-// And since we don't need them for Mixins anyway, we can just exclude them from the shadowJar
-shadowJar {
-    exclude "META-INF/services/**"
-}

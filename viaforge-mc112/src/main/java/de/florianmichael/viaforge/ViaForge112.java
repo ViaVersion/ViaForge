@@ -29,7 +29,7 @@ import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.G
 import java.io.File;
 import java.util.function.Supplier;
 
-@Mod(modid = "viaforge")
+@Mod(modid = "viaforge", version = "3.5.0")
 public class ViaForge112 implements VFPlatform {
 
     public static final ViaForge112 PLATFORM = new ViaForge112();
