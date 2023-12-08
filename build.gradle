@@ -40,10 +40,9 @@ allprojects {
     // Replace the version in the mcmod.info and mods.toml files with the project version
     // Since this depends on the platform version, we can't define it in the global scope :(
     processResources {
-        inputs.property "version", project.version
-
-
         for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
+            inputs.property "version", project.version
+
             filesMatching(file) {
                 expand "version": project.version
             }
@@ -130,9 +129,9 @@ subprojects {
         manifest.attributes(
                 "Specification-Title": "viaforge",
                 "Specification-Vendor": "viaforge",
-                "Specification-Version": "1",
+                "Specification-Version": project.version,
                 "Implementation-Title": project.name,
-                "Implementation-Version": "${archiveVersion}",
+                "Implementation-Version": project.version,
                 "Implementation-Vendor" :"viaforge",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
                 "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",

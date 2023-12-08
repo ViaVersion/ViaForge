@@ -7,9 +7,10 @@ showAsResourcePack=false
 
 [[mods]]
 modId="viaforge"
-version="3.5.0"
+version="${version}"
 displayName="ViaForge"
 displayURL="https://github.com/FlorianMichael"
+logoFile="icon.png"
 credits="FlorianMichael/EnZaXD and all ViaVersion/ViaForge contributors"
 authors="FlorianMichael/EnZaXD"
 description='''

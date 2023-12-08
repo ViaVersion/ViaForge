@@ -60,7 +60,7 @@ public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
     }
 
     @Override
-    public GameProfile loadGameProfile(UUID uuid) throws Exception {
+    public GameProfile loadGameProfile(UUID uuid) {
         final com.mojang.authlib.GameProfile inProfile = new com.mojang.authlib.GameProfile(uuid, null);
         final com.mojang.authlib.GameProfile mojangProfile = SESSION_SERVICE.fillProfileProperties(inProfile, true);
         if (mojangProfile.equals(inProfile)) throw new ProfileNotFoundException();
