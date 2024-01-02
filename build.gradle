@@ -11,7 +11,7 @@ buildscript {
     // Counterpart of settings.gradle file, sadly conventions can't use those defined plugins for some reason...
     dependencies {
         classpath "com.github.johnrengelman:shadow:7.1.2"
-        classpath "net.minecraftforge.gradle:ForgeGradle:5.+"
+        classpath "net.minecraftforge.gradle:ForgeGradle:6.+"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
     }
 }
