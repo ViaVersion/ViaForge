@@ -22,7 +22,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import net.lenni0451.mcstructs.core.TextFormatting;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ObjectSelectionList;
@@ -31,7 +31,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -73,9 +72,9 @@ public class GuiProtocolSelector extends Screen {
             addRenderableWidget(new Button(width - 105, 5, 100, 20, new TextComponent("Create dump"), b -> {
                 try {
                     minecraft.keyboardHandler.setClipboard(DumpUtil.postDump(UUID.randomUUID()).get());
-                    setStatus(TextFormatting.GREEN + "Dump created and copied to clipboard");
+                    setStatus(ChatFormatting.GREEN + "Dump created and copied to clipboard");
                 } catch (InterruptedException | ExecutionException e) {
-                    setStatus(TextFormatting.RED + "Failed to create dump: " + e.getMessage());
+                    setStatus(ChatFormatting.RED + "Failed to create dump: " + e.getMessage());
                 }
             }));
             addRenderableWidget(new Button(width - 105, height - 25, 100, 20, new TextComponent("Reload configs"), b -> Via.getManager().getConfigurationProvider().reloadConfigs()));
@@ -110,7 +109,7 @@ public class GuiProtocolSelector extends Screen {
 
         matrices.pushPose();
         matrices.scale(2.0F, 2.0F, 2.0F);
-        drawCenteredString(matrices, font, TextFormatting.GOLD + "ViaForge", width / 4, 3, 16777215);
+        drawCenteredString(matrices, font, ChatFormatting.GOLD + "ViaForge", width / 4, 3, 16777215);
         matrices.popPose();
 
         drawCenteredString(matrices, font, "https://github.com/ViaVersion/ViaForge", width / 2, (font.lineHeight + 2) * 2 + 3, -1);
@@ -152,9 +151,9 @@ public class GuiProtocolSelector extends Screen {
 
                 String color;
                 if (targetVersion == versionEnum) {
-                    color = GuiProtocolSelector.this.simple ? TextFormatting.GOLD.toString() : TextFormatting.GREEN.toString();
+                    color = GuiProtocolSelector.this.simple ? ChatFormatting.GOLD.toString() : ChatFormatting.GREEN.toString();
                 } else {
-                    color = GuiProtocolSelector.this.simple ? TextFormatting.WHITE.toString() : TextFormatting.DARK_RED.toString();
+                    color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
                 }
 
                 drawCenteredString(matrices, Minecraft.getInstance().font, color + versionEnum.getName(), width / 2, y, -1);
