@@ -79,7 +79,7 @@ public class GuiProtocolSelector extends Screen {
             addRenderableWidget(Button.builder(Component.literal("Reload configs"), b -> Via.getManager().getConfigurationProvider().reloadConfigs()).bounds(width - 105, height - 25, 100, 20).build());
         }
 
-        list = new SlotList(minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, height - 30, font.lineHeight + 2);
+        list = new SlotList(minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, 30, font.lineHeight + 2);
     }
 
     public void setStatus(final String status) {
@@ -118,7 +118,7 @@ public class GuiProtocolSelector extends Screen {
     class SlotList extends ObjectSelectionList<SlotList.SlotEntry> {
 
         public SlotList(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
-            super(client, width, height, top, bottom, slotHeight);
+            super(client, width, height - top - bottom, top, slotHeight);
 
             for (VersionEnum version : VersionEnum.SORTED_VERSIONS) {
                 addEntry(new SlotEntry(version));

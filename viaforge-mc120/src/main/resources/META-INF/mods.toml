@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[48,)"
+loaderVersion="[49,)"
 
 license="GPL-3.0 license"
 issueTrackerURL="https://github.com/ViaVersion/ViaForge/issues"
@@ -11,7 +11,7 @@ version="${version}"
 displayName="ViaForge"
 displayURL="https://github.com/FlorianMichael"
 logoFile="icon.png"
-credits="FlorianMichael/EnZaXD and all ViaVersion/ViaForge contributors"
+credits="Github contributors"
 authors="FlorianMichael/EnZaXD"
 description='''
   Client-side Implementation of the Via* projects for Minecraft Forge
