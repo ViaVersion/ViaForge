@@ -76,6 +76,9 @@ subprojects {
     version = maven_version + "-" + project.mc_version
     group = maven_group
 
+    // Used to execute code only for specific submodules
+    def versionId = Integer.parseInt(project.mc_version.replace(".", ""))
+
     compileJava.options.encoding = "UTF-8"
 
     minecraft {
@@ -107,7 +110,8 @@ subprojects {
     }
 
     dependencies {
-        if ((project.property("sub_module_increment") as Integer) >= 2) {
+        if (versionId >= 1171) {
+            // Minecraft 1.17+ already includes slf4j, so we don't need to include it
             compileOnly "org.slf4j:slf4j-api:${slf4j_version}"
         } else {
             library "org.slf4j:slf4j-api:${slf4j_version}"
@@ -143,7 +147,7 @@ subprojects {
     }
 
     java {
-        if ((project.property("sub_module_increment") as Integer) >= 2) {
+        if (versionId >= 1171) {
             // Minecraft 1.17+ required Java 16/17 to compile
             toolchain.languageVersion = JavaLanguageVersion.of(17)
         }
@@ -158,12 +162,14 @@ subprojects {
         exclude("META-INF/maven/**")
         exclude("META-INF/versions/**")
 
-        if ((project.property("sub_module_increment") as Integer) >= 1) {
+        if (versionId >= 1132) {
+            // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
+            exclude("org/spongepowered/**")
+        }
+        if (versionId >= 1165) {
             // Get rid of the services folder, since Forge 1.16+ would conflict with some of the ForgeDev Environment's services
             // And since we don't need them for Mixins anyway, we can just exclude them from the shadowJar
             exclude("META-INF/services/**")
-            // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
-            exclude("org/spongepowered/**")
         }
     }
 
