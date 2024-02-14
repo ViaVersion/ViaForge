@@ -30,6 +30,7 @@ import net.minecraft.client.gui.widget.list.ExtendedList;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.raphimc.vialoader.util.ProtocolVersionList;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -122,7 +123,7 @@ public class GuiProtocolSelector extends Screen {
         public SlotList(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
             super(client, width, height, top, bottom, slotHeight);
 
-            for (ProtocolVersion version : ProtocolVersion.getProtocols()) {
+            for (ProtocolVersion version : ProtocolVersionList.getProtocolsNewToOld()) {
                 addEntry(new SlotEntry(version));
             }
         }

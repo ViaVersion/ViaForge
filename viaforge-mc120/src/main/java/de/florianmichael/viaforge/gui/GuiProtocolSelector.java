@@ -29,6 +29,7 @@ import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.raphimc.vialoader.util.ProtocolVersionList;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.UUID;
@@ -120,7 +121,7 @@ public class GuiProtocolSelector extends Screen {
         public SlotList(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
             super(client, width, height - top - bottom, top, slotHeight);
 
-            for (ProtocolVersion version : ProtocolVersion.getProtocols()) {
+            for (ProtocolVersion version : ProtocolVersionList.getProtocolsNewToOld()) {
                 addEntry(new SlotEntry(version));
             }
         }
