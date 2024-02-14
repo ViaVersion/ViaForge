@@ -19,16 +19,16 @@
 package de.florianmichael.viaforge.common.protocolhack.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaForgeVersionProvider extends BaseVersionProvider {
 
     @Override
-    public int getClosestServerProtocol(UserConnection connection) throws Exception {
+    public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {
         if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer().get()) {
-            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion().getVersion();
+            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion();
         }
         return super.getClosestServerProtocol(connection);
     }

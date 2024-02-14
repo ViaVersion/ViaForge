@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import net.minecraft.client.Minecraft;
@@ -38,7 +39,7 @@ public class MixinGuiConnecting_1 {
         // use it to determine the protocol version to use.
         // We hope that the current server data is not null
         if (Minecraft.getMinecraft().getCurrentServerData() instanceof ExtendedServerData) {
-            final VersionEnum version = ((ExtendedServerData) Minecraft.getMinecraft().getCurrentServerData()).viaForge$getVersion();
+            final ProtocolVersion version = ((ExtendedServerData) Minecraft.getMinecraft().getCurrentServerData()).viaForge$getVersion();
             if (version != null) {
                 ViaForgeCommon.getManager().setTargetVersionSilent(version);
             } else {

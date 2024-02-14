@@ -19,12 +19,12 @@
 package de.florianmichael.viaforge.common.protocolhack.netty;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
-import net.raphimc.vialoader.util.VersionEnum;
 
 public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
 
-    public ViaForgeVLLegacyPipeline(UserConnection user, VersionEnum version) {
+    public ViaForgeVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
         super(user, version);
     }
 

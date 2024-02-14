@@ -19,6 +19,7 @@
 package de.florianmichael.viaforge.mixin.impl.fixes;
 
 import com.mojang.authlib.GameProfile;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -46,7 +47,7 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Redirect(method = "onUpdateWalkingPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/NetHandlerPlayClient;addToSendQueue(Lnet/minecraft/network/Packet;)V", ordinal = 7))
     public void emulateIdlePacket(NetHandlerPlayClient instance, Packet p_addToSendQueue_1_) {
-        if (ViaForgeCommon.getManager().getTargetVersion().isNewerThan(VersionEnum.r1_8)) {
+        if (ViaForgeCommon.getManager().getTargetVersion().newerThan(ProtocolVersion.v1_8)) {
             // <= 1.8 spams the idle packet instead of only sending it when the ground state changes
             if (this.viaForge$prevOnGround == this.onGround) {
                 return;

@@ -18,7 +18,7 @@
 
 package de.florianmichael.viaforge.common.protocolhack.netty;
 
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public interface VFNetworkManager {
 
@@ -31,13 +31,13 @@ public interface VFNetworkManager {
     /**
      * @return the target version of the connection
      */
-    VersionEnum viaForge$getTrackedVersion();
+    ProtocolVersion viaForge$getTrackedVersion();
 
     /**
      * Sets the target version of the connection.
      *
      * @param version the target version
      */
-    void viaForge$setTrackedVersion(final VersionEnum version);
+    void viaForge$setTrackedVersion(final ProtocolVersion version);
 
 }

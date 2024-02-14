@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,14 +40,20 @@ public class MixinServerData implements ExtendedServerData {
     @Inject(method = "getNBTCompound", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NBTTagCompound;setString(Ljava/lang/String;Ljava/lang/String;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     public void saveVersion(CallbackInfoReturnable<NBTTagCompound> cir, NBTTagCompound nbttagcompound) {
         if (viaForge$version != null) {
-            nbttagcompound.setInteger("viaForge$version", viaForge$version.getVersion());
+            nbttagcompound.setString("viaForge$version", viaForge$version.getName());
         }
     }
 
     @Inject(method = "getServerDataFromNBTCompound", at = @At(value = "TAIL"))
     private static void getVersion(NBTTagCompound nbtCompound, CallbackInfoReturnable<ServerData> cir) {
         if (nbtCompound.hasKey("viaForge$version")) {
-            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(VersionEnum.fromProtocolId(nbtCompound.getInteger("viaForge$version")));
+            ProtocolVersion version;
+            if (nbtCompound.getInteger("viaForge$version") != 0) { // Temporary fix for old versions
+                version = ProtocolVersion.getProtocol(nbtCompound.getInteger("viaForge$version"));
+            } else {
+                version = ProtocolVersion.getClosest(nbtCompound.getString("viaForge$version"));
+            }
+            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(version);
         }
     }
 

@@ -20,12 +20,14 @@ package de.florianmichael.viaforge.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
+import net.raphimc.vialoader.util.ProtocolVersionList;
 import net.raphimc.vialoader.util.VersionEnum;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -133,12 +135,12 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return VersionEnum.SORTED_VERSIONS.size();
+            return ProtocolVersionList.getProtocolsNewToOld().size();
         }
 
         @Override
         protected void elementClicked(int index, boolean b, int i1, int i2) {
-            finishedCallback.finished(VersionEnum.SORTED_VERSIONS.get(index), parent);
+            finishedCallback.finished(ProtocolVersionList.getProtocolsNewToOld().get(index), parent);
         }
 
         @Override
@@ -153,8 +155,8 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int index, int x, int y, int slotHeight, int mouseX, int mouseY) {
-            final VersionEnum targetVersion = ViaForgeCommon.getManager().getTargetVersion();
-            final VersionEnum version = VersionEnum.SORTED_VERSIONS.get(index);
+            final ProtocolVersion targetVersion = ViaForgeCommon.getManager().getTargetVersion();
+            final ProtocolVersion version = ProtocolVersionList.getProtocolsNewToOld().get(index);
 
             String color;
             if (targetVersion == version) {
@@ -169,7 +171,7 @@ public class GuiProtocolSelector extends GuiScreen {
 
     public interface FinishedCallback {
 
-        void finished(final VersionEnum version, final GuiScreen parent);
+        void finished(final ProtocolVersion version, final GuiScreen parent);
         
     }
     

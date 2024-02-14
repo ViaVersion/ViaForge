@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
@@ -47,7 +48,7 @@ public class MixinGuiScreenAddServer extends GuiScreen {
         if (config.isShowAddServerButton()) {
             final Pair<Integer, Integer> pos = config.getAddServerScreenButtonPosition().getPosition(this.width, this.height);
 
-            final VersionEnum target = ((ExtendedServerData) serverData).viaForge$getVersion();
+            final ProtocolVersion target = ((ExtendedServerData) serverData).viaForge$getVersion();
             buttonList.add(new GuiButton(1_000_000_000, pos.key(), pos.value(), 100, 20, target != null ? target.getName() : "Set Version"));
         }
     }
