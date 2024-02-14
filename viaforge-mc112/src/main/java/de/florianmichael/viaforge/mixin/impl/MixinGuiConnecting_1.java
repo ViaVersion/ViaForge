@@ -22,7 +22,7 @@ import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkManager;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -38,7 +38,7 @@ public class MixinGuiConnecting_1 {
         // use it to determine the protocol version to use.
         // We hope that the current server data is not null
         if (Minecraft.getMinecraft().getCurrentServerData() instanceof ExtendedServerData) {
-            final VersionEnum version = ((ExtendedServerData) Minecraft.getMinecraft().getCurrentServerData()).viaForge$getVersion();
+            final ProtocolVersion version = ((ExtendedServerData) Minecraft.getMinecraft().getCurrentServerData()).viaForge$getVersion();
             if (version != null) {
                 ViaForgeCommon.getManager().setTargetVersionSilent(version);
             } else {

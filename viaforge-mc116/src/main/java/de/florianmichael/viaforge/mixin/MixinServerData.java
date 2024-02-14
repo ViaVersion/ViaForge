@@ -21,7 +21,7 @@ package de.florianmichael.viaforge.mixin;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.nbt.CompoundNBT;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,19 +34,25 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinServerData implements ExtendedServerData {
 
     @Unique
-    private VersionEnum viaForge$version;
+    private ProtocolVersion viaForge$version;
 
     @Inject(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/CompoundNBT;putString(Ljava/lang/String;Ljava/lang/String;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     public void saveVersion(CallbackInfoReturnable<CompoundNBT> cir, CompoundNBT compoundnbt) {
         if (viaForge$version != null) {
-            compoundnbt.putInt("viaForge$version", viaForge$version.getVersion());
+            compoundnbt.putString("viaForge$version", viaForge$version.getName());
         }
     }
 
     @Inject(method = "read", at = @At(value = "TAIL"))
     private static void getVersion(CompoundNBT compoundnbt, CallbackInfoReturnable<ServerData> cir) {
         if (compoundnbt.contains("viaForge$version")) {
-            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(VersionEnum.fromProtocolId(compoundnbt.getInt("viaForge$version")));
+            ProtocolVersion version;
+            if (compoundnbt.getInt("viaForge$version") != 0) { // Temporary fix for old versions
+                version = ProtocolVersion.getProtocol(compoundnbt.getInt("viaForge$version"));
+            } else {
+                version = ProtocolVersion.getClosest(compoundnbt.getString("viaForge$version"));
+            }
+            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(version);
         }
     }
 
@@ -58,12 +64,12 @@ public class MixinServerData implements ExtendedServerData {
     }
 
     @Override
-    public VersionEnum viaForge$getVersion() {
+    public ProtocolVersion viaForge$getVersion() {
         return viaForge$version;
     }
 
     @Override
-    public void viaForge$setVersion(VersionEnum version) {
+    public void viaForge$setVersion(ProtocolVersion version) {
         viaForge$version = version;
     }
 

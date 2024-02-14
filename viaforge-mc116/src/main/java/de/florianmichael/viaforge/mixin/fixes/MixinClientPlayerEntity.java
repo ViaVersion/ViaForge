@@ -23,7 +23,7 @@ import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,7 +40,7 @@ public class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
 
     @Redirect(method = "sendPosition", at = @At(value = "FIELD", target = "Lnet/minecraft/client/entity/player/ClientPlayerEntity;lastOnGround:Z", ordinal = 0))
     public boolean emulateIdlePacket(ClientPlayerEntity instance) {
-        if (ViaForgeCommon.getManager().getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_8)) {
+        if (ViaForgeCommon.getManager().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             // <= 1.8 spams the idle packet instead of only sending it when the ground state changes
             // So we invert the original logic:
             // if (prevOnGround != onGround) sendPacket

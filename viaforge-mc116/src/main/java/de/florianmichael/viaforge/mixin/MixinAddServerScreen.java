@@ -29,7 +29,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,7 +53,7 @@ public class MixinAddServerScreen extends Screen {
         if (config.isShowAddServerButton()) {
             final Pair<Integer, Integer> pos = config.getAddServerScreenButtonPosition().getPosition(this.width, this.height);
 
-            final VersionEnum target = ((ExtendedServerData) serverData).viaForge$getVersion();
+            final ProtocolVersion target = ((ExtendedServerData) serverData).viaForge$getVersion();
            addButton(new Button(pos.key(), pos.value(), 100, 20, new StringTextComponent(target != null ? target.getName() : "Set Version"), b -> {
                minecraft.setScreen(new GuiProtocolSelector(this, true, (version, parent) -> {
                    // Set version and go back to the parent screen.

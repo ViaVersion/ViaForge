@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.common.platform;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.Config;
 import com.viaversion.viaversion.util.Pair;
 
@@ -70,11 +71,14 @@ public class ViaForgeConfig extends Config {
         save(); // Automatically save the config when something changes
     }
 
-    public int getClientSideVersion() {
-        return getInt(CLIENT_SIDE_VERSION, 0);
+    public String getClientSideVersion() {
+        if (getInt(CLIENT_SIDE_VERSION, -1) != -1) { // Temporary fix for old configs
+            return ProtocolVersion.getProtocol(getInt(CLIENT_SIDE_VERSION, -1)).getName();
+        }
+        return getString(CLIENT_SIDE_VERSION, "");
     }
 
-    public void setClientSideVersion(final int version) {
+    public void setClientSideVersion(final String version) {
         set(CLIENT_SIDE_VERSION, version);
     }
 

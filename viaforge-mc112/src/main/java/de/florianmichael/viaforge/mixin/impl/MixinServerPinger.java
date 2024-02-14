@@ -18,12 +18,12 @@
 
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.ServerPinger;
 import net.minecraft.network.NetworkManager;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -51,7 +51,7 @@ public class MixinServerPinger {
         // We hope that the current server data is not null
 
         if (viaForge$serverData instanceof ExtendedServerData) {
-            final VersionEnum version = ((ExtendedServerData) viaForge$serverData).viaForge$getVersion();
+            final ProtocolVersion version = ((ExtendedServerData) viaForge$serverData).viaForge$getVersion();
             if (version != null) {
                 ViaForgeCommon.getManager().setTargetVersionSilent(version);
             } else {

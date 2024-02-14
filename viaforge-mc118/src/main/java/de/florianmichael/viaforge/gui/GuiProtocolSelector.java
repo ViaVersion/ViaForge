@@ -29,7 +29,7 @@ import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.UUID;
@@ -121,49 +121,49 @@ public class GuiProtocolSelector extends Screen {
         public SlotList(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
             super(client, width, height, top, bottom, slotHeight);
 
-            for (VersionEnum version : VersionEnum.SORTED_VERSIONS) {
+            for (ProtocolVersion version : ProtocolVersion.getProtocols()) {
                 addEntry(new SlotEntry(version));
             }
         }
 
         public class SlotEntry extends Entry<SlotEntry> {
 
-            private final VersionEnum versionEnum;
+            private final ProtocolVersion ProtocolVersion;
 
-            public SlotEntry(VersionEnum versionEnum) {
-                this.versionEnum = versionEnum;
+            public SlotEntry(ProtocolVersion ProtocolVersion) {
+                this.ProtocolVersion = ProtocolVersion;
             }
 
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
-                GuiProtocolSelector.this.finishedCallback.finished(versionEnum, GuiProtocolSelector.this.parent);
+                GuiProtocolSelector.this.finishedCallback.finished(ProtocolVersion, GuiProtocolSelector.this.parent);
                 return super.mouseClicked(mouseX, mouseY, button);
             }
 
             @Override
             public Component getNarration() {
-                return new TextComponent(versionEnum.getName());
+                return new TextComponent(ProtocolVersion.getName());
             }
 
             @Override
             public void render(PoseStack matrices, int p_93524_, int y, int p_93526_, int p_93527_, int p_93528_, int p_93529_, int p_93530_, boolean p_93531_, float p_93532_) {
-                final VersionEnum targetVersion = ViaForgeCommon.getManager().getTargetVersion();
+                final ProtocolVersion targetVersion = ViaForgeCommon.getManager().getTargetVersion();
 
                 String color;
-                if (targetVersion == versionEnum) {
+                if (targetVersion == ProtocolVersion) {
                     color = GuiProtocolSelector.this.simple ? ChatFormatting.GOLD.toString() : ChatFormatting.GREEN.toString();
                 } else {
                     color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
                 }
 
-                drawCenteredString(matrices, Minecraft.getInstance().font, color + versionEnum.getName(), width / 2, y, -1);
+                drawCenteredString(matrices, Minecraft.getInstance().font, color + ProtocolVersion.getName(), width / 2, y, -1);
             }
         }
     }
 
     public interface FinishedCallback {
 
-        void finished(final VersionEnum version, final Screen parent);
+        void finished(final ProtocolVersion version, final Screen parent);
 
     }
 

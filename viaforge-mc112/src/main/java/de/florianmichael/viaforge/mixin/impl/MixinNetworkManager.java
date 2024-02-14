@@ -27,8 +27,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.util.CryptManager;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.text.ITextComponent;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
-import net.raphimc.vialoader.util.VersionEnum;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -51,7 +52,7 @@ public class MixinNetworkManager implements VFNetworkManager {
     private Cipher viaForge$decryptionCipher;
 
     @Unique
-    private VersionEnum viaForge$targetVersion;
+    private ProtocolVersion viaForge$targetVersion;
 
     @Inject(method = "createNetworkManagerAndConnect", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void trackSelfTarget(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
@@ -64,7 +65,7 @@ public class MixinNetworkManager implements VFNetworkManager {
 
     @Inject(method = "enableEncryption", at = @At("HEAD"), cancellable = true)
     private void storeEncryptionCiphers(SecretKey key, CallbackInfo ci) {
-        if (ViaForgeCommon.getManager().getTargetVersion().isOlderThanOrEqualTo(VersionEnum.r1_6_4)) {
+        if (ViaForgeCommon.getManager().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // Minecraft's encryption code is bad for us, we need to reorder the pipeline
             ci.cancel();
 
@@ -96,12 +97,12 @@ public class MixinNetworkManager implements VFNetworkManager {
     }
 
     @Override
-    public VersionEnum viaForge$getTrackedVersion() {
+    public ProtocolVersion viaForge$getTrackedVersion() {
         return viaForge$targetVersion;
     }
 
     @Override
-    public void viaForge$setTrackedVersion(VersionEnum version) {
+    public void viaForge$setTrackedVersion(ProtocolVersion version) {
         viaForge$targetVersion = version;
     }
 

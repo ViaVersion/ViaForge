@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
@@ -27,7 +28,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenAddServer;
 import net.minecraft.client.multiplayer.ServerData;
-import net.raphimc.vialoader.util.VersionEnum;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,7 +47,7 @@ public class MixinGuiScreenAddServer extends GuiScreen {
         if (config.isShowAddServerButton()) {
             final Pair<Integer, Integer> pos = config.getAddServerScreenButtonPosition().getPosition(this.width, this.height);
 
-            final VersionEnum target = ((ExtendedServerData) serverData).viaForge$getVersion();
+            final ProtocolVersion target = ((ExtendedServerData) serverData).viaForge$getVersion();
             buttonList.add(new GuiButton(1_000_000_000, pos.key(), pos.value(), 100, 20, target != null ? target.getName() : "Set Version"));
         }
     }
