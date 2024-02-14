@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinServerData implements ExtendedServerData {
 
     @Unique
-    private VersionEnum viaForge$version;
+    private ProtocolVersion viaForge$version;
 
     @Inject(method = "getNBTCompound", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NBTTagCompound;setString(Ljava/lang/String;Ljava/lang/String;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     public void saveVersion(CallbackInfoReturnable<NBTTagCompound> cir, NBTTagCompound nbttagcompound) {
@@ -64,12 +64,12 @@ public class MixinServerData implements ExtendedServerData {
     }
 
     @Override
-    public VersionEnum viaForge$getVersion() {
+    public ProtocolVersion viaForge$getVersion() {
         return viaForge$version;
     }
 
     @Override
-    public void viaForge$setVersion(VersionEnum version) {
+    public void viaForge$setVersion(ProtocolVersion version) {
         viaForge$version = version;
     }
 
