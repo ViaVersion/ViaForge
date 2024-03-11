@@ -18,12 +18,15 @@
 
 package de.florianmichael.viaforge;
 
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
 
 import java.io.File;
@@ -32,7 +35,13 @@ import java.util.function.Supplier;
 @Mod("viaforge")
 public class ViaForge117 implements VFPlatform {
 
-    public static final ViaForge117 PLATFORM = new ViaForge117();
+    public ViaForge117() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onPostInit);
+    }
+
+    public void onPostInit(FMLCommonSetupEvent event) {
+        ViaForgeCommon.init(this);
+    }
 
     @Override
     public int getGameVersion() {

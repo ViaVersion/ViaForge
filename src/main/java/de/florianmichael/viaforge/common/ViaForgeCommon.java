@@ -25,9 +25,9 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLInjector;
+import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLLoader;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.ViaForgeVLLegacyPipeline;
-import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLLoader;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.util.AttributeKey;
@@ -63,9 +63,6 @@ public class ViaForgeCommon {
      * @param platform the platform fields
      */
     public static void init(final VFPlatform platform) {
-        if (manager != null) {
-            return; // Already initialized, ignore it then :tm:
-        }
         final ProtocolVersion version = ProtocolVersion.getProtocol(platform.getGameVersion()); // ViaForge will only load on post-netty versions
         if (version == ProtocolVersion.unknown) {
             throw new IllegalArgumentException("Unknown version " + platform.getGameVersion());
