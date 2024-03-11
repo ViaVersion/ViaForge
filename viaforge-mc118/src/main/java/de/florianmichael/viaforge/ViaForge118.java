@@ -36,10 +36,10 @@ import java.util.function.Supplier;
 public class ViaForge118 implements VFPlatform {
 
     public ViaForge118() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onPostInit);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
     }
 
-    private void onPostInit(FMLCommonSetupEvent event) {
+    private void onInit(FMLCommonSetupEvent event) {
         ViaForgeCommon.init(this);
     }
 
