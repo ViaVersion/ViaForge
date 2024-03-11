@@ -16,28 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack.netty;
+package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
+import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 
-public interface VFNetworkManager {
+public class ViaForgeEncryptionProvider extends EncryptionProvider {
 
-    /**
-     * API method to setup the decryption side of the pipeline.
-     * This method is called by the {@link de.florianmichael.viaforge.common.protocolhack.provider.ViaForgeEncryptionProvider} class.
-     */
-    void viaForge$setupPreNettyDecryption();
-
-    /**
-     * @return the target version of the connection
-     */
-    ProtocolVersion viaForge$getTrackedVersion();
-
-    /**
-     * Sets the target version of the connection.
-     *
-     * @param version the target version
-     */
-    void viaForge$setTrackedVersion(final ProtocolVersion version);
+    @Override
+    public void enableDecryption(UserConnection user) {
+        user.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).getAndRemove().viaForge$setupPreNettyDecryption();
+    }
 
 }

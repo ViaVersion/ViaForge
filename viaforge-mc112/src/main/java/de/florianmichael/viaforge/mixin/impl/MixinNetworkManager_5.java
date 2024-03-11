@@ -19,7 +19,7 @@
 package de.florianmichael.viaforge.mixin.impl;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import io.netty.channel.Channel;
 import net.minecraft.network.NetworkManager;
 import org.spongepowered.asm.mixin.*;

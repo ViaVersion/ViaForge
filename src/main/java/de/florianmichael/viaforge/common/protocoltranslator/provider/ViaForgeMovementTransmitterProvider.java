@@ -16,46 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack.netty;
+package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 
-public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
-
-    public ViaForgeVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
-        super(user, version);
-    }
+public class ViaForgeMovementTransmitterProvider extends MovementTransmitterProvider {
 
     @Override
-    protected String decompressName() {
-        return "decompress";
-    }
-
-    @Override
-    protected String compressName() {
-        return "compress";
-    }
-
-    @Override
-    protected String packetDecoderName() {
-        return "decoder";
-    }
-
-    @Override
-    protected String packetEncoderName() {
-        return "encoder";
-    }
-
-    @Override
-    protected String lengthSplitterName() {
-        return "splitter";
-    }
-
-    @Override
-    protected String lengthPrependerName() {
-        return "prepender";
+    public void sendPlayer(UserConnection userConnection) {
+        // We are on the client side, so we can handle the idle packet properly
     }
 
 }

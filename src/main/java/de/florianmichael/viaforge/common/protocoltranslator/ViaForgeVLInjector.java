@@ -16,17 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack.provider;
+package de.florianmichael.viaforge.common.protocoltranslator;
 
-import com.viaversion.viaversion.api.connection.UserConnection;
-import de.florianmichael.viaforge.common.ViaForgeCommon;
-import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
+import net.raphimc.vialoader.impl.viaversion.VLInjector;
+import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
-public class ViaForgeEncryptionProvider extends EncryptionProvider {
+public class ViaForgeVLInjector extends VLInjector {
 
     @Override
-    public void enableDecryption(UserConnection user) {
-        user.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).getAndRemove().viaForge$setupPreNettyDecryption();
+    public String getDecoderName() {
+        return VLLegacyPipeline.VIA_DECODER_NAME;
+    }
+
+    @Override
+    public String getEncoderName() {
+        return VLLegacyPipeline.VIA_ENCODER_NAME;
     }
 
 }

@@ -16,21 +16,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack;
+package de.florianmichael.viaforge.common.protocoltranslator.netty;
 
-import net.raphimc.vialoader.impl.viaversion.VLInjector;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
-public class ViaForgeVLInjector extends VLInjector {
+public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
 
-    @Override
-    public String getDecoderName() {
-        return VLLegacyPipeline.VIA_DECODER_NAME;
+    public ViaForgeVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
+        super(user, version);
     }
 
     @Override
-    public String getEncoderName() {
-        return VLLegacyPipeline.VIA_ENCODER_NAME;
+    protected String decompressName() {
+        return "decompress";
+    }
+
+    @Override
+    protected String compressName() {
+        return "compress";
+    }
+
+    @Override
+    protected String packetDecoderName() {
+        return "decoder";
+    }
+
+    @Override
+    protected String packetEncoderName() {
+        return "encoder";
+    }
+
+    @Override
+    protected String lengthSplitterName() {
+        return "splitter";
+    }
+
+    @Override
+    protected String lengthPrependerName() {
+        return "prepender";
     }
 
 }

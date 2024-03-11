@@ -19,12 +19,11 @@
 package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import io.netty.channel.Channel;
 import net.minecraft.network.NettyEncryptingDecoder;
 import net.minecraft.network.NettyEncryptingEncoder;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.util.CryptManager;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.text.ITextComponent;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -40,7 +39,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
 import java.net.InetAddress;
 
 @Mixin(NetworkManager.class)
