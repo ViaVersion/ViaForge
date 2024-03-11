@@ -16,17 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack.provider;
+package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 
-public class ViaForgeEncryptionProvider extends EncryptionProvider {
+public class ViaForgeVersionProvider extends BaseVersionProvider {
 
     @Override
-    public void enableDecryption(UserConnection user) {
-        user.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).getAndRemove().viaForge$setupPreNettyDecryption();
+    public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {
+        if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer().get()) {
+            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion();
+        }
+        return super.getClosestServerProtocol(connection);
     }
-
+    
 }

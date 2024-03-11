@@ -16,46 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack.netty;
+package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
+import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
 
-public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
-
-    public ViaForgeVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
-        super(user, version);
-    }
+public class ViaForgeEncryptionProvider extends EncryptionProvider {
 
     @Override
-    protected String decompressName() {
-        return "decompress";
+    public void enableDecryption(UserConnection user) {
+        user.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).getAndRemove().viaForge$setupPreNettyDecryption();
     }
 
-    @Override
-    protected String compressName() {
-        return "compress";
-    }
-
-    @Override
-    protected String packetDecoderName() {
-        return "decoder";
-    }
-
-    @Override
-    protected String packetEncoderName() {
-        return "encoder";
-    }
-
-    @Override
-    protected String lengthSplitterName() {
-        return "splitter";
-    }
-
-    @Override
-    protected String lengthPrependerName() {
-        return "prepender";
-    }
-    
 }

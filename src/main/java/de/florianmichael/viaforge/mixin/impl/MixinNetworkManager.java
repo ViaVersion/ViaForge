@@ -20,7 +20,7 @@ package de.florianmichael.viaforge.mixin.impl;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.protocolhack.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import io.netty.channel.Channel;
 import net.minecraft.network.NettyEncryptingDecoder;
 import net.minecraft.network.NettyEncryptingEncoder;

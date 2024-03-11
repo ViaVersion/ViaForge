@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack.netty;
+package de.florianmichael.viaforge.common.protocoltranslator.netty;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
@@ -24,7 +24,7 @@ public interface VFNetworkManager {
 
     /**
      * API method to setup the decryption side of the pipeline.
-     * This method is called by the {@link de.florianmichael.viaforge.common.protocolhack.provider.ViaForgeEncryptionProvider} class.
+     * This method is called by the {@link de.florianmichael.viaforge.common.protocoltranslator.provider.ViaForgeEncryptionProvider} class.
      */
     void viaForge$setupPreNettyDecryption();
 

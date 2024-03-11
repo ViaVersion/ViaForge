@@ -16,21 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack.provider;
+package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
-import de.florianmichael.viaforge.common.ViaForgeCommon;
+import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
 
-public class ViaForgeVersionProvider extends BaseVersionProvider {
+public class ViaForgeMovementTransmitterProvider extends MovementTransmitterProvider {
 
     @Override
-    public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {
-        if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer().get()) {
-            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion();
-        }
-        return super.getClosestServerProtocol(connection);
+    public void sendPlayer(UserConnection userConnection) {
+        // We are on the client side, so we can handle the idle packet properly
     }
-    
+
 }

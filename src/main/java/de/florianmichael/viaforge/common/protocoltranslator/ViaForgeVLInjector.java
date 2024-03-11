@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocolhack;
+package de.florianmichael.viaforge.common.protocoltranslator;
 
 import net.raphimc.vialoader.impl.viaversion.VLInjector;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
