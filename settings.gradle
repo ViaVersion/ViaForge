@@ -1,9 +1,9 @@
 rootProject.name = "ViaForge"
 
-include "viaforge-mc112"
-include "viaforge-mc116"
-include "viaforge-mc117"
-include "viaforge-mc118"
-include "viaforge-mc119"
-include "viaforge-mc120"
+include "viaforge-mc1122"
+include "viaforge-mc1165"
+include "viaforge-mc1171"
+include "viaforge-mc1182"
+include "viaforge-mc1194"
+include "viaforge-mc1204"
 
