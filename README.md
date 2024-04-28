@@ -20,17 +20,17 @@ GitHub Releases: https://github.com/ViaVersion/ViaForge
 
 ## For developers
 ### Project Structure
-All ViaForge versions from Minecraft version 1.12 onwards are on the `master` branch. <br>
+All ViaForge versions from Minecraft version 1.12.2 onwards are on the `master` branch. <br>
 The names of the submodules indicate the version, they are always given in the format `mc-<version name without .>`. <br>
-`Minecraft 1.12.2` - `mc112` <br>
-`Minecraft 1.16.5` - `mc116` <br>
-`Minecraft 1.17.1` - `mc117` <br>
-`Minecraft 1.18.2` - `mc118` <br>
-`Minecraft 1.19.4` - `mc119` <br>
-`Minecraft 1.20.4` - `mc120` <br>
+`Minecraft 1.12.2` - `viaforge-mc1122` <br>
+`Minecraft 1.16.5` - `viaforge-mc1165` <br>
+`Minecraft 1.17.1` - `viaforge-mc1171` <br>
+`Minecraft 1.18.2` - `viaforge-mc1182` <br>
+`Minecraft 1.19.4` - `viaforge-mc1194` <br>
+`Minecraft 1.20.4` - `viaforge-mc1204` <br>
 
 ### ViaForge for Minecraft 1.8
-Since ForgeGradle for Minecraft 1.8 is too old, it has its own branch called `legacy-1.8`
+Since ForgeGradle for Minecraft 1.8.9 is too old, it has its own branch called `legacy-1.8`
 
 ### I want ViaForge in my own utility mod
 Just take a look at my other Project called `ViaMCP`: https://github.com/FlorianMichael/ViaMCP
