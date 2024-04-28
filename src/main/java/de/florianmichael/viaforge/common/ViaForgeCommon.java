@@ -90,6 +90,10 @@ public class ViaForgeCommon {
      */
     public void inject(final Channel channel, final VFNetworkManager networkManager) {
         if (channel instanceof SocketChannel) {
+            if (targetVersion.equals(getNativeVersion())) {
+                return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
+            }
+
             final UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);
 
