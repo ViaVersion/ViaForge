@@ -1,0 +1,2 @@
+- Updated Via* projects to support 1.20.5
+- Fixed version in 1.12 mcmod.info file
