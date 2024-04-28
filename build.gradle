@@ -20,7 +20,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "java"
 apply plugin: "idea"
 
-version = "1.8.9-${maven_version}"
+version = maven_version
 group = "${maven_group}.${maven_name}"
 archivesBaseName = maven_name
 
