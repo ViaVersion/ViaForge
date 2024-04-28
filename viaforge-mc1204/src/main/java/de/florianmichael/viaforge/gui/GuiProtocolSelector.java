@@ -41,8 +41,6 @@ public class GuiProtocolSelector extends Screen {
     public final boolean simple;
     public final FinishedCallback finishedCallback;
 
-    private SlotList list;
-
     private String status;
     private long time;
 
@@ -80,7 +78,7 @@ public class GuiProtocolSelector extends Screen {
             addRenderableWidget(Button.builder(Component.literal("Reload configs"), b -> Via.getManager().getConfigurationProvider().reloadConfigs()).bounds(width - 105, height - 25, 100, 20).build());
         }
 
-        list = new SlotList(minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, 30, font.lineHeight + 2);
+        addRenderableWidget(new SlotList(minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, 30, font.lineHeight + 2));
     }
 
     public void setStatus(final String status) {
@@ -102,7 +100,6 @@ public class GuiProtocolSelector extends Screen {
             this.status = null;
         }
 
-        this.list.render(graphics, p_230430_2_, p_230430_3_, p_230430_4_);
         super.render(graphics, p_230430_2_, p_230430_3_, p_230430_4_);
 
         final var pose = graphics.pose();
