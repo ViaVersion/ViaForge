@@ -7,7 +7,6 @@
     "MixinClientHandshakePacketListenerImpl",
     "MixinConnection",
     "MixinConnection_1",
-    "MixinConnectScreen_1",
     "MixinDebugScreenOverlay",
     "MixinDirectJoinServerScreen",
     "MixinEditServerScreen",
@@ -20,5 +19,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "mixins.viaforge-mc118.refmap.json"
+  "refmap": "mixins.viaforge-mc1204.refmap.json"
 }

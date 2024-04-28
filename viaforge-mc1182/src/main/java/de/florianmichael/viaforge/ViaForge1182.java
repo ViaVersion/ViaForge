@@ -21,44 +21,48 @@ package de.florianmichael.viaforge;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.realms.RealmsSharedConstants;
-import net.minecraft.util.Session;
+import net.minecraft.client.User;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;
 
-@Mod(modid = "viaforge")
-public class ViaForge112 implements VFPlatform {
+@Mod("viaforge")
+public class ViaForge1182 implements VFPlatform {
 
-    @Mod.EventHandler
-    public void onInit(FMLInitializationEvent event) {
+    public ViaForge1182() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
+    }
+
+    private void onInit(FMLCommonSetupEvent event) {
         ViaForgeCommon.init(this);
     }
 
     @Override
     public int getGameVersion() {
-        return RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
+        return SharedConstants.getProtocolVersion();
     }
 
     @Override
     public Supplier<Boolean> isSingleplayer() {
-        return () -> Minecraft.getMinecraft().isSingleplayer();
+        return () -> Minecraft.getInstance().hasSingleplayerServer();
     }
 
     @Override
     public File getLeadingDirectory() {
-        return Minecraft.getMinecraft().gameDir;
+        return Minecraft.getInstance().gameDirectory;
     }
 
     @Override
     public void joinServer(String serverId) throws Throwable {
-        final Session session = Minecraft.getMinecraft().getSession();
+        final User session = Minecraft.getInstance().getUser();
 
-        Minecraft.getMinecraft().getSessionService().joinServer(session.getProfile(), session.getToken(), serverId);
+        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getGameProfile(), session.getAccessToken(), serverId);
     }
 
     @Override

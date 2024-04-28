@@ -3,7 +3,7 @@
   "minVersion": "0.7.5",
   "compatibilityLevel": "JAVA_8",
   "package": "de.florianmichael.viaforge.mixin.impl",
-  "refmap": "mixins.viaforge-mc112.refmap.json",
+  "refmap": "mixins.viaforge-mc1122.refmap.json",
   "client": [
     "MixinGuiConnecting_1",
     "MixinGuiMainMenu",

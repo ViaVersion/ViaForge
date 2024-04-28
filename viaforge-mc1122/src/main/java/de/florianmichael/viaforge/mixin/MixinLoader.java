@@ -29,7 +29,7 @@ public class MixinLoader implements IFMLLoadingPlugin {
 
     public MixinLoader() {
         MixinBootstrap.init();
-        Mixins.addConfiguration("mixins.viaforge-mc112.json");
+        Mixins.addConfiguration("mixins.viaforge-mc1122.json");
         MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
     }
 

@@ -33,9 +33,9 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge118 implements VFPlatform {
+public class ViaForge1204 implements VFPlatform {
 
-    public ViaForge118() {
+    public ViaForge1204() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
     }
 
@@ -50,7 +50,7 @@ public class ViaForge118 implements VFPlatform {
 
     @Override
     public Supplier<Boolean> isSingleplayer() {
-        return () -> Minecraft.getInstance().hasSingleplayerServer();
+        return () -> Minecraft.getInstance().isSingleplayer();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ViaForge118 implements VFPlatform {
     public void joinServer(String serverId) throws Throwable {
         final User session = Minecraft.getInstance().getUser();
 
-        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getGameProfile(), session.getAccessToken(), serverId);
+        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
     }
 
     @Override

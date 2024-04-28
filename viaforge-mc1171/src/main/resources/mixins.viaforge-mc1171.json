@@ -14,14 +14,12 @@
     "MixinServerData",
     "MixinServerStatusPinger",
     "MixinTitleScreen",
-    "fixes.MixinLocalPlayer"
+    "fixes.MixinLocalPlayer",
+    "MixinConnection_1",
+    "MixinConnectScreen_1"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "mixins.viaforge-mc117.refmap.json",
-  "mixins": [
-    "MixinConnection_1",
-    "MixinConnectScreen_1"
-  ]
+  "refmap": "mixins.viaforge-mc1171.refmap.json"
 }
