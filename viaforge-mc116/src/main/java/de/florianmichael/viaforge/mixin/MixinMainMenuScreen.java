@@ -19,7 +19,6 @@
 package de.florianmichael.viaforge.mixin;
 
 import com.viaversion.viaversion.util.Pair;
-import de.florianmichael.viaforge.ViaForge116;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
@@ -42,8 +41,6 @@ public class MixinMainMenuScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void hookViaForgeButton(CallbackInfo ci) {
-        ViaForgeCommon.init(ViaForge116.PLATFORM);
-
         final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
         if (config.isShowMainMenuButton()) {
             final Pair<Integer, Integer> pos = config.getViaForgeButtonPosition().getPosition(this.width, this.height);
