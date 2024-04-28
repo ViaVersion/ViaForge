@@ -93,12 +93,12 @@ public class ViaForgeCommon {
             if (targetVersion.equals(getNativeVersion())) {
                 return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
             }
+            channel.attr(VF_NETWORK_MANAGER).set(networkManager);
 
             final UserConnection user = new UserConnectionImpl(channel, true);
             new ProtocolPipelineImpl(user);
 
             channel.attr(LOCAL_VIA_USER).set(user);
-            channel.attr(VF_NETWORK_MANAGER).set(networkManager);
 
             channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
         }

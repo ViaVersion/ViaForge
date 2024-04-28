@@ -22,6 +22,7 @@ import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.CipherDecoder;
 import net.minecraft.network.CipherEncoder;
@@ -29,7 +30,6 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.handshake.ClientIntent;
-import net.minecraft.util.SampleLogger;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialoader.netty.VLLegacyPipeline;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -40,7 +40,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import javax.crypto.Cipher;
 import java.net.InetSocketAddress;
@@ -56,17 +55,17 @@ public class MixinConnection implements VFNetworkManager {
     @Unique
     private ProtocolVersion viaForge$targetVersion;
 
-    @Inject(method = "connectToServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;ZLnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void trackSelfTarget(InetSocketAddress p_178301_, boolean p_178302_, SampleLogger p_300093_, CallbackInfoReturnable<Connection> cir, Connection connection) {
+    @Inject(method = "connect", at = @At("HEAD"))
+    private static void trackSelfTarget(InetSocketAddress p_290034_, boolean p_290035_, Connection p_290031_, CallbackInfoReturnable<ChannelFuture> cir) {
         // The connecting screen and server pinger are setting the main target version when a specific version for a server is set,
         // This works for joining perfect since we can simply restore the version when the server doesn't have a specific one set,
         // but for the server pinger we need to store the target version and force the pinging to use the target version.
         // Due to the fact that the server pinger is being called multiple times.
-        ((VFNetworkManager) connection).viaForge$setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
+        ((VFNetworkManager) p_290031_).viaForge$setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
     }
 
     @Inject(method = "initiateServerboundConnection", at = @At("HEAD"))
-    public void test(String p_300730_, int p_300598_, PacketListener p_298739_, ClientIntent p_297789_, CallbackInfo ci) {
+    public void resetTargetVersion(String p_300730_, int p_300598_, PacketListener p_298739_, ClientIntent p_297789_, CallbackInfo ci) {
         if (Minecraft.getInstance().getCurrentServer() instanceof ExtendedServerData) {
             final ProtocolVersion version = ((ExtendedServerData) Minecraft.getInstance().getCurrentServer()).viaForge$getVersion();
             if (version != null) {

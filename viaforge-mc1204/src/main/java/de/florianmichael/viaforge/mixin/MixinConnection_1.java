@@ -20,22 +20,20 @@ package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelPipeline;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net.minecraft.network.Connection$1")
 public class MixinConnection_1 {
 
-    @Redirect(method = "initChannel", at = @At(value = "INVOKE", target = "Lio/netty/channel/ChannelPipeline;addLast(Ljava/lang/String;Lio/netty/channel/ChannelHandler;)Lio/netty/channel/ChannelPipeline;"))
-    private ChannelPipeline hookViaPipeline(ChannelPipeline instance, String s, ChannelHandler channelHandler) {
-        final ChannelPipeline handler = instance.addLast(s, channelHandler);
-        if (channelHandler instanceof VFNetworkManager mixinNetworkManager) {
-            ViaForgeCommon.getManager().inject(instance.channel(), mixinNetworkManager);
-        }
-        return handler;
+    @Inject(method = "initChannel", at = @At("TAIL"))
+    private void hookViaPipeline(Channel p_129552_, CallbackInfo ci) {
+        final ChannelHandler connection = p_129552_.pipeline().get("packet_handler");
+        ViaForgeCommon.getManager().inject(p_129552_, (VFNetworkManager) connection);
     }
 
 }
