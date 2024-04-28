@@ -37,12 +37,12 @@ allprojects {
 
     // Replace the version in the mcmod.info and mods.toml files with the project version
     // Since this depends on the platform version, we can't define it in the global scope :(
-    processResources {
-        for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
-            inputs.property "version", project.version
-
-            filesMatching(file) {
-                expand "version": project.version
+    tasks {
+        processResources {
+            for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
+                filesMatching(file) {
+                    expand "version": project.version
+                }
             }
         }
     }
@@ -73,7 +73,7 @@ subprojects {
 
     // Define the jar output attributes for all platforms
     archivesBaseName = project.maven_name
-    version = maven_version + "-" + project.mc_version
+    version = maven_version
     group = maven_group
 
     // Used to execute code only for specific submodules
