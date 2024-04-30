@@ -1,2 +1,4 @@
 - Updated Via* projects to support 1.20.5
 - Fixed version in 1.12 mcmod.info file
+- Fixed connecting issues and other desyncs
+- Fixed pre netty versions not working on online servers
