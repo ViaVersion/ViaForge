@@ -16,39 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin.impl;
+package de.florianmichael.viaforge.mixin.impl.connect;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
+import de.florianmichael.viaforge.common.platform.VersionTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.NetworkManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 @Mixin(targets = "net.minecraft.client.multiplayer.GuiConnecting$1")
 public class MixinGuiConnecting_1 {
 
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;func_181124_a(Ljava/net/InetAddress;IZ)Lnet/minecraft/network/NetworkManager;"))
-    public NetworkManager trackVersion(InetAddress address, int i, boolean b) {
-        // We need to track the version of the server we are connecting to, so we can later
-        // use it to determine the protocol version to use.
-        // We hope that the current server data is not null
-        if (Minecraft.getMinecraft().getCurrentServerData() instanceof ExtendedServerData) {
-            final ProtocolVersion version = ((ExtendedServerData) Minecraft.getMinecraft().getCurrentServerData()).viaForge$getVersion();
-            if (version != null) {
-                ViaForgeCommon.getManager().setTargetVersionSilent(version);
-            } else {
-                // If the server data does not contain a version, we need to restore the version
-                // we had before, so we don't use the wrong version.
-                ViaForgeCommon.getManager().restoreVersion();
-            }
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetAddress;getByName(Ljava/lang/String;)Ljava/net/InetAddress;"))
+    public InetAddress trackServerVersion(String s) throws UnknownHostException {
+        final InetAddress address = InetAddress.getByName(s);
+        ProtocolVersion version = ((ExtendedServerData) Minecraft.getMinecraft().getCurrentServerData()).viaForge$getVersion();
+        if (version == null) {
+            version = ViaForgeCommon.getManager().getTargetVersion();
         }
-
-        return NetworkManager.func_181124_a(address, i, b);
+        VersionTracker.storeServerProtocolVersion(address, version);
+        return address;
     }
 
 }

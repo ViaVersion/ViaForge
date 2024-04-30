@@ -10,13 +10,13 @@
     "MixinGuiOverlayDebug",
     "MixinGuiScreenAddServer",
     "MixinGuiScreenServerList",
-    "MixinNetHandlerLoginClient",
-    "MixinNetworkManager",
-    "MixinNetworkManager_5",
+    "connect.MixinNetHandlerLoginClient",
+    "connect.MixinNetworkManager",
+    "connect.MixinNetworkManager_5",
     "MixinServerData",
-    "MixinServerPinger",
+    "connect.MixinServerPinger",
     "fixes.MixinEntityPlayerSP",
-    "MixinGuiConnecting_1"
+    "connect.MixinGuiConnecting_1"
   ],
   "verbose": true
 }

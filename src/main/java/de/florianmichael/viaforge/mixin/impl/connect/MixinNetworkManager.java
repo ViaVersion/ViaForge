@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin.impl;
+package de.florianmichael.viaforge.mixin.impl.connect;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import de.florianmichael.viaforge.common.platform.VersionTracker;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import io.netty.channel.Channel;
 import net.minecraft.network.NettyEncryptingDecoder;
@@ -48,46 +49,39 @@ public class MixinNetworkManager implements VFNetworkManager {
 
     @Shadow private Channel channel;
 
+    @Shadow private boolean isEncrypted;
     @Unique
     private Cipher viaForge$decryptionCipher;
 
     @Unique
     private ProtocolVersion viaForge$targetVersion;
 
-    @Inject(method = "func_181124_a", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void trackSelfTarget(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
-        // The connecting screen and server pinger are setting the main target version when a specific version for a server is set,
-        // This works for joining perfect since we can simply restore the version when the server doesn't have a specific one set,
-        // but for the server pinger we need to store the target version and force the pinging to use the target version.
-        // Due to the fact that the server pinger is being called multiple times.
-        ((VFNetworkManager) networkmanager).viaForge$setTrackedVersion(ViaForgeCommon.getManager().getTargetVersion());
+    @Inject(method = "setCompressionTreshold", at = @At("RETURN"))
+    public void reorderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
+        ViaForgeCommon.getManager().reorderCompression(channel);
     }
 
     @Inject(method = "enableEncryption", at = @At("HEAD"), cancellable = true)
     private void storeEncryptionCiphers(SecretKey key, CallbackInfo ci) {
-        if (ViaForgeCommon.getManager().getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (viaForge$targetVersion != null && viaForge$targetVersion.olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             // Minecraft's encryption code is bad for us, we need to reorder the pipeline
             ci.cancel();
 
-            // Minecraft 1.6.4 supports tile encryption which means the server can only disable one side of the encryption
+            // Minecraft 1.6.4 supports tile encryption which means the server can only enable one side of the encryption
             // So we only enable the encryption side and later enable the decryption side if the 1.7 -> 1.6 protocol
             // tells us to do, therefore we need to store the cipher instance.
             this.viaForge$decryptionCipher = CryptManager.createNetCipherInstance(2, key);
 
             // Enabling the encryption side
+            this.isEncrypted = true;
             this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new NettyEncryptingEncoder(CryptManager.createNetCipherInstance(1, key)));
         }
     }
 
-    @Inject(method = "closeChannel", at = @At("HEAD"))
-    public void restoreTargetVersion(IChatComponent message, CallbackInfo ci) {
-        // If the previous server forced a version, we need to restore the version to the default one.
-        ViaForgeCommon.getManager().restoreVersion();
-    }
-
-    @Inject(method = "setCompressionTreshold", at = @At("RETURN"))
-    public void reorderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
-        ViaForgeCommon.getManager().reorderCompression(channel);
+    @Inject(method = "func_181124_a", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void setTargetVersion(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
+        final VFNetworkManager mixinNetworkManager = (VFNetworkManager) networkmanager;
+        mixinNetworkManager.viaForge$setTrackedVersion(VersionTracker.getServerProtocolVersion(address));
     }
 
     @Override

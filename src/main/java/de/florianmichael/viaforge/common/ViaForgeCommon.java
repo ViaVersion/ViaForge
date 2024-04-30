@@ -25,11 +25,10 @@ import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLInjector;
+import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLLoader;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.ViaForgeVLLegacyPipeline;
-import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLLoader;
 import io.netty.channel.Channel;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.util.AttributeKey;
 import net.raphimc.vialoader.ViaLoader;
 import net.raphimc.vialoader.impl.platform.*;
@@ -50,6 +49,7 @@ public class ViaForgeCommon {
 
     private final VFPlatform platform;
     private ProtocolVersion targetVersion;
+    private ProtocolVersion previousVersion;
 
     private ViaForgeConfig config;
 
@@ -92,15 +92,22 @@ public class ViaForgeCommon {
      * @param channel the channel to inject the pipeline into
      */
     public void inject(final Channel channel, final VFNetworkManager networkManager) {
-        if (channel instanceof SocketChannel) {
-            final UserConnection user = new UserConnectionImpl(channel, true);
-            new ProtocolPipelineImpl(user);
-
-            channel.attr(LOCAL_VIA_USER).set(user);
-            channel.attr(VF_NETWORK_MANAGER).set(networkManager);
-
-            channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
+        if (networkManager.viaForge$getTrackedVersion().equals(getNativeVersion())) {
+            return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
         }
+        channel.attr(VF_NETWORK_MANAGER).set(networkManager);
+
+        final UserConnection user = new UserConnectionImpl(channel, true);
+        new ProtocolPipelineImpl(user);
+
+        channel.attr(LOCAL_VIA_USER).set(user);
+
+        channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
+        channel.closeFuture().addListener(future -> {
+            if (previousVersion != null) {
+                restoreVersion();
+            }
+        });
     }
 
     /**
@@ -127,7 +134,11 @@ public class ViaForgeCommon {
     }
 
     public void setTargetVersionSilent(final ProtocolVersion targetVersion) {
+        final ProtocolVersion oldVersion = this.targetVersion;
         this.targetVersion = targetVersion;
+        if (oldVersion != targetVersion) {
+            previousVersion = oldVersion;
+        }
     }
 
     public void setTargetVersion(final ProtocolVersion targetVersion) {

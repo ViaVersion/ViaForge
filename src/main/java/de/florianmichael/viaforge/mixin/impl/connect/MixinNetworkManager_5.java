@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin.impl;
+package de.florianmichael.viaforge.mixin.impl.connect;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
@@ -35,7 +35,7 @@ public class MixinNetworkManager_5 {
     NetworkManager val$networkmanager;
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
-    private void onInitChannel(Channel channel, CallbackInfo ci) {
+    private void hookViaPipeline(Channel channel, CallbackInfo ci) {
         ViaForgeCommon.getManager().inject(channel, (VFNetworkManager) val$networkmanager);
     }
     

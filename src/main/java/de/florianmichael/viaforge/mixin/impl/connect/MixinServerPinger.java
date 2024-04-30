@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin.impl;
+package de.florianmichael.viaforge.mixin.impl.connect;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
+import de.florianmichael.viaforge.common.platform.VersionTracker;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.OldServerPinger;
 import net.minecraft.network.NetworkManager;
@@ -46,22 +47,12 @@ public class MixinServerPinger {
 
     @Redirect(method = "ping", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;func_181124_a(Ljava/net/InetAddress;IZ)Lnet/minecraft/network/NetworkManager;"))
     public NetworkManager trackVersion(InetAddress address, int i, boolean b) {
-        // We need to track the version of the server we are connecting to, so we can later
-        // use it to determine the protocol version to use.
-        // We hope that the current server data is not null
-
-        if (viaForge$serverData instanceof ExtendedServerData) {
-            final ProtocolVersion version = ((ExtendedServerData) viaForge$serverData).viaForge$getVersion();
-            if (version != null) {
-                ViaForgeCommon.getManager().setTargetVersionSilent(version);
-            } else {
-                // If the server data does not contain a version, we need to restore the version
-                // we had before, so we don't use the wrong version.
-                ViaForgeCommon.getManager().restoreVersion();
-            }
-
-            viaForge$serverData = null;
+        ProtocolVersion version = ((ExtendedServerData) viaForge$serverData).viaForge$getVersion();
+        if (version == null) {
+            version = ViaForgeCommon.getManager().getTargetVersion();
         }
+        VersionTracker.storeServerProtocolVersion(address, version);
+        viaForge$serverData = null;
 
         return NetworkManager.func_181124_a(address, i, b);
     }
