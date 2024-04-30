@@ -5,16 +5,16 @@
   "package": "de.florianmichael.viaforge.mixin",
   "client": [
     "MixinAddServerScreen",
-    "MixinClientLoginNetHandler",
-    "MixinConnectingScreen_1",
+    "connect.MixinClientLoginNetHandler",
+    "connect.MixinConnectingScreen_1",
     "MixinDebugOverlayGui",
     "MixinMainMenuScreen",
     "MixinMultiplayerScreen",
-    "MixinNetworkManager",
-    "MixinNetworkManager_1",
+    "connect.MixinNetworkManager",
+    "connect.MixinNetworkManager_1",
     "MixinServerData",
     "MixinServerListScreen",
-    "MixinServerPinger",
+    "connect.MixinServerPinger",
     "fixes.MixinClientPlayerEntity"
   ],
   "injectors": {
