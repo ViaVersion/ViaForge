@@ -90,12 +90,12 @@ processResources {
 }
 
 mixin {
-    add sourceSets.main, "mixins.${maven_name}-mc18.refmap.json"
+    add sourceSets.main, "mixins.${maven_name}.refmap.json"
 }
 
 jar {
     manifest.attributes(
-            "MixinConfigs": "mixins.${maven_name}-mc18.json",
+            "MixinConfigs": "mixins.${maven_name}.json",
             "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": 0,
             "FMLCorePluginContainsFMLMod": "de.florianmichael.viaforge.mixin.MixinLoader"
