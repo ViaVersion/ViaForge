@@ -40,7 +40,6 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Redirect(method = "onUpdateWalkingPlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/client/entity/EntityPlayerSP;prevOnGround:Z", ordinal = 0))
     public boolean emulateIdlePacket(EntityPlayerSP instance) {
-        System.out.println(ViaForgeCommon.getManager().getTargetVersion());
         if (ViaForgeCommon.getManager().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             // <= 1.8 spams the idle packet instead of only sending it when the ground state changes
             // So we invert the original logic:

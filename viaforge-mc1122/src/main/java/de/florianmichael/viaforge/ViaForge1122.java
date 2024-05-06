@@ -31,7 +31,7 @@ import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.G
 import java.io.File;
 import java.util.function.Supplier;
 
-@Mod(modid = "viaforge")
+@Mod(modid = "viaforge", name = "ViaForge", acceptableRemoteVersions = "*", clientSideOnly=true, useMetadata=true)
 public class ViaForge1122 implements VFPlatform {
 
     @Mod.EventHandler
