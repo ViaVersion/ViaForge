@@ -45,7 +45,7 @@ public class MixinServerPinger {
         viaForge$serverData = server;
     }
 
-    @Redirect(method = "ping", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;func_181124_a(Ljava/net/InetAddress;IZ)Lnet/minecraft/network/NetworkManager;"))
+    @Redirect(method = "ping", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;createNetworkManagerAndConnect(Ljava/net/InetAddress;IZ)Lnet/minecraft/network/NetworkManager;"))
     public NetworkManager trackVersion(InetAddress address, int i, boolean b) {
         ProtocolVersion version = ((ExtendedServerData) viaForge$serverData).viaForge$getVersion();
         if (version == null) {
@@ -54,7 +54,7 @@ public class MixinServerPinger {
         VersionTracker.storeServerProtocolVersion(address, version);
         viaForge$serverData = null;
 
-        return NetworkManager.func_181124_a(address, i, b);
+        return NetworkManager.createNetworkManagerAndConnect(address, i, b);
     }
 
 }
