@@ -4,15 +4,12 @@
     "name": "ViaForge",
     "description": "Client-side Implementation of the Via* projects for Minecraft Forge",
     "version": "${version}",
-    "mcversion": "[1.12.2]",
+    "mcversion": "[1.12,)",
     "url": "https://github.com/ViaVersion/ViaForge",
-    "updateUrl": "",
     "authorList": [
       "FlorianMichael/EnZaXD"
     ],
     "credits": "https://github.com/FlorianMichael/",
-    "logoFile": "icon.png",
-    "screenshots": [],
-    "dependencies": []
+    "logoFile": "icon.png"
   }
 ]
