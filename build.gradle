@@ -12,6 +12,7 @@ buildscript {
         classpath "net.minecraftforge.gradle:ForgeGradle:6.+"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
         classpath "me.modmuss50:mod-publish-plugin:0.5.1"
+        classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:0.6.1"
     }
 }
 
@@ -19,13 +20,19 @@ allprojects {
     apply plugin: "java-library"
     apply plugin: "com.github.johnrengelman.shadow"
     apply plugin: "me.modmuss50.mod-publish-plugin"
+    apply plugin: "xyz.wagyourtail.jvmdowngrader"
 
     // We define the configuration here so we can use it across all conventions and platforms
     // To define which projects/source files should be included in the jar
     configurations {
         library
         implementation.extendsFrom(library)
+
+        libraryJ8
+        library.extendsFrom(libraryJ8)
     }
+
+    jvmdg.dg(configurations.libraryJ8)
 
     // Repositories for the ViaVersion dependencies defined below
     repositories {
@@ -53,14 +60,14 @@ allprojects {
     dependencies {
         compileOnly "io.netty:netty-all:4.0.20.Final"
 
-        library "com.viaversion:viaversion-common:${project.viaversion_version}"
-        library "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-        library "com.viaversion:viarewind-common:${project.viarewind_version}"
-        library ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
+        libraryJ8 "com.viaversion:viaversion-common:${project.viaversion_version}"
+        libraryJ8 "com.viaversion:viabackwards-common:${project.viabackwards_version}"
+        libraryJ8 "com.viaversion:viarewind-common:${project.viarewind_version}"
+        libraryJ8 ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
             exclude group: "com.google.code.gson", module: "gson"
         }
-        library "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
-        library ("net.raphimc:ViaLoader:${project.vialoader_version}") {
+        libraryJ8 "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
+        libraryJ8 ("net.raphimc:ViaLoader:${project.vialoader_version}") {
             exclude group: "com.google.guava"
             exclude group: "org.slf4j"
         }
@@ -157,7 +164,7 @@ subprojects {
 
     shadowJar {
         archiveFileName = jar.archiveFileName
-        configurations = [project.configurations.library] // Include the dependencies from the include configuration
+        configurations = [project.configurations.library, project.configurations.libraryJ8] // Include the dependencies from the include configuration
         duplicatesStrategy DuplicatesStrategy.EXCLUDE
 
         // Prevent conflicts with Forge's weird service loading

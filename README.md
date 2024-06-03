@@ -35,6 +35,14 @@ Since ForgeGradle for Minecraft 1.8.9 is too old, it has its own branch called `
 ### I want ViaForge in my own utility mod
 Just take a look at my other Project called `ViaMCP`: https://github.com/FlorianMichael/ViaMCP
 
+## For developers
+### How to build
+1. Clone the repository with `git clone`.
+2. Run `./gradlew build` in the root directory of the repository.
+3. The compiled jar files can be found in `viaforge-mc<version>/build/libs`.
+
+Note: Build scripts are made to be run using Java 8.
+
 ## Other ViaVersion Mods / Platforms
 - ViaFabric - https://modrinth.com/mod/viafabric
 - ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus (Includes additional modifications to make the experience better)
