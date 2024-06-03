@@ -20,7 +20,7 @@ package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import net.raphimc.vialegacy.protocols.release.protocol1_7_2_5to1_6_4.providers.EncryptionProvider;
+import net.raphimc.vialegacy.protocol.release.r1_6_4tor1_7_2_5.provider.EncryptionProvider;
 
 public class ViaForgeEncryptionProvider extends EncryptionProvider {
 

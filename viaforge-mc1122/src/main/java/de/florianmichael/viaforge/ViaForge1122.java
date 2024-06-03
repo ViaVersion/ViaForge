@@ -26,7 +26,7 @@ import net.minecraft.realms.RealmsSharedConstants;
 import net.minecraft.util.Session;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.raphimc.vialegacy.protocols.release.protocol1_8to1_7_6_10.providers.GameProfileFetcher;
+import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;

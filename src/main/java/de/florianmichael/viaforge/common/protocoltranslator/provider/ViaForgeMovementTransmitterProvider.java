@@ -19,7 +19,7 @@
 package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
-import com.viaversion.viaversion.protocols.protocol1_9to1_8.providers.MovementTransmitterProvider;
+import com.viaversion.viaversion.protocols.v1_8to1_9.provider.MovementTransmitterProvider;
 
 public class ViaForgeMovementTransmitterProvider extends MovementTransmitterProvider {
 
