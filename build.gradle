@@ -29,7 +29,6 @@ allprojects {
         implementation.extendsFrom(library)
 
         libraryJ8
-        library.extendsFrom(libraryJ8)
     }
 
     jvmdg.dg(configurations.libraryJ8)
@@ -41,6 +40,10 @@ allprojects {
         }
         maven {
             url = "https://repo.viaversion.com"
+            metadataSources {
+                // Cursed hack to prevent Gradle checking for Java versions
+                artifact()
+            }
         }
     }
 
@@ -73,6 +76,7 @@ allprojects {
         }
 
         library "org.yaml:snakeyaml:${project.snake_yml_version}"
+        library project.files(configurations.libraryJ8)
     }
 }
 
@@ -164,7 +168,7 @@ subprojects {
 
     shadowJar {
         archiveFileName = jar.archiveFileName
-        configurations = [project.configurations.library, project.configurations.libraryJ8] // Include the dependencies from the include configuration
+        configurations = [project.configurations.library] // Include the dependencies from the include configuration
         duplicatesStrategy DuplicatesStrategy.EXCLUDE
 
         // Prevent conflicts with Forge's weird service loading
