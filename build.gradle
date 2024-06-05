@@ -16,11 +16,19 @@ buildscript {
     }
 }
 
+apply plugin: "java-library"
+apply plugin: "xyz.wagyourtail.jvmdowngrader"
+
+System.setProperty("jvmdg.quiet", "true")
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
 allprojects {
     apply plugin: "java-library"
     apply plugin: "com.github.johnrengelman.shadow"
     apply plugin: "me.modmuss50.mod-publish-plugin"
-    apply plugin: "xyz.wagyourtail.jvmdowngrader"
 
     // We define the configuration here so we can use it across all conventions and platforms
     // To define which projects/source files should be included in the jar
@@ -29,6 +37,7 @@ allprojects {
         implementation.extendsFrom(library)
 
         libraryJ8
+        library.extendsFrom(libraryJ8)
     }
 
     jvmdg.dg(configurations.libraryJ8)
@@ -76,7 +85,6 @@ allprojects {
         }
 
         library "org.yaml:snakeyaml:${project.snake_yml_version}"
-        library project.files(configurations.libraryJ8)
     }
 }
 
@@ -159,10 +167,13 @@ subprojects {
         enabled = false
     }
 
-    java {
+    tasks.withType(JavaCompile).configureEach {
         if (versionId >= 1_17_1) {
-            // Minecraft 1.17+ required Java 16/17 to compile
-            toolchain.languageVersion = JavaLanguageVersion.of(17)
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
+        } else {
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
         }
     }
 
