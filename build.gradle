@@ -96,9 +96,10 @@ mixin {
 jar {
     manifest.attributes(
             "MixinConfigs": "mixins.${maven_name}.json",
-            "tweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": 0,
-            "FMLCorePluginContainsFMLMod": "de.florianmichael.viaforge.mixin.MixinLoader"
+            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
+            "FMLCorePluginContainsFMLMod": "true"
     )
 
     enabled = false
