@@ -35,7 +35,7 @@ public abstract class MixinProtocolVersionDetector {
     @Dynamic
     @Inject(method = "isCompatibleWithVersion", at = @At("HEAD"), cancellable = true)
     private void viaforge$setCompatible(String ip, int version, CallbackInfoReturnable cir) {
-        if (ViaForgeCommon.getManager().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11)) {
+        cir.setReturnValue(ViaForgeCommon.getManager().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11));
             cir.setReturnValue(true);
         } else {
             cir.setReturnValue(false);
