@@ -11,7 +11,6 @@ buildscript {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
         classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
         classpath "com.github.johnrengelman:shadow:4.0.4"
-        //classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:0.7.1"
     }
 }
 
@@ -20,7 +19,6 @@ apply plugin: "org.spongepowered.mixin"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "java"
 apply plugin: "idea"
-//apply plugin: "xyz.wagyourtail.jvmdowngrader" Broken with Gradle 4
 
 version = maven_version
 group = "${maven_group}.${maven_name}"
