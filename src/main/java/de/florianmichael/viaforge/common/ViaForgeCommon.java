@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.common;
 
+import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
@@ -76,7 +77,7 @@ public class ViaForgeCommon {
         final File mainFolder = new File(platform.getLeadingDirectory(), "ViaForge");
 
         ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
-        manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"));
+        manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"), Via.getPlatform().getLogger());
 
         final ProtocolVersion configVersion = ProtocolVersion.getClosest(manager.config.getClientSideVersion());
         if (configVersion != null) {

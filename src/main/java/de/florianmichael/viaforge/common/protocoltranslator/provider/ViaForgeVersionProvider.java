@@ -20,7 +20,7 @@ package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.base.BaseVersionProvider;
+import com.viaversion.viaversion.protocol.version.BaseVersionProvider;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 
 public class ViaForgeVersionProvider extends BaseVersionProvider {

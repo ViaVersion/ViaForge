@@ -60,14 +60,8 @@ dependencies {
         exclude module: "launchwrapper"
     }
 
-    include "com.viaversion:viaversion-common:${project.viaversion_version}"
-    include "com.viaversion:viabackwards-common:${project.viabackwards_version}"
-    include "com.viaversion:viarewind-common:${project.viarewind_version}"
-    include ("net.raphimc:ViaLegacy:${project.vialegacy_version}") {
-        exclude group: "com.google.code.gson", module: "gson"
-    }
-    include "net.raphimc:ViaAprilFools:${project.viaaprilfools_version}"
-    include "net.raphimc:ViaLoader:${project.vialoader_version}"
+    // See the README file on how to get this folder
+    include fileTree(dir: 'output', include: '*.jar')
 
     include "org.slf4j:slf4j-api:${project.slf4j_version}"
     include "org.yaml:snakeyaml:${project.snake_yml_version}"

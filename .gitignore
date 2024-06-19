@@ -23,3 +23,8 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
+
+# downgraded binaries
+downloads/
+output/
+JavaDowngrader-Standalone-1.1.2.jar
