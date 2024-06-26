@@ -1,6 +1,22 @@
 @echo off
 setlocal enabledelayedexpansion
 
+IF EXIST "output" (
+    echo Folder "output" exists. Deleting...
+    rmdir /s /q "output"
+    echo Folder "output" has been deleted.
+) ELSE (
+    echo Folder "output" does not exist.
+)
+
+IF EXIST "downloads" (
+    echo Folder "downloads" exists. Deleting...
+    rmdir /s /q "downloads"
+    echo Folder "downloads" has been deleted.
+) ELSE (
+    echo Folder "downloads" does not exist.
+)
+
 rem GitHub repository information
 set repoOwner=RaphiMC
 set repoName=JavaDowngrader

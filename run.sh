@@ -2,6 +2,22 @@
 
 set -e
 
+if [ -d "output" ]; then
+    echo "Folder 'output' exists. Deleting..."
+    rm -rf "output"
+    echo "Folder 'output' has been deleted."
+else
+    echo "Folder 'output' does not exist."
+fi
+
+if [ -d "downloads" ]; then
+    echo "Folder 'downloads' exists. Deleting..."
+    rm -rf "downloads"
+    echo "Folder 'downloads' has been deleted."
+else
+    echo "Folder 'downloads' does not exist."
+fi
+
 # GitHub repository information
 repoOwner="RaphiMC"
 repoName="JavaDowngrader"
