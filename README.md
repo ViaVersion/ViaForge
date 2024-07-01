@@ -7,7 +7,7 @@ Switch to the `master` branch for the latest changes.
 ## Installation
 
 ViaVersion 5.0.0+ versions are using Java 17 which is usually not supported by this setup,
-therefore a script automatically downloading and downgrading the jar files using [JavaDowngrader]() has been written:
+therefore a script automatically downloading and downgrading the jar files using [JavaDowngrader](https://github.com/RaphiMC/JavaDowngrader) has been written:
 
 1. Execute either `./run.sh` or `run.bat` depending on your operating system.
 2. A `downloads` folder will be created which is ignored by git and should not be pushed.
