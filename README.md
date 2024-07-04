@@ -26,6 +26,7 @@ The names of the submodules indicate the version, they are always given in the f
 `Minecraft 1.16.5` - `viaforge-mc1165` <br>
 `Minecraft 1.17.1` - `viaforge-mc1171` <br>
 `Minecraft 1.18.2` - `viaforge-mc1182` <br>
+`Minecraft 1.19.2` - `viaforge-mc1192` <br>
 `Minecraft 1.19.4` - `viaforge-mc1194` <br>
 `Minecraft 1.20.4` - `viaforge-mc1204` <br>
 
