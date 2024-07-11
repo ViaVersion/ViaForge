@@ -6,7 +6,7 @@
   <a href="https://discord.gg/viaversion"><img src="https://img.shields.io/discord/316206679014244363?color=0098DB&label=Discord&logo=discord&logoColor=0098DB"></a> <br />
   <a href="https://modrinth.com/mod/viaforge"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/Z6se2s8f&logo=modrinth"></a>
   <a href="https://curseforge.com/minecraft/mc-mods/viaforge"><img src="https://cf.way2muchnoise.eu/full_418933_downloads.svg"></a>
-  <a href="https://github.com/ViaVersion/ViaForge/actions/workflows/build.yml"><img src="https://github.com/ViaVersion/ViaForge/actions/workflows/main.yml/badge.svg?branch=master"></a>  
+  <a href="https://github.com/ViaVersion/ViaForge/actions/workflows/build.yml"><img src="https://github.com/ViaVersion/ViaForge/actions/workflows/build.yml/badge.svg?branch=master"></a>  
 
 #### Client-side Implementation of the Via* projects for Minecraft Forge
 </div>
