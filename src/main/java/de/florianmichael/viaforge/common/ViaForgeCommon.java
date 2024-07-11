@@ -43,8 +43,8 @@ import java.io.File;
  */
 public class ViaForgeCommon {
 
-    public static final AttributeKey<UserConnection> LOCAL_VIA_USER = AttributeKey.valueOf("local_via_user");
-    public static final AttributeKey<VFNetworkManager> VF_NETWORK_MANAGER = AttributeKey.valueOf("encryption_setup");
+    public static final AttributeKey<UserConnection> VF_VIA_USER = AttributeKey.valueOf("viaforge_via_user");
+    public static final AttributeKey<VFNetworkManager> VF_NETWORK_MANAGER = AttributeKey.valueOf("viaforge_network_manager");
 
     private static ViaForgeCommon manager;
 
@@ -98,7 +98,7 @@ public class ViaForgeCommon {
         final UserConnection user = new UserConnectionImpl(channel, true);
         new ProtocolPipelineImpl(user);
 
-        channel.attr(LOCAL_VIA_USER).set(user);
+        channel.attr(VF_VIA_USER).set(user);
 
         channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
         channel.closeFuture().addListener(future -> {

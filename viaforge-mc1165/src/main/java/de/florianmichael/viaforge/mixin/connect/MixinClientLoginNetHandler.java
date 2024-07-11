@@ -44,7 +44,7 @@ public class MixinClientLoginNetHandler {
     public void onlyJoinServerIfPremium(MinecraftSessionService instance, GameProfile profile, String authenticationToken, String serverId) throws AuthenticationException {
         final VFNetworkManager mixinConnection = (VFNetworkManager) connection;
         if (mixinConnection.viaForge$getTrackedVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
-            final UserConnection user = connection.channel().attr(ViaForgeCommon.LOCAL_VIA_USER).get();
+            final UserConnection user = connection.channel().attr(ViaForgeCommon.VF_VIA_USER).get();
             if (user != null && user.has(ProtocolMetadataStorage.class) && !user.get(ProtocolMetadataStorage.class).authenticate) {
                 // We are in the 1.7 -> 1.6 protocol, so we need to skip the joinServer call
                 // if the server is in offline mode, due the packet changes <-> networking changes
