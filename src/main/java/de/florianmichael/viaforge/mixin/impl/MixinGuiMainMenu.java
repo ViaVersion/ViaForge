@@ -19,7 +19,6 @@
 package de.florianmichael.viaforge.mixin.impl;
 
 import com.viaversion.viaversion.util.Pair;
-import de.florianmichael.viaforge.ViaForge189;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
