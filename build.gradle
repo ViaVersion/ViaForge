@@ -93,7 +93,8 @@ jar {
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": 0,
             "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
-            "FMLCorePluginContainsFMLMod": "true"
+            "FMLCorePluginContainsFMLMod": "true",
+            "ForceLoadAsMod": "true"
     )
 
     enabled = false
