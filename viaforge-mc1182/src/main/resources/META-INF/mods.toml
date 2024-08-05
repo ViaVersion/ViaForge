@@ -13,6 +13,4 @@ displayURL="https://github.com/FlorianMichael"
 logoFile="icon.png"
 credits="Github contributors"
 authors="FlorianMichael/EnZaXD"
-description='''
-  Client-side Implementation of the Via* projects for Minecraft Forge
-  '''
+description="${description}"

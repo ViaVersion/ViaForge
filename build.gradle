@@ -46,20 +46,8 @@ allprojects {
         }
     }
 
-    // Replace the version in the mcmod.info and mods.toml files with the project version
-    // Since this depends on the platform version, we can't define it in the global scope :(
-    tasks {
-        processResources {
-            for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
-                filesMatching(file) {
-                    expand "version": project.version
-                }
-            }
-        }
-    }
-
-    // Including all required libraries for ViaVersion {for version numbers see gradle.properties}
     dependencies {
+        // For common source code
         compileOnly "io.netty:netty-all:4.1.112.Final"
 
         library "com.viaversion:viaversion-common:5.0.3-SNAPSHOT"
@@ -85,6 +73,7 @@ subprojects {
         group = project.maven_group
         archivesName = project.name
         version = project.maven_version
+        description = project.maven_description
     }
 
     def mcVersion = project.forge_version.split("-")[0]
@@ -138,6 +127,21 @@ subprojects {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
         library project(":") // Include the base project, to get Common-ViaForge
+    }
+
+    // Replace the version in the mcmod.info and mods.toml files with the project version
+    // Since this depends on the platform version, we can't define it in the global scope :(
+    tasks {
+        processResources {
+            for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
+                filesMatching(file) {
+                    expand (
+                            "version": project.version,
+                            "description": project.description
+                    )
+                }
+            }
+        }
     }
 
     mixin {
