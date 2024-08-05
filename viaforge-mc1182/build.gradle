@@ -1,7 +1,0 @@
-minecraft {
-    mappings channel: "official", version: "1.18.2"
-}
-
-dependencies {
-    minecraft "net.minecraftforge:forge:1.18.2-40.2.0"
-}

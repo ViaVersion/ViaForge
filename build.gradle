@@ -83,16 +83,21 @@ subprojects {
     // Define the jar output attributes for all platforms
     base {
         group = project.maven_group
-        archivesName = project.maven_name
+        archivesName = project.name
         version = project.maven_version
     }
 
+    def mcVersion = project.forge_version.split("-")[0]
+
     // Used to execute code only for specific submodules
-    def versionId = Integer.parseInt(project.mc_version.replace(".", ""))
+    def versionId = Integer.parseInt(mcVersion.replace(".", ""))
 
     compileJava.options.encoding = "UTF-8"
 
     minecraft {
+        if (versionId >= 1_16_5) {
+            mappings channel: "official", version: mcVersion
+        }
         runs {
             client {
                 workingDirectory project.file("run")
@@ -104,11 +109,11 @@ subprojects {
                 property "mixin.debug.export", "true"
                 property "mixin.hotSwap", "true"
                 property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader" // Only required for MC 1.12, but modern Forges skips this anyway
-                args "-mixin.config=" + "mixins." + project.getProperty('maven_name') + ".json"
+                args "-mixin.config=" + "mixins." + project.getProperty('name') + ".json"
 
                 // source set
                 mods {
-                    "${project.maven_name}" {
+                    "${project.name}" {
                         source sourceSets.main
                     }
                 }
@@ -121,6 +126,7 @@ subprojects {
     }
 
     dependencies {
+        minecraft "net.minecraftforge:forge:${forge_version}"
         if (versionId >= 1_17_1) {
             // Minecraft 1.17+ already includes slf4j, so we don't need to include it
             compileOnly "org.slf4j:slf4j-api:${slf4j_version}"
@@ -135,7 +141,7 @@ subprojects {
     }
 
     mixin {
-        add sourceSets.main, "mixins.${project.maven_name}.refmap.json"
+        add sourceSets.main, "mixins.${project.name}.refmap.json"
     }
 
     jar {
@@ -151,7 +157,7 @@ subprojects {
                 "TweakOrder": "0",
                 "FMLCorePluginContainsFMLMod": "true", // Only required for MC 1.12, but modern Forges skips this anyway
                 "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader", // Counterpart to the above
-                "MixinConfigs": "mixins.${project.maven_name}.json",
+                "MixinConfigs": "mixins.${project.name}.json",
                 "ForceLoadAsMod": "true"
         )
         enabled = false
