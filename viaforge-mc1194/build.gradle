@@ -3,5 +3,5 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.19.4-45.2.0"
+    minecraft "net.minecraftforge:forge:1.21-51.0.31"
 }
