@@ -60,7 +60,7 @@ allprojects {
 
     // Including all required libraries for ViaVersion {for version numbers see gradle.properties}
     dependencies {
-        compileOnly "io.netty:netty-all:4.0.20.Final"
+        compileOnly "io.netty:netty-all:4.1.112.Final"
 
         library "com.viaversion:viaversion-common:5.0.3-SNAPSHOT"
         library "com.viaversion:viabackwards-common:5.0.3-SNAPSHOT"
