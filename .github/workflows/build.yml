@@ -1,4 +1,4 @@
-name: ViaForge CI
+name: Build
 on: [pull_request, push, workflow_dispatch]
 
 jobs:
