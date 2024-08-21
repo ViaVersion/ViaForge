@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.github.johnrengelman:shadow:8.1.1"
+        classpath "com.gradleup.shadow:shadow-gradle-plugin:8.3.0"
         classpath "net.minecraftforge.gradle:ForgeGradle:6.+"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
         classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.1.1"
@@ -17,7 +17,7 @@ buildscript {
 
 allprojects {
     apply plugin: "java-library"
-    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: "com.gradleup.shadow"
     apply plugin: "xyz.wagyourtail.jvmdowngrader"
 
     java {
