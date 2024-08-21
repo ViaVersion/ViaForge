@@ -2,9 +2,8 @@ buildscript {
     repositories {
         gradlePluginPortal()
 
+        maven { url = "https://maven.minecraftforge.net/" }
         maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
-        maven { url = "https://jitpack.io/" }
-        maven { url = "https://files.minecraftforge.net/maven" }
     }
 
     dependencies {
@@ -35,6 +34,9 @@ allprojects {
 
     // Repositories for the ViaVersion dependencies defined below
     repositories {
+        maven {
+            url = "https://maven.minecraftforge.net/"
+        }
         maven {
             url = "https://repo.spongepowered.org/repository/maven-public"
         }
