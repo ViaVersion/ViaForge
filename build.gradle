@@ -21,8 +21,9 @@ allprojects {
     apply plugin: "xyz.wagyourtail.jvmdowngrader"
 
     java {
-        // Minecraft 1.17+ required Java 16/17 to compile
-        toolchain.languageVersion = JavaLanguageVersion.of(17)
+        // Minecraft 1.17+ required Java 17 to compile,
+        // Minecraft 1.20.5+ required Java 21 to compile
+        toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
 
     // We define the configuration here so we can use it across all conventions and platforms

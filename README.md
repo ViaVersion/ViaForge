@@ -40,7 +40,7 @@ See [this project](https://github.com/ViaVersionMCP/ViaMCP) for a copy-paste sol
 2. Run `./gradlew build` in the root directory of the repository.
 3. The compiled jar files can be found in `viaforge-mc<version>/build/libs`.
 
-Note: Build scripts are made to be run using Java 17.
+Note: Build scripts are made to be run using Java 21.
 
 ## Other ViaVersion Mods / Platforms
 
@@ -52,4 +52,4 @@ ViaForge - https://modrinth.com/mod/viaforge/ <br>
 ViaProxy (App) - https://github.com/ViaVersion/ViaProxy/#readme <br>
 ViaaaS (Proxy) - https://github.com/ViaVersion/ViaaaS#readme <br>
 
-For a more detailed summary see https://viaversion.com/suite
+For a more detailed summary see https://viaversion.com
