@@ -25,14 +25,12 @@ allprojects {
         toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
 
-    // We define the configuration here so we can use it across all conventions and platforms
-    // To define which projects/source files should be included in the jar
+    // Configuration used to include dependencies to the final jars
     configurations {
         library
         implementation.extendsFrom(library)
     }
 
-    // Repositories for the ViaVersion dependencies defined below
     repositories {
         maven {
             url = "https://maven.minecraftforge.net/"
@@ -43,6 +41,8 @@ allprojects {
         maven {
             url = "https://repo.viaversion.com"
             metadataSources {
+                // Prevent Gradle from checking against correct Java version, needed since we downgrade libraries
+                // on include
                 mavenPom()
                 artifact()
             }
