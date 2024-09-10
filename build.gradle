@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.gradleup.shadow:shadow-gradle-plugin:8.3.0"
+        classpath "com.gradleup.shadow:shadow-gradle-plugin:8.3.1"
         classpath "net.minecraftforge.gradle:ForgeGradle:6.+"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
         classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.1.2"
