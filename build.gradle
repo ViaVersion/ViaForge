@@ -60,7 +60,7 @@ allprojects {
             exclude group: "com.google.code.gson", module: "gson"
         }
         library "net.raphimc:viaaprilfools-common:3.0.2-SNAPSHOT"
-        library ("net.raphimc:ViaLoader:3.0.3-SNAPSHOT") {
+        library ("net.raphimc:ViaLoader:3.0.4-SNAPSHOT") {
             exclude group: "com.google.guava"
             exclude group: "org.slf4j"
         }
