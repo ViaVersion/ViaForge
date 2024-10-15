@@ -55,7 +55,7 @@ allprojects {
 
         library "com.viaversion:viaversion-common:5.0.5"
         library "com.viaversion:viabackwards-common:5.0.4-SNAPSHOT"
-        library "com.viaversion:viarewind-common:4.0.3-SNAPSHOT"
+        library "com.viaversion:viarewind-common:4.0.3"
         library ("net.raphimc:ViaLegacy:3.0.4-SNAPSHOT") {
             exclude group: "com.google.code.gson", module: "gson"
         }
