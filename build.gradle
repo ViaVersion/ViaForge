@@ -53,14 +53,14 @@ allprojects {
         // For common source code
         compileOnly "io.netty:netty-all:4.1.114.Final"
 
-        library "com.viaversion:viaversion-common:5.0.5"
-        library "com.viaversion:viabackwards-common:5.0.4"
+        library "com.viaversion:viaversion-common:5.1.1-SNAPSHOT"
+        library "com.viaversion:viabackwards-common:5.1.1-SNAPSHOT"
         library "com.viaversion:viarewind-common:4.0.3"
-        library ("net.raphimc:ViaLegacy:3.0.4-SNAPSHOT") {
+        library ("net.raphimc:ViaLegacy:3.0.5-SNAPSHOT") {
             exclude group: "com.google.code.gson", module: "gson"
         }
-        library "net.raphimc:viaaprilfools-common:3.0.3-SNAPSHOT"
-        library ("net.raphimc:ViaLoader:3.0.4-SNAPSHOT") {
+        library "net.raphimc:viaaprilfools-common:3.0.4-SNAPSHOT"
+        library ("net.raphimc:ViaLoader:3.0.5-SNAPSHOT") {
             exclude group: "com.google.guava"
             exclude group: "org.slf4j"
         }
