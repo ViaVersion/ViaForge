@@ -26,10 +26,6 @@ set jarFileName=JavaDowngrader-Standalone-1.1.2.jar
 rem Download URL construction
 set downloadUrl=https://github.com/%repoOwner%/%repoName%/releases/download/%releaseTag%/%jarFileName%
 
-rem Download the specific JAR file from GitHub
-echo Downloading %jarFileName% from GitHub release %releaseTag%
-curl -L -o %jarFileName% %downloadUrl%
-
 rem URL list file
 set urlList=url_list.txt
 
@@ -40,6 +36,10 @@ rem Create the download directory if it doesn't exist
 if not exist %downloadDir% (
     mkdir %downloadDir%
 )
+
+rem Download the specific JAR file from GitHub
+echo Downloading %jarFileName% from GitHub release %releaseTag%
+curl -L -o %downloadDir%\%jarFileName% %downloadUrl%
 
 rem Download each file from the URL list
 for /f "delims=" %%u in (%urlList%) do (
@@ -65,7 +65,7 @@ for %%f in (*.jar) do (
         rem If the jarFileName is not found in the file name, execute your command
         echo Processing file: %%f
         rem Downgrade every jar file
-		java -jar ../%jarFileName% --input %%f --version 8 --output ../output/downgraded-%%f
+		java -jar %jarFileName% --input %%f --version 8 --output ../output/downgraded-%%f
     ) else (
         echo Skipping file: %%f
     )
