@@ -10,7 +10,7 @@ buildscript {
         classpath "com.gradleup.shadow:shadow-gradle-plugin:8.3.5"
         classpath "net.minecraftforge.gradle:ForgeGradle:6.+"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
-        classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.2.1"
+        classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.0.1"
     }
 }
 
