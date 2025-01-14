@@ -53,7 +53,7 @@ allprojects {
         // For common source code
         compileOnly "io.netty:netty-all:4.1.117.Final"
 
-        library "com.viaversion:viaversion-common:5.2.0"
+        library "com.viaversion:viaversion-common:5.2.1"
         library "com.viaversion:viabackwards-common:5.2.0"
         library "com.viaversion:viarewind-common:4.0.4"
         library ("net.raphimc:ViaLegacy:3.0.6") {
