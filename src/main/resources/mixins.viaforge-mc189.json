@@ -16,6 +16,8 @@
     "connect.MixinNetworkManager",
     "connect.MixinNetworkManager_5",
     "connect.MixinServerPinger",
+    "fixes.MixinBulkChunkType",
+    "fixes.MixinChunkType",
     "fixes.MixinEntityPlayerSP",
     "fixes.patcher.MixinProtocolVersionDetector"
   ],
