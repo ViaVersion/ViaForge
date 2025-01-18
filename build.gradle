@@ -61,7 +61,7 @@ allprojects {
             exclude group: "com.google.guava"
             exclude group: "org.slf4j"
         }
-        library ("net.raphimc:ViaLegacy:3.0.6") {
+        library ("net.raphimc:ViaLegacy:3.0.7") {
             exclude group: "com.google.code.gson", module: "gson"
         }
     }
