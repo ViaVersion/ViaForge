@@ -77,7 +77,10 @@ targetCompatibility = JavaVersion.VERSION_1_8
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         include "mcmod.info"
-        expand "version": project.version
+        expand (
+                "version": project.version,
+                "description": project.description
+        )
     }
 
     from(sourceSets.main.resources.srcDirs) {

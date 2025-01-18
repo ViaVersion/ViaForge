@@ -2,7 +2,7 @@
   {
     "modid": "viaforge",
     "name": "ViaForge",
-    "description": "Client-side Implementation of the Via* projects for Minecraft Forge",
+    "description": "${description}",
     "version": "${version}",
     "mcversion": "[1.8.8,)",
     "url": "https://github.com/ViaVersion/ViaForge",
