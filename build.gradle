@@ -29,7 +29,7 @@ apply plugin: "org.spongepowered.mixin"
 apply plugin: "com.github.johnrengelman.shadow"
 
 group = project.maven_group
-archivesBaseName = project.name
+archivesBaseName = project.maven_name
 version = project.maven_version
 description = project.maven_description
 
