@@ -1,3 +1,5 @@
+import me.modmuss50.mpp.ReleaseType
+
 buildscript {
     // Unify build logic of all submodules in here, ugly but easier since we have to deal with a lot random stuff
     repositories {
@@ -16,6 +18,7 @@ buildscript {
         classpath "net.minecraftforge.gradle:ForgeGradle:[6.0.24,6.2)"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
         classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.0.1"
+        classpath "me.modmuss50.mod-publish-plugin:me.modmuss50.mod-publish-plugin.gradle.plugin:0.8.4"
     }
 }
 
@@ -72,6 +75,7 @@ allprojects {
 subprojects {
     apply plugin: "net.minecraftforge.gradle"
     apply plugin: "org.spongepowered.mixin"
+    apply plugin: "me.modmuss50.mod-publish-plugin"
 
     // Define the jar output attributes for all platforms
     base {
@@ -223,6 +227,42 @@ subprojects {
     if (versionId < 1_17_1) {
         // Downgrade the jar to Java 8 for Minecraft 1.16.5 and below
         jar.dependsOn("shadeDowngradedApi")
+    }
+
+    publishMods {
+        file = tasks.jar.archiveFile
+        changelog = rootProject.file("CHANGELOG").text
+        version = project.version.toString()
+        displayName = "ViaForge $version (MC $mcVersion)"
+        modLoaders.add("forge")
+        type = ReleaseType.STABLE
+        dryRun = !rootProject.hasProperty("curseforge_publish_token") || !rootProject.hasProperty("modrinth_publish_token")
+
+        curseforge {
+            if (rootProject.hasProperty("curseforge_publish_token")) {
+                accessToken = rootProject.property("curseforge_publish_token")
+            }
+            projectId = "418933"
+
+            if (versionId < 1_16_5) {
+                javaVersions.add(JavaVersion.VERSION_1_8)
+            } else if (versionId < 1_17_1) {
+                javaVersions.add(JavaVersion.VERSION_16)
+            } else if (versionId < 1_20_6) {
+                javaVersions.add(JavaVersion.VERSION_17)
+            } else {
+                javaVersions.add(JavaVersion.VERSION_21)
+            }
+            minecraftVersions.add(mcVersion.toString())
+        }
+        modrinth {
+            if (rootProject.hasProperty("modrinth_publish_token")) {
+                accessToken = rootProject.property("modrinth_publish_token")
+            }
+            projectId = "Z6se2s8f"
+
+            minecraftVersions.add(mcVersion.toString())
+        }
     }
 }
 
