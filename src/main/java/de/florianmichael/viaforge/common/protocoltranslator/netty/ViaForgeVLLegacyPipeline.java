@@ -18,9 +18,9 @@
 
 package de.florianmichael.viaforge.common.protocoltranslator.netty;
 
+import com.viaversion.vialoader.netty.VLLegacyPipeline;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.raphimc.vialoader.netty.VLLegacyPipeline;
 
 public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
 
