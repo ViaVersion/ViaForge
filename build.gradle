@@ -96,9 +96,7 @@ subprojects {
             mappings channel: "official", version: mcVersion
         }
 
-        if (versionId >= 1_21_4) {
-            reobf = false // Use official mappings at runtime
-        }
+        reobf = versionId < 1_21_4 // Use official mappings at runtime
 
         runs {
             client {
@@ -215,8 +213,10 @@ subprojects {
         archiveFileName = jar.archiveFileName
     }
 
-    reobf {
-        shadowJar {}
+    if (versionId < 1_21_4) {
+        reobf {
+            shadowJar {}
+        }
     }
 
     jar.dependsOn("shadowJar")

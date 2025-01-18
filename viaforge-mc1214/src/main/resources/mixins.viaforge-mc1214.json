@@ -19,6 +19,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "refmap": "mixins.viaforge-mc1214.refmap.json"
+  }
 }
