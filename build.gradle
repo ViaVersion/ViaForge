@@ -163,12 +163,12 @@ subprojects {
 
     jar {
         manifest.attributes(
-                "Specification-Title": "viaforge",
-                "Specification-Vendor": "viaforge",
+                "Specification-Title": project.name,
+                "Specification-Vendor": "FlorianMichael/EnZaXD <florian.michael07@gmail.com>",
                 "Specification-Version": project.version,
                 "Implementation-Title": project.name,
+                "Implementation-Vendor": "FlorianMichael/EnZaXD <florian.michael07@gmail.com>",
                 "Implementation-Version": project.version,
-                "Implementation-Vendor" :"viaforge",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd"-"HH:mm:ssZ"),
                 "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
                 "TweakOrder": "0",
