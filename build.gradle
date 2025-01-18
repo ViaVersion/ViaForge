@@ -55,8 +55,6 @@ allprojects {
     }
 
     dependencies {
-        compileOnly "io.netty:netty-all:4.1.117.Final" // For common source code
-
         library "com.viaversion:viaversion-common:5.2.2-SNAPSHOT"
         library "com.viaversion:viabackwards-common:5.2.2-SNAPSHOT"
         library "com.viaversion:viarewind-common:4.0.6-SNAPSHOT"
@@ -227,4 +225,8 @@ subprojects {
         // Downgrade the jar to Java 8 for Minecraft 1.16.5 and below
         jar.dependsOn("shadeDowngradedApi")
     }
+}
+
+dependencies {
+    compileOnly "io.netty:netty-all:4.1.117.Final"
 }
