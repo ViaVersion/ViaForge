@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.gui;
 
+import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
@@ -29,7 +30,6 @@ import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.raphimc.vialoader.util.ProtocolVersionList;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.UUID;

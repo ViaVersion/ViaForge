@@ -18,6 +18,9 @@
 
 package de.florianmichael.viaforge.common;
 
+import com.viaversion.vialoader.ViaLoader;
+import com.viaversion.vialoader.impl.platform.*;
+import com.viaversion.vialoader.netty.CompressionReorderEvent;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -31,9 +34,6 @@ import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManag
 import de.florianmichael.viaforge.common.protocoltranslator.netty.ViaForgeVLLegacyPipeline;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
-import net.raphimc.vialoader.ViaLoader;
-import net.raphimc.vialoader.impl.platform.*;
-import net.raphimc.vialoader.netty.CompressionReorderEvent;
 
 import java.io.File;
 

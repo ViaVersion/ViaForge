@@ -19,6 +19,7 @@
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
@@ -30,7 +31,6 @@ import net.minecraft.client.gui.widget.list.ExtendedList;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.raphimc.vialoader.util.ProtocolVersionList;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
