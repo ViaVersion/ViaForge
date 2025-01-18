@@ -19,11 +19,11 @@
 package de.florianmichael.viaforge.mixin.fixes;
 
 import com.mojang.authlib.GameProfile;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +32,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(LocalPlayer.class)
 public class MixinLocalPlayer extends AbstractClientPlayer {
 
-    @Shadow private boolean lastOnGround;
+    @Shadow
+    private boolean lastOnGround;
 
     public MixinLocalPlayer(ClientLevel level, GameProfile profile) {
         super(level, profile);

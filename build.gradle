@@ -96,7 +96,7 @@ subprojects {
             mappings channel: "official", version: mcVersion
         }
 
-        reobf = versionId < 1_21_4 // Use official mappings at runtime
+        reobf = versionId < 1_20_6 // Use official mappings at runtime
 
         runs {
             client {
@@ -213,7 +213,7 @@ subprojects {
         archiveFileName = jar.archiveFileName
     }
 
-    if (versionId < 1_21_4) {
+    if (versionId < 1_20_6) { // Use official mappings at runtime, otherwise re-obfuscate output
         reobf {
             shadowJar {}
         }

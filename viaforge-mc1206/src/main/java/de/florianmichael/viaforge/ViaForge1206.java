@@ -24,6 +24,7 @@ import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
+import net.minecraft.network.HandlerNames;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -72,7 +73,7 @@ public class ViaForge1206 implements VFPlatform {
 
     @Override
     public String getDecodeHandlerName() {
-        return "decoder";
+        return HandlerNames.INBOUND_CONFIG;
     }
 
 }
