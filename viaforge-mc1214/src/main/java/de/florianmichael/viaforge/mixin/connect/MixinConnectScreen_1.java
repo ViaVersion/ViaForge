@@ -22,9 +22,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import de.florianmichael.viaforge.common.platform.VersionTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,10 +34,13 @@ import java.util.Optional;
 @Mixin(targets = "net.minecraft.client.gui.screens.ConnectScreen$1")
 public class MixinConnectScreen_1 {
 
+    @Shadow
+    private ServerData val$p_252078_;
+
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
     public Object trackServerVersion(Optional instance) {
         final InetSocketAddress address = (InetSocketAddress) instance.get();
-        ProtocolVersion version = ((ExtendedServerData) Minecraft.getInstance().getCurrentServer()).viaForge$getVersion();
+        ProtocolVersion version = ((ExtendedServerData) val$p_252078_).viaForge$getVersion();
         if (version == null) {
             version = ViaForgeCommon.getManager().getTargetVersion();
         }

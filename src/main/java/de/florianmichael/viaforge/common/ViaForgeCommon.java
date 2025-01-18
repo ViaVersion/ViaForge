@@ -93,6 +93,7 @@ public class ViaForgeCommon {
         if (networkManager.viaForge$getTrackedVersion().equals(getNativeVersion())) {
             return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
         }
+
         channel.attr(VF_NETWORK_MANAGER).set(networkManager);
 
         final UserConnection user = new UserConnectionImpl(channel, true);

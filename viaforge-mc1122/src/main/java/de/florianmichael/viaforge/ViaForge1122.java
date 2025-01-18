@@ -66,4 +66,9 @@ public class ViaForge1122 implements VFPlatform {
         return new ViaForgeGameProfileFetcher();
     }
 
+    @Override
+    public String getDecodeHandlerName() {
+        return "decoder";
+    }
+
 }

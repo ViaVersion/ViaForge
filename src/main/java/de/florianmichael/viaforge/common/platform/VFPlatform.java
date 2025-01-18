@@ -55,4 +55,9 @@ public interface VFPlatform {
      */
     GameProfileFetcher getGameProfileFetcher();
 
+    /**
+     * @return the name of the decode handler in the client connection
+     */
+    String getDecodeHandlerName();
+
 }
