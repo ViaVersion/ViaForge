@@ -35,7 +35,9 @@ import java.util.Optional;
 @Mixin(targets = "net.minecraft.client.gui.screens.ConnectScreen$1")
 public class MixinConnectScreen_1 {
 
-    @Shadow @Final private ServerData val$p_252078_;
+    @Shadow
+    @Final
+    private ServerData val$p_252078_;
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
     public Object trackServerVersion(Optional instance) {
