@@ -1,10 +1,18 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = "https://maven.minecraftforge.net/" }
-        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
-        maven { url = "https://repo.viaversion.com" }
-        maven { url = "https://jitpack.io/" }
+        maven {
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            url = "https://repo.spongepowered.org/repository/maven-public/"
+        }
+        maven {
+            url = "https://repo.viaversion.com"
+        }
+        maven {
+            url = "https://jitpack.io/"
+        }
     }
 
     dependencies {
@@ -14,18 +22,17 @@ buildscript {
     }
 }
 
+apply plugin: "java"
+apply plugin: "idea"
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "org.spongepowered.mixin"
 apply plugin: "com.github.johnrengelman.shadow"
-apply plugin: "java"
-apply plugin: "idea"
 
-version = maven_version
-group = "${maven_group}.${maven_name}"
-archivesBaseName = maven_name
+group = project.maven_group
+archivesBaseName = project.name
+version = project.maven_version
+description = project.maven_description
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = "UTF-8"
 
 repositories {
@@ -56,23 +63,20 @@ configurations {
 }
 
 dependencies {
+    include fileTree(dir: "output", include: "*.jar") // See the README file on how to get this folder
+
+    include "org.slf4j:slf4j-api:2.0.16"
     include compile ("org.spongepowered:mixin:${project.mixin_version}") {
         exclude module: "launchwrapper"
     }
-
-    // See the README file on how to get this folder
-    include fileTree(dir: 'output', include: '*.jar')
-
-    include "org.slf4j:slf4j-api:${project.slf4j_version}"
-    include "org.yaml:snakeyaml:${project.snake_yml_version}"
 }
 
-processResources {
-    inputs.property "version", project.version
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
+processResources {
     from(sourceSets.main.resources.srcDirs) {
         include "mcmod.info"
-
         expand "version": project.version
     }
 
