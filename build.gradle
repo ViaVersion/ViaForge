@@ -119,17 +119,12 @@ subprojects {
 
     dependencies {
         minecraft "net.minecraftforge:forge:${forge_version}"
-        if (versionId >= 1_17_1) {
-            // Minecraft 1.17+ already includes slf4j, so we don't need to include it
-            compileOnly "org.slf4j:slf4j-api:${slf4j_version}"
-        } else {
-            library "org.slf4j:slf4j-api:${slf4j_version}"
-        }
+        library "org.slf4j:slf4j-api:2.0.16"
 
         library "org.spongepowered:mixin:${mixin_version}"
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
-        library project(":") // Include the base project, to get Common-ViaForge
+        library project(":") // Include the base project
     }
 
     // Replace the version in the mcmod.info and mods.toml files with the project version
@@ -192,6 +187,9 @@ subprojects {
             // And since we don't need them for Mixins anyway, we can just exclude them from the shadowJar
             exclude("META-INF/services/**")
         }
+
+        // Workaround GH-94
+        relocate("org.slf4j", "com.viaversion.vialoader.libs.slf4j")
     }
 
     downgradeJar {
