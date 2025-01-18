@@ -13,7 +13,7 @@ buildscript {
 
     dependencies {
         classpath "com.gradleup.shadow:shadow-gradle-plugin:8.3.5"
-        classpath "net.minecraftforge.gradle:ForgeGradle:6.+"
+        classpath "net.minecraftforge.gradle:ForgeGradle:[6.0.24,6.2)"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
         classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.0.1"
     }
@@ -96,6 +96,10 @@ subprojects {
         // Unify to mojang mappings for 1.14+, MCP for below
         if (versionId >= 1_16_5) {
             mappings channel: "official", version: mcVersion
+        }
+        
+        if (versionId >= 1_21_4) {
+            reobf = false // They finally did it
         }
 
         runs {
