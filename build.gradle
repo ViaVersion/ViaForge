@@ -100,8 +100,6 @@ subprojects {
             mappings channel: "official", version: mcVersion
         }
 
-        reobf = versionId < 1_20_6 // Use official mappings at runtime
-
         runs {
             client {
                 workingDirectory project.file("run")
@@ -133,9 +131,12 @@ subprojects {
         minecraft "net.minecraftforge:forge:${forge_version}"
         library "org.slf4j:slf4j-api:2.0.16"
 
-        // Always include for refmap
-        library "org.spongepowered:mixin:${mixin_version}"
-        annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+        if (versionId < 1_20_6) {
+            // Always include for refmap in versions that don't have official mappings at runtime,
+            // later exclude classes to prevent loading conflicts...
+            library "org.spongepowered:mixin:${mixin_version}"
+            annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+        }
 
         library project(":") // Include the base project
     }
@@ -162,7 +163,7 @@ subprojects {
     // 1. jar
     // 2. shadowJar
     // 3. downgradeJar and shadeDowngradedApi
-    // 4. reobfuscate the shadowJar
+    // 4. re-obfuscate the shadowJar
 
     jar {
         manifest.attributes(
