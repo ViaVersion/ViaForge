@@ -16,23 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin.impl.fixes;
+package de.florianmichael.viaforge.mixin.impl.javadowngrader;
 
-import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.types.BulkChunkType;
+import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.types.ChunkType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.io.ByteArrayOutputStream;
 
-@Mixin(value = BulkChunkType.class, remap = false)
-public class MixinBulkChunkType {
+@Mixin(value = ChunkType.class, remap = false)
+public class MixinChunkType {
 
-    @Redirect(
-        method = "write(Lio/netty/buffer/ByteBuf;[Lcom/viaversion/viaversion/api/minecraft/chunks/Chunk;)V",
-        at = @At(value = "INVOKE", target = "Ljava/io/ByteArrayOutputStream;writeBytes([B)V")
-    )
-    public void write(ByteArrayOutputStream instance, byte[] b) {
+    @Redirect(method = "serialize", at = @At(value = "INVOKE", target = "Ljava/io/ByteArrayOutputStream;writeBytes([B)V"))
+    private static void serialize(ByteArrayOutputStream instance, byte[] b) {
         instance.write(b, 0, b.length);
     }
+
 }

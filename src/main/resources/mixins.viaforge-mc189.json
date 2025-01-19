@@ -16,10 +16,10 @@
     "connect.MixinNetworkManager",
     "connect.MixinNetworkManager_5",
     "connect.MixinServerPinger",
-    "fixes.MixinBulkChunkType",
-    "fixes.MixinChunkType",
+    "javadowngrader.MixinBulkChunkType",
+    "javadowngrader.MixinChunkType",
     "fixes.MixinEntityPlayerSP",
-    "fixes.patcher.MixinProtocolVersionDetector"
+    "compatibility.patcher.MixinProtocolVersionDetector"
   ],
   "verbose": true
 }
