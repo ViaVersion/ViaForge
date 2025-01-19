@@ -47,6 +47,9 @@ allprojects {
             url = "https://repo.spongepowered.org/repository/maven-public"
         }
         maven {
+            url = "https://maven.neoforged.net/"
+        }
+        maven {
             url = "https://repo.viaversion.com"
             metadataSources {
                 // Prevent Gradle from checking against correct Java version, needed since we downgrade libraries
@@ -130,7 +133,12 @@ subprojects {
     dependencies {
         minecraft "net.minecraftforge:forge:${forge_version}"
         library "org.slf4j:slf4j-api:2.0.16"
-
+        compileOnly("net.neoforged.fancymodloader:loader:2.0.20") {
+            transitive = false
+        }
+        compileOnly("net.neoforged:bus:7.2.0") {
+            transitive = false
+        }
         if (versionId < 1_20_6) {
             // Always include for refmap in versions that don't have official mappings at runtime,
             // later exclude classes to prevent loading conflicts...
