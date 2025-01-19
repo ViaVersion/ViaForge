@@ -18,7 +18,6 @@
     "connect.MixinServerPinger",
     "javadowngrader.MixinBulkChunkType",
     "javadowngrader.MixinChunkType",
-    "fixes.MixinEntityPlayerSP",
     "compatibility.patcher.MixinProtocolVersionDetector"
   ],
   "verbose": true
