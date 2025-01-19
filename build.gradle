@@ -257,6 +257,8 @@ subprojects {
                 javaVersions.add(JavaVersion.VERSION_21)
             }
             minecraftVersions.add(mcVersion.toString())
+
+            clientRequired = true
         }
         modrinth {
             if (rootProject.hasProperty("modrinth_publish_token")) {
