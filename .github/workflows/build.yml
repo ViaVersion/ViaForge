@@ -18,7 +18,7 @@ jobs:
           distribution: 'temurin'
           check-latest: true
       - name: Build with Gradle
-        run: ./gradlew shadowJar
+        run: ./gradlew build
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
