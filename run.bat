@@ -47,15 +47,15 @@ for /f "delims=" %%u in (%urlList%) do (
     curl -o %downloadDir%\%%~nzu.jar %%u
 )
 
-rem Change to the download directory
-cd %downloadDir%
-
 set outputDir=output
 
 rem Create the output directory if it doesn't exist
 if not exist %outputDir% (
     mkdir %outputDir%
 )
+
+rem Change to the download directory
+cd %downloadDir%
 
 rem Loop through all .jar files in the download directory
 for %%f in (*.jar) do (

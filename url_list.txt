@@ -1,6 +1,6 @@
 https://ci.viaversion.com/job/ViaVersion/lastSuccessfulBuild/artifact/build/libs/ViaVersion-5.2.2-SNAPSHOT.jar
 https://ci.viaversion.com/job/ViaBackwards/lastSuccessfulBuild/artifact/build/libs/ViaBackwards-5.2.2-SNAPSHOT.jar
-https://ci.viaversion.com/job/ViaRewind/lastSuccessfulBuild/artifact/build/libs/ViaRewind-4.0.6-SNAPSHOT.jar
+https://ci.viaversion.com/view/ViaRewind/job/ViaRewind/lastSuccessfulBuild/artifact/build/libs/ViaRewind-4.0.6-SNAPSHOT.jar
 https://ci.viaversion.com/view/Libs/job/ViaAprilFools/lastSuccessfulBuild/artifact/build/libs/ViaAprilFools-4.0.1-SNAPSHOT.jar
 https://ci.viaversion.com/view/Libs/job/ViaLegacy/lastSuccessfulBuild/artifact/build/libs/ViaLegacy-3.0.8-SNAPSHOT.jar
 https://ci.viaversion.com/view/Libs/job/ViaLoader/lastSuccessfulBuild/artifact/build/libs/ViaLoader-4.0.1-SNAPSHOT.jar

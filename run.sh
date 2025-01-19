@@ -54,15 +54,15 @@ while IFS= read -r url; do
     curl -L -o "$downloadDir/$fileName" "$url"
 done < "$urlList"
 
-# Change to the download directory
-cd "$downloadDir"
-
 outputDir="../output"
 
 # Create the output directory if it doesn't exist
 if [ ! -d "$outputDir" ]; then
     mkdir "$outputDir"
 fi
+
+# Change to the download directory
+cd "$downloadDir"
 
 # Loop through all .jar files in the download directory
 for file in *.jar; do
