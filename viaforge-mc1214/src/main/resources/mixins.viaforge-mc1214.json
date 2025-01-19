@@ -14,8 +14,7 @@
     "connect.MixinConnection",
     "connect.MixinConnection_1",
     "connect.MixinConnectScreen_1",
-    "connect.MixinServerStatusPinger",
-    "fixes.MixinLocalPlayer"
+    "connect.MixinServerStatusPinger"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -14,8 +14,7 @@
     "connect.MixinNetworkManager_1",
     "MixinServerData",
     "MixinServerListScreen",
-    "connect.MixinServerPinger",
-    "fixes.MixinClientPlayerEntity"
+    "connect.MixinServerPinger"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -15,8 +15,7 @@
     "connect.MixinNetworkManager",
     "connect.MixinNetworkManager_5",
     "MixinServerData",
-    "connect.MixinServerPinger",
-    "fixes.MixinEntityPlayerSP"
+    "connect.MixinServerPinger"
   ],
   "verbose": true
 }

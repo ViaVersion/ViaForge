@@ -14,8 +14,7 @@
     "MixinJoinMultiplayerScreen",
     "MixinServerData",
     "connect.MixinServerStatusPinger",
-    "MixinTitleScreen",
-    "fixes.MixinLocalPlayer"
+    "MixinTitleScreen"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -13,8 +13,7 @@
     "MixinJoinMultiplayerScreen",
     "MixinServerData",
     "connect.MixinServerStatusPinger",
-    "MixinTitleScreen",
-    "fixes.MixinLocalPlayer",
+    "MixinTitleScreen"
     "connect.MixinConnection_1",
     "connect.MixinConnectScreen_1"
   ],
