@@ -133,11 +133,9 @@ subprojects {
         minecraft "net.minecraftforge:forge:${forge_version}"
         library "org.slf4j:slf4j-api:2.0.16"
 
-        if (versionId < 1_13_2) {
-            // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
-            library "org.spongepowered:mixin:${mixin_version}"
-            annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-        }
+        // Always include for refmap
+        library "org.spongepowered:mixin:${mixin_version}"
+        annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
         library project(":") // Include the base project
     }
@@ -198,6 +196,10 @@ subprojects {
         exclude("META-INF/maven/**")
         exclude("META-INF/versions/**")
 
+        if (versionId >= 1_13_2) {
+            // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
+            exclude("org/spongepowered/**")
+        }
         if (versionId >= 1_16_5) {
             // Get rid of the services folder, since Forge 1.16+ would conflict with some of the ForgeDev Environment's services
             // And since we don't need them for Mixins anyway, we can just exclude them from the shadowJar
