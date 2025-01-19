@@ -247,10 +247,8 @@ subprojects {
             }
             projectId = "418933"
 
-            if (versionId < 1_16_5) {
+            if (versionId < 1_17_1) {
                 javaVersions.add(JavaVersion.VERSION_1_8)
-            } else if (versionId == 1_16_5) {
-                javaVersions.add(JavaVersion.VERSION_16)
             } else if (versionId < 1_20_6) {
                 javaVersions.add(JavaVersion.VERSION_17)
             } else {
