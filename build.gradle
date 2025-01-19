@@ -233,7 +233,12 @@ subprojects {
     }
 
     publishMods {
-        file = tasks.jar.archiveFile
+        // FG's reobfuscation will rename the jar in place, so use the one *before* finalizing the jar
+        if (versionId < 1_17_1) {
+            file = tasks.shadeDowngradedApi.archiveFile
+        } else {
+            file = tasks.shadowJar.archiveFile
+        }
         changelog = rootProject.file("CHANGELOG").text
         version = project.version.toString() + "+" + mcVersion
         displayName = "ViaForge " + project.version.toString() + " (MC $mcVersion)"
