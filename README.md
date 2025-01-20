@@ -8,7 +8,7 @@
   <a href="https://curseforge.com/minecraft/mc-mods/viaforge"><img src="https://cf.way2muchnoise.eu/full_418933_downloads.svg"></a>
   <a href="https://github.com/ViaVersion/ViaForge/actions/workflows/build.yml"><img src="https://github.com/ViaVersion/ViaForge/actions/workflows/build.yml/badge.svg?branch=master"></a>  
 
-#### Client-side Implementation of the Via* projects for Minecraft Forge
+#### Client-side and ViaVersion implementation for MinecraftForge and NeoForge
 </div>
 
 ## Supported Server versions
