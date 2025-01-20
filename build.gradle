@@ -33,6 +33,10 @@ allprojects {
         toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
 
+    // Always set min java version to 17, for java 8 versions the jar is manually downgraded so it doesn't matter.
+    compileJava.setSourceCompatibility("17")
+    compileJava.setTargetCompatibility("17")
+
     // Configuration used to include dependencies to the final jars
     configurations {
         library
@@ -95,6 +99,11 @@ subprojects {
     // Used to execute code only for specific submodules
     def versionId = Integer.parseInt(mcVersion.replace(".", ""))
 
+    // Java 17 is default, set newer versions here
+    if (versionId >= 1_20_6) {
+        compileJava.setSourceCompatibility("21")
+        compileJava.setTargetCompatibility("21")
+    }
     compileJava.options.encoding = "UTF-8"
 
     minecraft {
@@ -140,7 +149,9 @@ subprojects {
             library "org.spongepowered:mixin:${mixin_version}"
             annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
         }
+
         if (versionId >= 1_20_6) {
+            // NeoForge, only to compile against
             compileOnly("net.neoforged.fancymodloader:loader:2.0.20") { transitive = false }
             compileOnly("net.neoforged:bus:7.2.0") { transitive = false }
         }
