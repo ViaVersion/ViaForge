@@ -32,6 +32,8 @@ allprojects {
         // Minecraft 1.20.5+ required Java 21 to compile
         toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
+    setSourceCompatibility("17")
+    setTargetCompatibility("17")
 
     // Configuration used to include dependencies to the final jars
     configurations {
@@ -94,6 +96,11 @@ subprojects {
 
     // Used to execute code only for specific submodules
     def versionId = Integer.parseInt(mcVersion.replace(".", ""))
+
+    if (versionId > 1_20_4) {
+        compileJava.setSourceCompatibility("21")
+        compileJava.setTargetCompatibility("21")
+    }
 
     compileJava.options.encoding = "UTF-8"
 

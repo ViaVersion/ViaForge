@@ -1,0 +1,16 @@
+modLoader="javafml"
+loaderVersion="[46,)"
+
+license="GPL-3.0 license"
+issueTrackerURL="https://github.com/ViaVersion/ViaForge/issues"
+showAsResourcePack=false
+
+[[mods]]
+modId="viaforge"
+version="${version}"
+displayName="ViaForge"
+displayURL="https://github.com/FlorianMichael"
+logoFile="icon.png"
+credits="Github contributors"
+authors="FlorianMichael/EnZaXD"
+description="${description}"
