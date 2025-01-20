@@ -21,31 +21,40 @@ package de.florianmichael.viaforge.mixin.connect;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import de.florianmichael.viaforge.common.platform.VersionTracker;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ServerData;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.client.multiplayer.ServerStatusPinger;
+import net.minecraft.network.Connection;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.InetSocketAddress;
-import java.util.Optional;
 
-@Mixin(targets = "net.minecraft.client.gui.screens.ConnectScreen$1")
-public class MixinConnectScreen_1 {
+@Mixin(ServerStatusPinger.class)
+public class MixinServerStatusPinger {
 
-    @Shadow @Final ServerData val$p_252078_;
+    @Unique
+    private ServerData viaForge$serverData;
 
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
-    public Object trackServerVersion(Optional instance) {
-        final InetSocketAddress address = (InetSocketAddress) instance.get();
-        ProtocolVersion version = ((ExtendedServerData) val$p_252078_).viaForge$getVersion();
+    @Inject(method = "pingServer", at = @At("HEAD"))
+    public void trackServerData(ServerData server, Runnable p_147224_2_, CallbackInfo ci) {
+        viaForge$serverData = server;
+    }
+
+    @Redirect(method = "pingServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connectToServer(Ljava/net/InetSocketAddress;Z)Lnet/minecraft/network/Connection;"))
+    public Connection trackVersion(InetSocketAddress oclass, boolean lazyloadedvalue) {
+        ProtocolVersion version = ((ExtendedServerData) viaForge$serverData).viaForge$getVersion();
         if (version == null) {
             version = ViaForgeCommon.getManager().getTargetVersion();
         }
-        VersionTracker.storeServerProtocolVersion(address.getAddress(), version);
-        return address;
+        VersionTracker.storeServerProtocolVersion(oclass.getAddress(), version);
+        viaForge$serverData = null;
+
+        return Connection.connectToServer(oclass, lazyloadedvalue);
     }
 
 }

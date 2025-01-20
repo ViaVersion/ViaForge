@@ -21,7 +21,8 @@
 
 ## How to (Users)
 
-ViaForge can be installed on 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2, 1.19.4, 1.20.4, 1.20.6 and 1.21.4 Forge client versions. <br>
+ViaForge can be installed on 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2, 1.19.4, 1.20.1, 1.20.4, 1.20.6 and 1.21.4 Forge,
+and 1.20.1, 1.20.6, 1.21.4 NeoForge client versions. <br>
 
 The ``legacy-1.8`` also supports Minecraft 1.8.9.
 
