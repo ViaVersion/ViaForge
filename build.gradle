@@ -290,6 +290,9 @@ subprojects {
             minecraftVersions.add(mcVersion.toString())
         }
     }
+
+    // Make sure to have the re-obfuscated jar for publishing
+    tasks.publishMods.dependsOn tasks.build
 }
 
 dependencies {
