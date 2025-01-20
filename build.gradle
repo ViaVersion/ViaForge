@@ -133,19 +133,19 @@ subprojects {
     dependencies {
         minecraft "net.minecraftforge:forge:${forge_version}"
         library "org.slf4j:slf4j-api:2.0.16"
-        compileOnly("net.neoforged.fancymodloader:loader:2.0.20") {
-            transitive = false
-        }
-        compileOnly("net.neoforged:bus:7.2.0") {
-            transitive = false
-        }
         if (versionId < 1_20_6) {
             // Always include for refmap in versions that don't have official mappings at runtime,
             // later exclude classes to prevent loading conflicts...
             library "org.spongepowered:mixin:${mixin_version}"
             annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+        } else {
+            compileOnly("net.neoforged.fancymodloader:loader:2.0.20") {
+                transitive = false
+            }
+            compileOnly("net.neoforged:bus:7.2.0") {
+                transitive = false
+            }
         }
-
         library project(":") // Include the base project
     }
 
