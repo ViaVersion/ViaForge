@@ -141,7 +141,7 @@ subprojects {
             annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
         }
         if (versionId >= 1_20_6) {
-            compileOnly("net.neoforged.fancymodloader:loader:2.0.20") { transitive = false }
+            compileOnly("net.neoforged.fancymodloader:loader:47.2.3") { transitive = false }
             compileOnly("net.neoforged:bus:7.2.0") { transitive = false }
         }
 
