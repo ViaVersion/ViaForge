@@ -22,5 +22,7 @@ build
 eclipse
 run
 
+viaforge-mc189/publishMods/*
+
 # Files from Forge MDK
 forge*changelog.txt

@@ -1,0 +1,7 @@
+def folder = file("publishMods")
+if (folder.isFile()) {
+    folder.delete()
+}
+if (!folder.exists()) {
+    folder.mkdir()
+}

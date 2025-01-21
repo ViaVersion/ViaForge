@@ -4,6 +4,7 @@ plugins {
 
 rootProject.name = "ViaForge"
 
+include "viaforge-mc189"
 include "viaforge-mc1122"
 include "viaforge-mc1165"
 include "viaforge-mc1171"
