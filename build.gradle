@@ -272,6 +272,9 @@ subprojects {
         version = project.version.toString() + "+" + mcVersion
         displayName = "ViaForge " + project.version.toString() + " (MC $mcVersion)"
         modLoaders.add("forge")
+        if (versionId == 1_20_1 || versionId >= 1_20_6) {
+            modLoaders.add("neoforge")
+        }
         type = ReleaseType.STABLE
         dryRun = !rootProject.hasProperty("curseforge_publish_token") || !rootProject.hasProperty("modrinth_publish_token")
 
