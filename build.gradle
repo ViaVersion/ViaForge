@@ -146,7 +146,7 @@ subprojects {
 
         dependencies {
             minecraft "net.minecraftforge:forge:${forge_version}"
-            library "org.slf4j:slf4j-api:2.0.16"
+            library "org.slf4j:slf4j-api:2.0.17"
 
             if (versionId < 1_20_6) {
                 // Always include for refmap in versions that don't have official mappings at runtime,
