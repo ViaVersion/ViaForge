@@ -19,6 +19,7 @@ buildscript {
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
         classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.2.2"
         classpath "me.modmuss50.mod-publish-plugin:me.modmuss50.mod-publish-plugin.gradle.plugin:0.8.4"
+        classpath "net.raphimc.class-token-replacer:net.raphimc.class-token-replacer.gradle.plugin:1.1.4"
     }
 }
 
@@ -311,4 +312,14 @@ subprojects {
 
 dependencies {
     compileOnly "io.netty:netty-all:4.1.119.Final"
+}
+
+apply plugin: "net.raphimc.class-token-replacer"
+
+sourceSets {
+    main {
+        classTokenReplacer {
+            property("\${version}", project.maven_version)
+        }
+    }
 }

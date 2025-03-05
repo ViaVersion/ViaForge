@@ -32,6 +32,7 @@ import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLInjector;
 import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLLoader;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.ViaForgeVLLegacyPipeline;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgeViaVersionPlatformImpl;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 
@@ -73,7 +74,7 @@ public class ViaForgeCommon {
 
         final File mainFolder = new File(platform.getLeadingDirectory(), "ViaForge");
 
-        ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
+        ViaLoader.init(new ViaForgeViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
         manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"), Via.getPlatform().getLogger());
 
         final ProtocolVersion configVersion = ProtocolVersion.getClosest(manager.config.getClientSideVersion());

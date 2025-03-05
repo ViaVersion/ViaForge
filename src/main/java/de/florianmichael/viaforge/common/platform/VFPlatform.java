@@ -28,6 +28,8 @@ import java.util.function.Supplier;
  */
 public interface VFPlatform {
 
+    String VERSION = "${version}";
+
     /**
      * @return the native version of the platform
      */
