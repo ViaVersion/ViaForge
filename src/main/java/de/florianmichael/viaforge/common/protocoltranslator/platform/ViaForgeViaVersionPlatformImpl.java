@@ -19,6 +19,8 @@
 package de.florianmichael.viaforge.common.protocoltranslator.platform;
 
 import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
+import com.viaversion.viaversion.libs.gson.JsonObject;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import java.io.File;
 
@@ -36,6 +38,14 @@ public final class ViaForgeViaVersionPlatformImpl extends ViaVersionPlatformImpl
     @Override
     public String getPlatformVersion() {
         return VFPlatform.VERSION;
+    }
+
+    @Override
+    public JsonObject getDump() {
+        final JsonObject platformDump = new JsonObject();
+        platformDump.addProperty("native_version", ViaForgeCommon.getManager().getNativeVersion().toString());
+        platformDump.addProperty("target_version", ViaForgeCommon.getManager().getTargetVersion().toString());
+        return platformDump;
     }
 
 }
