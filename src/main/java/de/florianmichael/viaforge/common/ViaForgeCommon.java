@@ -134,6 +134,9 @@ public class ViaForgeCommon {
     }
 
     public void setTargetVersionSilent(final ProtocolVersion targetVersion) {
+        if (targetVersion == null) {
+            throw new IllegalArgumentException("Target version cannot be null");
+        }
         final ProtocolVersion oldVersion = this.targetVersion;
         this.targetVersion = targetVersion;
         if (oldVersion != targetVersion) {
@@ -142,6 +145,9 @@ public class ViaForgeCommon {
     }
 
     public void setTargetVersion(final ProtocolVersion targetVersion) {
+        if (targetVersion == null) {
+            throw new IllegalArgumentException("Target version cannot be null");
+        }
         this.targetVersion = targetVersion;
         config.setClientSideVersion(targetVersion.getName());
     }
