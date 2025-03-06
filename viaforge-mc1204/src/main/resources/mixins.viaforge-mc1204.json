@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "package": "de.florianmichael.viaforge.mixin",
   "client": [
+    "MixinClientPacketListener",
     "MixinDebugScreenOverlay",
     "MixinDirectJoinServerScreen",
     "MixinEditServerScreen",

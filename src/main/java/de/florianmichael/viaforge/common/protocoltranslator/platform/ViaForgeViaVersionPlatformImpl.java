@@ -19,10 +19,17 @@
 package de.florianmichael.viaforge.common.protocoltranslator.platform;
 
 import com.viaversion.vialoader.impl.platform.ViaVersionPlatformImpl;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
+import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.libs.gson.JsonObject;
+import com.viaversion.viaversion.protocols.base.InitialBaseProtocol;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import java.io.File;
+import java.util.UUID;
 
 public final class ViaForgeViaVersionPlatformImpl extends ViaVersionPlatformImpl {
 
@@ -38,6 +45,17 @@ public final class ViaForgeViaVersionPlatformImpl extends ViaVersionPlatformImpl
     @Override
     public String getPlatformVersion() {
         return VFPlatform.VERSION;
+    }
+
+    @Override
+    public void sendCustomPayload(final UUID uuid, final String channel, final String message) {
+        final ServerboundPacketType packet = ViaForgeCommon.getManager().getPlatform().getCustomPayloadPacketType();
+        final UserConnection connection = Via.getManager().getConnectionManager().getConnections().stream().findFirst().orElse(null);
+
+        final PacketWrapper payload = PacketWrapper.create(packet, connection);
+        payload.write(Types.STRING, channel);
+        payload.write(Types.REMAINING_BYTES, message.getBytes());
+        payload.sendToServer(InitialBaseProtocol.class);
     }
 
     @Override

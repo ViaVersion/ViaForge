@@ -18,6 +18,8 @@
 
 package de.florianmichael.viaforge;
 
+import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
+import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.packet.ServerboundPackets1_21_4;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
@@ -74,6 +76,11 @@ public class ViaForge1214 implements VFPlatform {
     @Override
     public String getDecodeHandlerName() {
         return HandlerNames.INBOUND_CONFIG;
+    }
+
+    @Override
+    public ServerboundPacketType getCustomPayloadPacketType() {
+        return ServerboundPackets1_21_4.CUSTOM_PAYLOAD;
     }
 
 }

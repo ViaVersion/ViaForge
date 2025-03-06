@@ -24,6 +24,7 @@ import com.viaversion.vialoader.netty.CompressionReorderEvent;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.connection.ConnectionDetails;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
@@ -108,6 +109,14 @@ public class ViaForgeCommon {
                 restoreVersion();
             }
         });
+    }
+
+    public void sendConnectionDetails(final Channel channel) {
+        if (!channel.hasAttr(VF_VIA_USER)) {
+            return;
+        }
+
+        ConnectionDetails.sendConnectionDetails(channel.attr(VF_VIA_USER).get(), ConnectionDetails.MOD_CHANNEL);
     }
 
     /**

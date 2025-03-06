@@ -18,6 +18,7 @@
 
 package de.florianmichael.viaforge.common.platform;
 
+import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
@@ -61,5 +62,10 @@ public interface VFPlatform {
      * @return the name of the decode handler in the client connection
      */
     String getDecodeHandlerName();
+
+    /**
+     * @return the serverbound packet type for custom payload packets
+     */
+    ServerboundPacketType getCustomPayloadPacketType();
 
 }
