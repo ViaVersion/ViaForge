@@ -63,9 +63,4 @@ public interface VFPlatform {
      */
     String getDecodeHandlerName();
 
-    /**
-     * @return the serverbound packet type for custom payload packets
-     */
-    ServerboundPacketType getCustomPayloadPacketType();
-
 }

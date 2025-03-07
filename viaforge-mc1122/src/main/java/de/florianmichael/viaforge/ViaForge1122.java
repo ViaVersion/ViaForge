@@ -73,9 +73,4 @@ public class ViaForge1122 implements VFPlatform {
         return "decoder";
     }
 
-    @Override
-    public ServerboundPacketType getCustomPayloadPacketType() {
-        return ServerboundPackets1_12_1.CUSTOM_PAYLOAD;
-    }
-
 }

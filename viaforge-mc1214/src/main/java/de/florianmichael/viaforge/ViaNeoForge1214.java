@@ -78,9 +78,4 @@ public class ViaNeoForge1214 implements VFPlatform {
         return HandlerNames.INBOUND_CONFIG;
     }
 
-    @Override
-    public ServerboundPacketType getCustomPayloadPacketType() {
-        return ServerboundPackets1_21_4.CUSTOM_PAYLOAD;
-    }
-
 }
