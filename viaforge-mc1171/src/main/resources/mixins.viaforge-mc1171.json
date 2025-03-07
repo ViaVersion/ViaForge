@@ -14,13 +14,11 @@
     "connect.MixinConnection",
     "connect.MixinConnection_1",
     "connect.MixinConnectScreen_1",
-    "connect.MixinServerStatusPinger"
+    "connect.MixinServerStatusPinger",
+    "MixinClientPacketListener"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "mixins.viaforge-mc1171.refmap.json",
-  "mixins": [
-    "MixinClientPacketListener"
-  ]
+  "refmap": "mixins.viaforge-mc1171.refmap.json"
 }
