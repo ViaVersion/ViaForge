@@ -10,15 +10,16 @@
     "MixinGuiOverlayDebug",
     "MixinGuiScreenAddServer",
     "MixinGuiScreenServerList",
+    "MixinNetHandlerPlayClient",
     "MixinServerData",
+    "compatibility.patcher.MixinProtocolVersionDetector",
     "connect.MixinGuiConnecting_1",
     "connect.MixinNetHandlerLoginClient",
     "connect.MixinNetworkManager",
     "connect.MixinNetworkManager_5",
     "connect.MixinServerPinger",
     "javadowngrader.MixinBulkChunkType",
-    "javadowngrader.MixinChunkType",
-    "compatibility.patcher.MixinProtocolVersionDetector"
+    "javadowngrader.MixinChunkType"
   ],
   "verbose": true
 }

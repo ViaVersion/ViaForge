@@ -24,6 +24,7 @@ import com.viaversion.vialoader.netty.CompressionReorderEvent;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.connection.ConnectionDetails;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
@@ -32,6 +33,7 @@ import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLInjector;
 import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLLoader;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
 import de.florianmichael.viaforge.common.protocoltranslator.netty.ViaForgeVLLegacyPipeline;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgeViaVersionPlatformImpl;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 
@@ -76,7 +78,7 @@ public class ViaForgeCommon {
 
         final File mainFolder = new File(platform.getLeadingDirectory(), "ViaForge");
 
-        ViaLoader.init(new ViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
+        ViaLoader.init(new ViaForgeViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
         manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"), Via.getPlatform().getLogger());
 
         final ProtocolVersion configVersion = ProtocolVersion.getClosest(manager.config.getClientSideVersion());
@@ -111,6 +113,10 @@ public class ViaForgeCommon {
         });
     }
 
+    public void sendConnectionDetails(final Channel channel) {
+        ConnectionDetails.sendConnectionDetails(channel.attr(LOCAL_VIA_USER).get(), ConnectionDetails.MOD_CHANNEL);
+    }
+
     /**
      * Reorders the compression channel.
      *
@@ -135,6 +141,9 @@ public class ViaForgeCommon {
     }
 
     public void setTargetVersionSilent(final ProtocolVersion targetVersion) {
+        if (targetVersion == null) {
+            throw new IllegalArgumentException("Target version cannot be null");
+        }
         final ProtocolVersion oldVersion = this.targetVersion;
         this.targetVersion = targetVersion;
         if (oldVersion != targetVersion) {
@@ -143,6 +152,9 @@ public class ViaForgeCommon {
     }
 
     public void setTargetVersion(final ProtocolVersion targetVersion) {
+        if (targetVersion == null) {
+            throw new IllegalArgumentException("Target version cannot be null");
+        }
         this.targetVersion = targetVersion;
         config.setClientSideVersion(targetVersion.getName());
     }
