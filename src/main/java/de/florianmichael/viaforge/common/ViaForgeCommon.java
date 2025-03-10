@@ -112,7 +112,7 @@ public class ViaForgeCommon {
     }
 
     public void sendConnectionDetails(final Channel channel) {
-        if (!channel.hasAttr(VF_VIA_USER)) {
+        if (!config.isSendConnectionDetails() || !channel.hasAttr(VF_VIA_USER)) {
             return;
         }
 

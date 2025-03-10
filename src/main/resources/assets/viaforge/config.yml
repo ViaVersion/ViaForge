@@ -21,6 +21,10 @@ allow-betacraft-authentication: true
 # If enabled, ViaForge will show the current protocol version in the F3 menu.
 show-protocol-version-in-f3: true
 #
+# If enabled, ViaForge will send connection details to the server when connecting.
+# This includes the actual client version as well as the ViaForge version.
+send-connection-details: true
+#
 #----------------------------------------------------------#
 #                       GUI OPTIONS                        #
 #----------------------------------------------------------#
