@@ -46,7 +46,7 @@ public class MixinServerData implements ExtendedServerData {
     @Inject(method = "read", at = @At(value = "TAIL"))
     private static void getVersion(CompoundTag compoundnbt, CallbackInfoReturnable<ServerData> cir) {
         if (compoundnbt.contains("viaForge$version")) {
-            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(ProtocolVersion.getClosest(compoundnbt.getString("viaForge$version")));
+            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(ProtocolVersion.getClosest(compoundnbt.getStringOr("viaForge$version", "")));
         }
     }
 

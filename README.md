@@ -12,7 +12,7 @@
 </div>
 
 ## Supported Server versions
-- Release (1.0.0 - 1.21.4)
+- Release (1.0.0 - 1.21.5)
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
@@ -27,8 +27,8 @@ For more details on how to use this feature, see the [Player Details Protocol wi
 
 ## How to (Users)
 
-ViaForge can be installed on 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2, 1.19.4, 1.20.1, 1.20.4, 1.20.6 and 1.21.4 Forge,
-and 1.20.1, 1.20.6, 1.21.4 NeoForge client versions. <br>
+ViaForge can be installed on 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2, 1.19.4, 1.20.1, 1.20.4, 1.20.6 and 1.21.5 Forge,
+and 1.20.1, 1.20.6, 1.21.5 NeoForge client versions. <br>
 
 The ``legacy-1.8`` also supports Minecraft 1.8.9.
 
