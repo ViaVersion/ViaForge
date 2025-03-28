@@ -19,6 +19,12 @@
 - April Fools (3D Shareware, 20w14infinite)
 - Combat Snapshots (Combat Test 8c)
 
+## Anti cheat integration
+
+ViaForge supports sending a custom payload to transmit player protocol version data to the server. This allows servers to retrieve a player's protocol version via plugin messages, which can be useful for anti-cheat checks and version-dependent logic.
+This feature is enabled by default and can be disabled using the `send-connection-details` config option.
+For more details on how to use this feature, see the [Player Details Protocol wiki](https://github.com/ViaVersion/ViaVersion/wiki/Player-Details-Protocol).
+
 ## How to (Users)
 
 ViaForge can be installed on 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2, 1.19.4, 1.20.1, 1.20.4, 1.20.6 and 1.21.4 Forge,
