@@ -114,6 +114,10 @@ public class ViaForgeCommon {
     }
 
     public void sendConnectionDetails(final Channel channel) {
+        if (!config.isSendConnectionDetails()) {
+            return;
+        }
+
         ConnectionDetails.sendConnectionDetails(channel.attr(LOCAL_VIA_USER).get(), ConnectionDetails.MOD_CHANNEL);
     }
 
