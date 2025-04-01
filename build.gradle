@@ -1,130 +1,134 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url = "https://maven.minecraftforge.net/"
-        }
-        maven {
-            url = "https://repo.spongepowered.org/repository/maven-public/"
-        }
-        maven {
-            url = "https://repo.viaversion.com"
-        }
-        maven {
-            url = "https://jitpack.io/"
-        }
-    }
-
-    dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
-        classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
-        classpath "com.github.johnrengelman:shadow:4.0.4"
-    }
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.jvmdowngrader' version '1.2.2'
+    id 'xyz.wagyourtail.unimined' version '1.3.13'
+    id 'com.github.johnrengelman.shadow' version "8.1.1"
 }
 
-apply plugin: "java"
-apply plugin: "idea"
-apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: "org.spongepowered.mixin"
-apply plugin: "com.github.johnrengelman.shadow"
-
 group = project.maven_group
-archivesBaseName = project.maven_name
 version = project.maven_version
 description = project.maven_description
 
+base {
+    archivesName = project.maven_name
+}
+
 compileJava.options.encoding = "UTF-8"
-
-repositories {
-    mavenCentral()
-    maven { url = "https://maven.minecraftforge.net/" }
-    maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
-    maven { url = "https://repo.viaversion.com" }
-    maven { url = "https://jitpack.io/" }
-}
-
-minecraft {
-    version = "1.8.9-11.15.1.2318-1.8.9"
-    runDir = "run"
-    mappings = "stable_22"
-    makeObfSourceJar = false
-    clientJvmArgs += ["-Dfml.coreMods.load=de.florianmichael.viaforge.mixin.MixinLoader"]
-}
-
-sourceSets {
-    main.java.srcDirs += 'src/main/java'
-    main.java.srcDirs += '../shared/main/java'
-    main.resources.srcDirs += '../shared/main/resources'
-}
-
-configurations {
-    include
-    implementation.extendsFrom(include)
-}
-
-dependencies {
-    include fileTree(dir: "output", include: "*.jar") // See the README file on how to get this folder
-
-    include "org.slf4j:slf4j-api:2.0.16"
-    include compile ("org.spongepowered:mixin:${project.mixin_version}") {
-        exclude module: "launchwrapper"
-    }
-}
-
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-        expand (
-                "version": project.version,
-                "description": project.description
-        )
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
-    }
-
-    rename '(.+_at.cfg)', 'META-INF/$1'
-}
-
-mixin {
-    add sourceSets.main, "mixins.${maven_name}.refmap.json"
-}
-
-jar {
-    manifest.attributes(
-            "MixinConfigs": "mixins.${maven_name}.json",
-            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-            "TweakOrder": 0,
-            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
-            "FMLCorePluginContainsFMLMod": "true",
-            "ForceLoadAsMod": "true"
-    )
-
-    enabled = false
-}
-
 idea {
     module {
+        downloadJavadoc = false
+        downloadSources = true
         inheritOutputDirs = true
     }
 }
 
-shadowJar {
-    archiveName = jar.archiveName
-    configurations = [project.configurations.include] // Include the dependencies from the include configuration
-    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+unimined.minecraft {
+    version "1.8.9"
 
-    // Prevent conflicts with Forge's weird service loading
+    minecraftForge {
+        loader "11.15.1.2318-1.8.9"
+        mixinConfig("mixins.viaforge.json")
+    }
+
+    mappings {
+        searge()
+        mcp("stable", "22-1.8.9")
+    }
+
+    remap(tasks.shadowJar) {
+        prodNamespace("searge")
+        mixinRemap {
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+    maven {
+        name = "Sponge"
+        url 'https://repo.spongepowered.org/maven'
+    }
+    maven {
+        name = "ViaVersion"
+        url = "https://repo.viaversion.com"
+        metadataSources {
+            artifact()
+        }
+    }
+}
+
+jvmdg.downgradeTo = JavaVersion.VERSION_1_8
+
+configurations {
+    library
+    implementation.extendsFrom library
+}
+
+dependencies {
+    library ("org.spongepowered:mixin:${project.mixin_version}") {
+        exclude module: "launchwrapper"
+    }
+    library "com.viaversion:viaversion-common:5.3.1-SNAPSHOT"
+    library "com.viaversion:viabackwards-common:5.3.1-SNAPSHOT"
+    library "com.viaversion:viarewind-common:4.0.7-SNAPSHOT"
+    library "com.viaversion:viaaprilfools-common:4.0.2-SNAPSHOT"
+    library ("com.viaversion:vialoader:4.0.3-SNAPSHOT") {
+        exclude group: "com.google.guava"
+        exclude group: "org.slf4j"
+    }
+    library ("net.raphimc:ViaLegacy:3.0.10-SNAPSHOT") {
+        exclude group: "com.google.code.gson", module: "gson"
+    }
+    library ("org.slf4j:slf4j-api:${project.slf4j_version}")
+}
+
+processResources {
+    filesMatching("mcmod.info") {
+        expand "version": project.version
+        expand "description": project.description
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader",
+            "FMLCorePluginContainsFMLMod": "true",
+            "ForceLoadAsMod": "true",
+            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "MixinConfigs": "mixins.viaforge-mc189.json",
+            "Manifest-Version": 1.0
+        ])
+    }
+    enabled = false
+}
+
+shadowJar {
+    destinationDirectory = temporaryDir
+    configurations = [project.configurations.library]
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
     exclude("META-INF/maven/**")
     exclude("META-INF/versions/**")
 }
 
-reobf {
-    shadowJar {}
+downgradeJar {
+    inputFile = shadowJar.archiveFile
+    destinationDirectory = temporaryDir
 }
 
-jar.dependsOn("shadowJar")
+shadeDowngradedApi {
+    archiveFileName = jar.archiveFileName
+}
+
+jar.dependsOn("shadeDowngradedApi")
+
+tasks.build {
+    dependsOn(tasks.shadeDowngradedApi)
+}

@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  */
 public interface VFPlatform {
 
-    String VERSION = "4.1.0";
+    String VERSION = "4.1.1";
 
     /**
      * @return the native version of the platform
