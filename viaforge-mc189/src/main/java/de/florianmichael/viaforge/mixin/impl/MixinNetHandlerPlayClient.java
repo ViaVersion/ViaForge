@@ -18,7 +18,10 @@
 
 package de.florianmichael.viaforge.mixin.impl;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.connection.ConnectionDetails;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import io.netty.channel.Channel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,11 +34,17 @@ public class MixinNetHandlerPlayClient {
 
     @Inject(method = "handleJoinGame", at = @At("RETURN"))
     public void sendConnectionDetails(CallbackInfo ci) {
-        if (ViaForgeCommon.getManager().getTargetVersion().equals(ViaForgeCommon.getManager().getNativeVersion())) {
+        if (!ViaForgeCommon.getManager().getConfig().isSendConnectionDetails()) {
             return;
         }
 
-        ViaForgeCommon.getManager().sendConnectionDetails(Minecraft.getMinecraft().thePlayer.sendQueue.getNetworkManager().channel());
+        final Channel channel = Minecraft.getMinecraft().thePlayer.sendQueue.getNetworkManager().channel();
+        final UserConnection connection = channel.attr(ViaForgeCommon.VF_VIA_USER).get();
+        if (connection == null) {
+            return;
+        }
+
+        ConnectionDetails.sendConnectionDetails(connection, ConnectionDetails.MOD_CHANNEL);
     }
 
 }
