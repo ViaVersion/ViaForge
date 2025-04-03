@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.7.5",
+  "compatibilityLevel": "JAVA_8",
+  "package": "de.florianmichael.viaforge.mixin.impl",
+  "refmap": "mixins.viaforge-mc189.refmap.json",
+  "client": [
+    "MixinGuiMainMenu",
+    "MixinGuiMultiplayer",
+    "MixinGuiOverlayDebug",
+    "MixinGuiScreenAddServer",
+    "MixinGuiScreenServerList",
+    "MixinNetHandlerPlayClient",
+    "MixinServerData",
+    "compatibility.patcher.MixinProtocolVersionDetector",
+    "connect.MixinGuiConnecting_1",
+    "connect.MixinNetHandlerLoginClient",
+    "connect.MixinNetworkManager",
+    "connect.MixinNetworkManager_5",
+    "connect.MixinServerPinger",
+    "javadowngrader.MixinBulkChunkType",
+    "javadowngrader.MixinChunkType"
+  ],
+  "verbose": true
+}

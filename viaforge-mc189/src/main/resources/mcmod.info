@@ -1,0 +1,14 @@
+[
+  {
+    "modid": "viaforge",
+    "name": "ViaForge",
+    "description": "${description}",
+    "version": "${version}",
+    "mcversion": "[1.8.8,)",
+    "url": "https://github.com/ViaVersion/ViaForge",
+    "authorList": [
+      "FlorianMichael/EnZaXD"
+    ],
+    "credits": "https://github.com/FlorianMichael/"
+  }
+]
