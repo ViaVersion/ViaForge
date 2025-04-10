@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    library ("org.spongepowered:mixin:0.7.10-SNAPSHOT") {
+    library ("org.spongepowered:mixin:0.8.7") {
         exclude module: "launchwrapper"
     }
     library "org.slf4j:slf4j-api:2.0.16"
