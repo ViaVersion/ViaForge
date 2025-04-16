@@ -4,6 +4,15 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      via-libraries:
+        patterns:
+          - "com.viaversion:viaversion-common"
+          - "com.viaversion:viabackwards-common"
+          - "com.viaversion:viarewind-common"
+          - "com.viaversion:viaaprilfools-common"
+          - "com.viaversion:vialoader"
+          - "net.raphimc:ViaLegacy"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

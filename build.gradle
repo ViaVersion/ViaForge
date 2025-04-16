@@ -260,7 +260,7 @@ subprojects {
     }
 
     publishMods {
-        if (project.name == "viaforge-mc189") { // Special handle dummy module...
+        if (project.name == "viaforge-mc189") { // Special handle module...
             def folder = project.file("publishMods")
             if (!folder.exists() || folder.listFiles().length != 1) {
                 return
