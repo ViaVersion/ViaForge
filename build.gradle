@@ -167,21 +167,6 @@ subprojects {
             }
         }
 
-        // Replace the version in the mcmod.info and mods.toml files with the project version
-        // Since this depends on the platform version, we can't define it in the global scope :(
-        tasks {
-            processResources {
-                for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
-                    filesMatching(file) {
-                        expand(
-                                "version": project.version,
-                                "description": project.description
-                        )
-                    }
-                }
-            }
-        }
-
         mixin {
             add sourceSets.main, "mixins.${project.name}.refmap.json"
         }
@@ -189,6 +174,21 @@ subprojects {
         if (versionId < 1_20_6) { // Use official mappings at runtime, otherwise re-obfuscate output
             reobf {
                 shadowJar {}
+            }
+        }
+    }
+
+    // Replace the version in the mcmod.info and mods.toml files with the project version
+    // Since this depends on the platform version, we can't define it in the global scope :(
+    tasks {
+        processResources {
+            for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
+                filesMatching(file) {
+                    expand(
+                        "version": project.version,
+                        "description": project.description
+                    )
+                }
             }
         }
     }
