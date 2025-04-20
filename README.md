@@ -16,7 +16,7 @@
 - Beta (b1.0 - b1.8.1)
 - Alpha (a1.0.15 - a1.2.6)
 - Classic (c0.0.15 - c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
-- April Fools (3D Shareware, 20w14infinite)
+- April Fools (3D Shareware, 20w14infinite, 25w14craftmine)
 - Combat Snapshots (Combat Test 8c)
 
 ## Anti cheat integration
