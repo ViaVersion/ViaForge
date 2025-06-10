@@ -17,7 +17,7 @@ buildscript {
         classpath "com.gradleup.shadow:shadow-gradle-plugin:8.3.6"
         classpath "net.minecraftforge.gradle:ForgeGradle:[6.0.24,6.2)"
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
-        classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.3.2"
+        classpath "xyz.wagyourtail.jvmdowngrader:gradle-plugin:1.3.3"
         classpath "me.modmuss50.mod-publish-plugin:me.modmuss50.mod-publish-plugin.gradle.plugin:0.8.4"
         classpath "net.raphimc.class-token-replacer:net.raphimc.class-token-replacer.gradle.plugin:1.1.6"
     }
