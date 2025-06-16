@@ -163,7 +163,7 @@ subprojects {
             if (versionId >= 1_20_6) {
                 // NeoForge, only to compile against
                 compileOnly("net.neoforged.fancymodloader:loader:2.0.20") { transitive = false }
-                compileOnly("net.neoforged:bus:7.2.0") { transitive = false }
+                compileOnly("net.neoforged:bus:8.0.5") { transitive = false }
             }
         }
 
