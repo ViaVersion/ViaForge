@@ -77,7 +77,7 @@ public class MixinConnection implements VFNetworkManager {
         }
     }
 
-    @Inject(method = "connectToServer", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "connectToServer", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void setTargetVersion(InetSocketAddress p_178301_, boolean p_178302_, CallbackInfoReturnable<Connection> cir, Connection connection, Class<? extends SocketChannel> oclass, LazyLoadedValue<? extends EventLoopGroup> lazyloadedvalue) {
         final VFNetworkManager mixinConnection = (VFNetworkManager) connection;
         mixinConnection.viaForge$setTrackedVersion(VersionTracker.getServerProtocolVersion(p_178301_.getAddress()));

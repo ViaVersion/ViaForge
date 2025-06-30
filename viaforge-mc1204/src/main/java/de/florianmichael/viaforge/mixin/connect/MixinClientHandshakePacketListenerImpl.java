@@ -41,7 +41,7 @@ public class MixinClientHandshakePacketListenerImpl {
 
     @Shadow @Final private Connection connection;
 
-    @Redirect(method = "authenticateServer", at = @At(value = "INVOKE", target = "Lcom/mojang/authlib/minecraft/MinecraftSessionService;joinServer(Ljava/util/UUID;Ljava/lang/String;Ljava/lang/String;)V"))
+    @Redirect(method = "authenticateServer", at = @At(value = "INVOKE", target = "Lcom/mojang/authlib/minecraft/MinecraftSessionService;joinServer(Ljava/util/UUID;Ljava/lang/String;Ljava/lang/String;)V", remap = false))
     public void onlyJoinServerIfPremium(MinecraftSessionService instance, UUID uuid, String authenticationToken, String serverId) throws AuthenticationException {
         final VFNetworkManager mixinConnection = (VFNetworkManager) connection;
         if (mixinConnection.viaForge$getTrackedVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
