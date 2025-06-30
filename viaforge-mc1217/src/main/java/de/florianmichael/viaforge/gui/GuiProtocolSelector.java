@@ -104,10 +104,10 @@ public class GuiProtocolSelector extends Screen {
 
         final var pose = graphics.pose();
 
-        pose.pushPose();
-        pose.scale(2.0F, 2.0F, 2.0F);
-        graphics.drawCenteredString(font, ChatFormatting.GOLD + "ViaForge", width / 4, 3, 16777215);
-        pose.popPose();
+        pose.pushMatrix();
+        pose.scale(2.0F, 2.0F);
+        graphics.drawCenteredString(font, ChatFormatting.GOLD + "ViaForge", width / 4, 3, -1);
+        pose.popMatrix();
 
         graphics.drawCenteredString(font, "https://github.com/ViaVersion/ViaForge", width / 2, (font.lineHeight + 2) * 2 + 3, -1);
         graphics.drawString(font, status != null ? status : "Discord: florianmichael", 3, 3, -1);

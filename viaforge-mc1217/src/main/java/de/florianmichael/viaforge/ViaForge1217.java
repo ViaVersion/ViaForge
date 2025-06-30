@@ -25,19 +25,19 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
 import net.minecraft.network.HandlerNames;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaNeoForge1215 implements VFPlatform {
+public class ViaForge1217 implements VFPlatform {
 
-    public ViaNeoForge1215(IEventBus modEventBus) {
-        modEventBus.addListener(this::onInit);
+    public ViaForge1217(final FMLJavaModLoadingContext context) {
+        FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(this::onInit);
     }
 
     private void onInit(FMLCommonSetupEvent event) {
