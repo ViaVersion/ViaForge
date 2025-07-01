@@ -273,7 +273,7 @@ subprojects {
         }
         changelog = rootProject.file("CHANGELOG").text
         version = project.version.toString() + "+" + mcVersion
-        displayName = "ViaForge " + project.version.toString() + " (MC $mcVersion)"
+        displayName = version
         modLoaders.add("forge")
         if (versionId == 1_20_1 || versionId >= 1_20_6) {
             modLoaders.add("neoforge")
