@@ -36,8 +36,18 @@ import java.util.function.Supplier;
 @Mod("viaforge")
 public class ViaForge1217 implements VFPlatform {
 
+    @SuppressWarnings("all")
     public ViaForge1217(final FMLJavaModLoadingContext context) {
-        FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(this::onInit);
+        if (SharedConstants.getProtocolVersion() >= 771) {
+            FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(this::onInit);;
+        } else {
+            try {
+                Object bus = FMLJavaModLoadingContext.class.getDeclaredMethod("getModEventBus").invoke(context);
+                bus.getClass().getDeclaredMethod("addListener", java.util.function.Consumer.class).invoke(bus, (java.util.function.Consumer<FMLCommonSetupEvent>) this::onInit);
+            } catch (Exception e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
     }
 
     private void onInit(FMLCommonSetupEvent event) {
