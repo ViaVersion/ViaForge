@@ -19,7 +19,6 @@
 package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.common.gui.ExtendedServerData;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.nbt.CompoundTag;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -30,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import java.lang.reflect.Method;
 
 @Mixin(ServerData.class)
 public class MixinServerData implements ExtendedServerData {
@@ -48,7 +46,7 @@ public class MixinServerData implements ExtendedServerData {
     @Inject(method = "read", at = @At(value = "TAIL"))
     private static void getVersion(CompoundTag compoundnbt, CallbackInfoReturnable<ServerData> cir) {
         if (compoundnbt.contains("viaForge$version")) {
-            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(ProtocolVersion.getClosest(viaforge$getString(compoundnbt)));
+            ((ExtendedServerData) cir.getReturnValue()).viaForge$setVersion(ProtocolVersion.getClosest(compoundnbt.getStringOr("viaForge$version", "")));
         }
     }
 
@@ -69,27 +67,4 @@ public class MixinServerData implements ExtendedServerData {
         viaForge$version = version;
     }
 
-    @Unique
-    private static Method viaForge$getString;
-
-    /**
-     * 1.21.4 Compat
-     */
-    @Unique
-    private static String viaforge$getString(CompoundTag compoundnbt) {
-        if (SharedConstants.getProtocolVersion() >= 770) {
-            return compoundnbt.getStringOr("viaForge$version", "");
-        } else {
-            String s = "";
-            try {
-                if (viaForge$getString == null) {
-                    viaForge$getString = CompoundTag.class.getDeclaredMethod("getString", String.class);
-                }
-                s = (String) viaForge$getString.invoke(compoundnbt, "viaForge$version");
-            } catch (Exception e) {
-                throw new IllegalArgumentException(e);
-            }
-            return s;
-        }
-    }
 }
