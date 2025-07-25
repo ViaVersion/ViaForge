@@ -18,12 +18,15 @@
 
 package de.florianmichael.viaforge.gui;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import net.minecraft.ChatFormatting;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ObjectSelectionList;
@@ -32,6 +35,8 @@ import net.minecraft.network.chat.Component;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.lwjgl.glfw.GLFW;
 
+import javax.annotation.Nullable;
+import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -102,15 +107,49 @@ public class GuiProtocolSelector extends Screen {
 
         super.render(graphics, p_230430_2_, p_230430_3_, p_230430_4_);
 
-        final var pose = graphics.pose();
-
-        pose.pushMatrix();
-        pose.scale(2.0F, 2.0F);
-        graphics.drawCenteredString(font, ChatFormatting.GOLD + "ViaForge", width / 4, 3, -1);
-        pose.popMatrix();
-
+        if (SharedConstants.getProtocolVersion() >= 771) {
+            final var pose = graphics.pose();
+            pose.pushMatrix();
+            pose.scale(2.0F, 2.0F);
+            graphics.drawCenteredString(font, ChatFormatting.GOLD + "ViaForge", width / 4, 3, -1);
+            pose.popMatrix();
+        } else { // 1.21.5 and before has different type
+            try {
+                if (viaforge$pose == null) {
+                    viaforge$pose = GuiGraphics.class.getDeclaredMethod("pose");
+                }
+                final PoseStack pose = (PoseStack) viaforge$pose.invoke(graphics);
+                pose.pushPose();
+                pose.scale(2.0F, 2.0F, 2.0F);
+                graphics.drawCenteredString(font, ChatFormatting.GOLD + "ViaForge", width / 4, 3, 16777215);
+                pose.popPose();
+            } catch (Exception e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
         graphics.drawCenteredString(font, "https://github.com/ViaVersion/ViaForge", width / 2, (font.lineHeight + 2) * 2 + 3, -1);
-        graphics.drawString(font, status != null ? status : "Discord: florianmichael", 3, 3, -1);
+        drawString(graphics, font, status != null ? status : "Discord: florianmichael");
+    }
+
+    /**
+     * 1.21.5 Compat
+     */
+    private static Method viaforge$pose;
+    private static Method viaforge$drawString;
+
+    private static void drawString(GuiGraphics graphics, Font font, String s) {
+        if (SharedConstants.getProtocolVersion() >= 771) {
+            graphics.drawString(font, s, 3, 3, -1);
+        } else {
+            try {
+                if (viaforge$drawString == null) {
+                    viaforge$drawString = GuiGraphics.class.getDeclaredMethod("drawString", Font.class, String.class, int.class, int.class, int.class);
+                }
+                viaforge$drawString.invoke(graphics, font, s, 3, 3, -1);
+            } catch (Exception e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
     }
 
     class SlotList extends ObjectSelectionList<SlotList.SlotEntry> {
