@@ -1,28 +1,38 @@
+# Gradle
+
+.gradle/
+build/
+out/
+classes/
+.kotlin/
+
 # Eclipse
 
-bin
 *.launch
-.settings
-.metadata
+
+# Idea
+
+.idea/
+!.idea/copyright/*
+!.idea/scopes/*
+*.iml
+*.ipr
+*.iws
+
+# VSCode
+
+.settings/
+.vscode/
+bin/
 .classpath
 .project
 
-# Idea
-out
-*.ipr
-*.iws
-*.iml
-.idea
+# macOS
 
-# Gradle
-build
-.gradle
+DS_Store
 
-# Others
-eclipse
-run
+# Misc
 
+run/
 viaforge-mc189/publishMods/*
-
-# Files from Forge MDK
 forge*changelog.txt
