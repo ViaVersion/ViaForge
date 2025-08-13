@@ -313,7 +313,7 @@ subprojects {
 }
 
 dependencies {
-    compileOnly "io.netty:netty-all:4.2.2.Final"
+    compileOnly "io.netty:netty-all:4.2.4.Final"
 }
 
 apply plugin: "net.raphimc.class-token-replacer"
