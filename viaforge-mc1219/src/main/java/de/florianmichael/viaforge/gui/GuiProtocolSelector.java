@@ -195,7 +195,7 @@ public class GuiProtocolSelector extends Screen {
                     color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
                 }
 
-                guiGraphics.drawCenteredString(Minecraft.getInstance().font, color + ProtocolVersion.getName(), getContentWidth() / 2, getContentY(), -1);
+                guiGraphics.drawCenteredString(Minecraft.getInstance().font, color + ProtocolVersion.getName(), getContentXMiddle(), getContentY(), -1);
             }
         }
     }
