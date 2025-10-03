@@ -21,8 +21,12 @@ package de.florianmichael.viaforge.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import java.lang.reflect.Method;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
@@ -31,27 +35,22 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import org.lwjgl.glfw.GLFW;
-
-import javax.annotation.Nullable;
-import java.lang.reflect.Method;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 public class GuiProtocolSelector extends Screen {
 
+    /**
+     * 1.21.5 Compat
+     */
+    private static Method viaforge$pose;
+    private static Method viaforge$drawString;
     public final Screen parent;
     public final boolean simple;
     public final FinishedCallback finishedCallback;
-
     private String status;
     private long time;
-
-    public static void open(final Minecraft minecraft) { // Bypass for some weird bytecode instructions errors in Forge
-        minecraft.setScreen(new GuiProtocolSelector(minecraft.screen));
-    }
 
     public GuiProtocolSelector(final Screen parent) {
         this(parent, false, (version, unused) -> {
@@ -65,6 +64,25 @@ public class GuiProtocolSelector extends Screen {
         this.parent = parent;
         this.simple = simple;
         this.finishedCallback = finishedCallback;
+    }
+
+    public static void open(final Minecraft minecraft) { // Bypass for some weird bytecode instructions errors in Forge
+        minecraft.setScreen(new GuiProtocolSelector(minecraft.screen));
+    }
+
+    private static void drawString(GuiGraphics graphics, Font font, String s) {
+        if (SharedConstants.getProtocolVersion() >= 771) {
+            graphics.drawString(font, s, 3, 3, -1);
+        } else {
+            try {
+                if (viaforge$drawString == null) {
+                    viaforge$drawString = GuiGraphics.class.getDeclaredMethod("drawString", Font.class, String.class, int.class, int.class, int.class);
+                }
+                viaforge$drawString.invoke(graphics, font, s, 3, 3, -1);
+            } catch (Exception e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
     }
 
     @Override
@@ -92,11 +110,11 @@ public class GuiProtocolSelector extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int actions) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+    public boolean keyPressed(final KeyEvent p_423266_) {
+        if (p_423266_.isEscape()) {
             minecraft.setScreen(parent);
         }
-        return super.keyPressed(keyCode, scanCode, actions);
+        return super.keyPressed(p_423266_);
     }
 
     @Override
@@ -131,25 +149,10 @@ public class GuiProtocolSelector extends Screen {
         drawString(graphics, font, status != null ? status : "Discord: florianmichael");
     }
 
-    /**
-     * 1.21.5 Compat
-     */
-    private static Method viaforge$pose;
-    private static Method viaforge$drawString;
+    public interface FinishedCallback {
 
-    private static void drawString(GuiGraphics graphics, Font font, String s) {
-        if (SharedConstants.getProtocolVersion() >= 771) {
-            graphics.drawString(font, s, 3, 3, -1);
-        } else {
-            try {
-                if (viaforge$drawString == null) {
-                    viaforge$drawString = GuiGraphics.class.getDeclaredMethod("drawString", Font.class, String.class, int.class, int.class, int.class);
-                }
-                viaforge$drawString.invoke(graphics, font, s, 3, 3, -1);
-            } catch (Exception e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
+        void finished(final ProtocolVersion version, final Screen parent);
+
     }
 
     class SlotList extends ObjectSelectionList<SlotList.SlotEntry> {
@@ -171,9 +174,9 @@ public class GuiProtocolSelector extends Screen {
             }
 
             @Override
-            public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            public boolean mouseClicked(final MouseButtonEvent p_429480_, final boolean p_425718_) {
                 GuiProtocolSelector.this.finishedCallback.finished(ProtocolVersion, GuiProtocolSelector.this.parent);
-                return super.mouseClicked(mouseX, mouseY, button);
+                return super.mouseClicked(p_429480_, p_425718_);
             }
 
             @Override
@@ -182,7 +185,7 @@ public class GuiProtocolSelector extends Screen {
             }
 
             @Override
-            public void render(GuiGraphics graphics, int p_93524_, int y, int p_93526_, int p_93527_, int p_93528_, int p_93529_, int p_93530_, boolean p_93531_, float p_93532_) {
+            public void renderContent(final GuiGraphics guiGraphics, final int i, final int i1, final boolean b, final float v) {
                 final ProtocolVersion targetVersion = ViaForgeCommon.getManager().getTargetVersion();
 
                 String color;
@@ -192,15 +195,9 @@ public class GuiProtocolSelector extends Screen {
                     color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
                 }
 
-                graphics.drawCenteredString(Minecraft.getInstance().font, color + ProtocolVersion.getName(), width / 2, y, -1);
+                guiGraphics.drawCenteredString(Minecraft.getInstance().font, color + ProtocolVersion.getName(), getContentWidth() / 2, getContentY(), -1);
             }
         }
-    }
-
-    public interface FinishedCallback {
-
-        void finished(final ProtocolVersion version, final Screen parent);
-
     }
 
 }

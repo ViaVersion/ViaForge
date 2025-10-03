@@ -5,7 +5,7 @@
   "package": "de.florianmichael.viaforge.mixin",
   "client": [
     "MixinClientPacketListener",
-    "MixinDebugScreenOverlay",
+    "MixinDebugScreenEntries",
     "MixinDirectJoinServerScreen",
     "MixinEditServerScreen",
     "MixinJoinMultiplayerScreen",

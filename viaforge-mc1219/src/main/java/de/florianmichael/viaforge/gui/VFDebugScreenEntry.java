@@ -16,30 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin;
+package de.florianmichael.viaforge.gui;
 
-import de.florianmichael.viaforge.common.ViaForgeCommon;
-import net.minecraft.client.gui.components.DebugScreenOverlay;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import de.florianmichael.viaforge.common.ViaForgeCommon;
+import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
+import net.minecraft.client.gui.components.debug.DebugScreenEntry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+public final class VFDebugScreenEntry implements DebugScreenEntry {
 
-@Mixin(DebugScreenOverlay.class)
-public class MixinDebugScreenOverlay {
+    public static final ResourceLocation ID = ResourceLocation.tryBuild("viaforge", "viaforge");
 
-    @Inject(method = "getSystemInformation", at = @At(value = "TAIL"))
-    public void addViaForgeVersion(CallbackInfoReturnable<List<String>> cir) {
+    @Override
+    public void display(final DebugScreenDisplayer p_427172_, @Nullable final Level p_427695_, @Nullable final LevelChunk p_423462_, @Nullable final LevelChunk p_426762_) {
         final ViaForgeCommon common = ViaForgeCommon.getManager();
         final ProtocolVersion version = ViaForgeCommon.getManager().getTargetVersion();
 
         if (common.getConfig().isShowProtocolVersionInF3() && version != common.getNativeVersion() && !common.getPlatform().isSingleplayer().get()) {
-            cir.getReturnValue().add("");
-            cir.getReturnValue().add("ViaForge: " + version.toString());
+            p_427172_.addLine("ViaForge: " + version.toString());
         }
+    }
+
+    @Override
+    public boolean isAllowed(final boolean p_424604_) {
+        return true;
     }
 
 }

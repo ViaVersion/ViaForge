@@ -25,29 +25,19 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
 import net.minecraft.network.HandlerNames;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge1218 implements VFPlatform {
+public class ViaNeoForge1219 implements VFPlatform {
 
-    @SuppressWarnings("all")
-    public ViaForge1218(final FMLJavaModLoadingContext context) {
-        if (SharedConstants.getProtocolVersion() >= 771) {
-            FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(this::onInit);;
-        } else {
-            try {
-                Object bus = FMLJavaModLoadingContext.class.getDeclaredMethod("getModEventBus").invoke(context);
-                bus.getClass().getDeclaredMethod("addListener", java.util.function.Consumer.class).invoke(bus, (java.util.function.Consumer<FMLCommonSetupEvent>) this::onInit);
-            } catch (Exception e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
+    public ViaNeoForge1219(IEventBus modEventBus) {
+        modEventBus.addListener(this::onInit);
     }
 
     private void onInit(FMLCommonSetupEvent event) {
@@ -73,7 +63,7 @@ public class ViaForge1218 implements VFPlatform {
     public void joinServer(String serverId) throws Throwable {
         final User session = Minecraft.getInstance().getUser();
 
-        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
+        Minecraft.getInstance().services().sessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
     }
 
     @Override
