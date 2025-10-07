@@ -69,8 +69,8 @@ allprojects {
         library "com.viaversion:viaversion-common:5.5.1-SNAPSHOT"
         library "com.viaversion:viabackwards-common:5.5.1-SNAPSHOT"
         library "com.viaversion:viarewind-common:4.0.10"
-        library "com.viaversion:viaaprilfools-common:4.0.5-SNAPSHOT"
-        library ("com.viaversion:vialoader:4.0.5-SNAPSHOT") {
+        library "com.viaversion:viaaprilfools-common:4.0.6-SNAPSHOT"
+        library ("com.viaversion:vialoader:4.0.6-SNAPSHOT") {
             exclude group: "com.google.guava"
             exclude group: "org.slf4j"
         }
