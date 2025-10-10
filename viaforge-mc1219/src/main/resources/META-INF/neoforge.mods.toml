@@ -1,6 +1,5 @@
-modLoader="javafml" #mandatory
-loaderVersion="[2,)" #mandatory
-
+modLoader="javafml"
+loaderVersion="[2,)"
 
 license="GPL-3.0 license"
 issueTrackerURL="https://github.com/ViaVersion/ViaForge/issues"
@@ -8,10 +7,14 @@ showAsResourcePack=false
 
 [[mods]]
 modId="viaforge"
-version="1.21.7"
+version="1.21.10"
 displayName="ViaForge"
+displayTest = "IGNORE_ALL_VERSION"
 displayURL="https://github.com/FlorianMichael"
 logoFile="icon.png"
 credits="Github contributors"
 authors="FlorianMichael/EnZaXD"
 description="description"
+
+[[mixins]]
+config = "mixins.viaforge-mc1219.json"

@@ -23,7 +23,6 @@ import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.User;
 import net.minecraft.network.HandlerNames;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -61,9 +60,7 @@ public class ViaNeoForge1219 implements VFPlatform {
 
     @Override
     public void joinServer(String serverId) throws Throwable {
-        final User session = Minecraft.getInstance().getUser();
-
-        Minecraft.getInstance().services().sessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
+        ViaForgeGameProfileFetcher.onJoinServer(serverId);
     }
 
     @Override

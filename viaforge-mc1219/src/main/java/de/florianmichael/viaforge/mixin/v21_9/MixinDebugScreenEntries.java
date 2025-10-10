@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin;
+package de.florianmichael.viaforge.mixin.v21_9;
 
 import de.florianmichael.viaforge.gui.VFDebugScreenEntry;
 import java.util.HashMap;

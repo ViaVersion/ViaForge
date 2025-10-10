@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin;
+package de.florianmichael.viaforge.mixin.v21_8;
 
 import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
@@ -24,19 +24,21 @@ import de.florianmichael.viaforge.common.gui.ExtendedServerData;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.ManageServerScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ManageServerScreen.class)
+@Pseudo
+@Mixin(targets = "net.minecraft.client.gui.screens.EditServerScreen")
 public class MixinEditServerScreen extends Screen {
 
     @Shadow
@@ -47,13 +49,14 @@ public class MixinEditServerScreen extends Screen {
         super(title);
     }
 
+    @SuppressWarnings("DataFlowIssue")
+    @Dynamic
     @Inject(method = "init", at = @At("RETURN"))
     public void initGui(CallbackInfo ci) {
         final ViaForgeConfig config = ViaForgeCommon.getManager().getConfig();
 
         if (config.isShowAddServerButton()) {
             final Pair<Integer, Integer> pos = config.getAddServerScreenButtonPosition().getPosition(this.width, this.height);
-
             final ProtocolVersion target = ((ExtendedServerData) serverData).viaForge$getVersion();
             addRenderableWidget(Button.builder(Component.literal(target != null ? target.getName() : "Set Version"), b -> {
                 minecraft.setScreen(new GuiProtocolSelector(this, true, (version, parent) -> {

@@ -9,6 +9,7 @@ showAsResourcePack=false
 modId="viaforge"
 version="${version}"
 displayName="ViaForge"
+displayTest = "IGNORE_ALL_VERSION"
 displayURL="https://github.com/FlorianMichael"
 logoFile="icon.png"
 credits="Github contributors"
