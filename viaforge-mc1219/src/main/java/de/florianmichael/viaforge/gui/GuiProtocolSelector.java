@@ -38,11 +38,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import org.lwjgl.glfw.GLFW;
 
+@SuppressWarnings("DataFlowIssue")
 public class GuiProtocolSelector extends Screen {
 
     /**
-     * 1.21.5 Compat
+     * 1.21.5 ~ 1.21.8 Compat
      */
     private static Method viaforge$pose;
     private static Method viaforge$drawString;
@@ -109,12 +111,21 @@ public class GuiProtocolSelector extends Screen {
         this.time = System.currentTimeMillis();
     }
 
+    @SuppressWarnings("unused")
+    public boolean keyPressed(int keyCode, int scanCode, int actions) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            minecraft.setScreen(parent);
+            this.onClose();
+        }
+        return true;
+    }
+
     @Override
-    public boolean keyPressed(final KeyEvent p_423266_) {
-        if (p_423266_.isEscape()) {
+    public boolean keyPressed(final KeyEvent event) {
+        if (event.isEscape()) {
             minecraft.setScreen(parent);
         }
-        return super.keyPressed(p_423266_);
+        return super.keyPressed(event);
     }
 
     @Override
@@ -165,6 +176,7 @@ public class GuiProtocolSelector extends Screen {
             }
         }
 
+        @SuppressWarnings("unused")
         public class SlotEntry extends Entry<SlotEntry> {
 
             private final ProtocolVersion ProtocolVersion;
@@ -173,10 +185,15 @@ public class GuiProtocolSelector extends Screen {
                 this.ProtocolVersion = ProtocolVersion;
             }
 
-            @Override
-            public boolean mouseClicked(final MouseButtonEvent p_429480_, final boolean p_425718_) {
+            public boolean mouseClicked(double mouseX, double mouseY, int button) {
                 GuiProtocolSelector.this.finishedCallback.finished(ProtocolVersion, GuiProtocolSelector.this.parent);
-                return super.mouseClicked(p_429480_, p_425718_);
+                return true;
+            }
+
+            @Override
+            public boolean mouseClicked(final MouseButtonEvent event, final boolean p_425718_) {
+                GuiProtocolSelector.this.finishedCallback.finished(ProtocolVersion, GuiProtocolSelector.this.parent);
+                return super.mouseClicked(event, p_425718_);
             }
 
             @Override
@@ -184,18 +201,22 @@ public class GuiProtocolSelector extends Screen {
                 return Component.literal(ProtocolVersion.getName());
             }
 
+            public void render(GuiGraphics guiGraphics, int p_93524_, int y, int p_93526_, int p_93527_, int p_93528_, int p_93529_, int p_93530_, boolean p_93531_, float p_93532_) {
+                guiGraphics.drawCenteredString(Minecraft.getInstance().font, this.getColor() + ProtocolVersion.getName(), width / 2, y, -1);
+            }
+
             @Override
             public void renderContent(final GuiGraphics guiGraphics, final int i, final int i1, final boolean b, final float v) {
+                guiGraphics.drawCenteredString(Minecraft.getInstance().font, this.getColor() + ProtocolVersion.getName(), getContentXMiddle(), getContentY(), -1);
+            }
+
+            private String getColor() {
                 final ProtocolVersion targetVersion = ViaForgeCommon.getManager().getTargetVersion();
-
-                String color;
                 if (targetVersion == ProtocolVersion) {
-                    color = GuiProtocolSelector.this.simple ? ChatFormatting.GOLD.toString() : ChatFormatting.GREEN.toString();
+                    return GuiProtocolSelector.this.simple ? ChatFormatting.GOLD.toString() : ChatFormatting.GREEN.toString();
                 } else {
-                    color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
+                    return GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
                 }
-
-                guiGraphics.drawCenteredString(Minecraft.getInstance().font, color + ProtocolVersion.getName(), getContentXMiddle(), getContentY(), -1);
             }
         }
     }
