@@ -229,7 +229,9 @@ subprojects {
 
         // Prevent conflicts with Forge's weird service loading
         exclude("META-INF/maven/**")
-        exclude("META-INF/versions/**")
+        if (versionId <= 1_12_2) {
+            exclude("META-INF/versions/**")
+        }
 
         if (versionId >= 1_13_2) {
             // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
