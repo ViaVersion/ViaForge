@@ -1,13 +1,12 @@
 {
   "required": true,
-  "minVersion": "0.7.5",
-  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_21",
   "package": "de.florianmichael.viaforge.mixin",
+  "plugin": "de.florianmichael.viaforge.mixin.MixinPlugin",
   "client": [
     "MixinClientPacketListener",
-    "MixinDebugScreenEntries",
     "MixinDirectJoinServerScreen",
-    "MixinEditServerScreen",
     "MixinJoinMultiplayerScreen",
     "MixinServerData",
     "MixinTitleScreen",
@@ -15,7 +14,11 @@
     "connect.MixinConnection",
     "connect.MixinConnection_1",
     "connect.MixinConnectScreen_1",
-    "connect.MixinServerStatusPinger"
+    "connect.MixinServerStatusPinger",
+    "v21_8.MixinDebugScreenOverlay",
+    "v21_8.MixinEditServerScreen",
+    "v21_9.MixinDebugScreenEntries",
+    "v21_9.MixinManageServerScreen"
   ],
   "injectors": {
     "defaultRequire": 1
