@@ -207,7 +207,7 @@ subprojects {
             "Implementation-Vendor": "FlorianMichael/EnZaXD",
             "Implementation-Version": project.version,
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd" - "HH:mm:ssZ"),
-            "Implementation-Contact": "florian.michael07@gmail.com",
+            "Implementation-Contact": "git@florianmichael.de",
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
             "FMLCorePluginContainsFMLMod": "true", // Only required for MC 1.12, but modern Forges skips this anyway

@@ -1,6 +1,6 @@
 /*
  * This file is part of ViaForge - https://github.com/FlorianMichael/ViaForge
- * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
+ * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <git@florianmichael.de> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
