@@ -25,6 +25,7 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerStatusPinger;
 import net.minecraft.network.Connection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.server.network.EventLoopGroupHolder;
 import net.minecraft.util.debugchart.LocalSampleLogger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -42,12 +43,12 @@ public class MixinServerStatusPinger {
     private ServerData viaForge$serverData;
 
     @Inject(method = "pingServer", at = @At("HEAD"))
-    public void trackServerData(ServerData p_105460_, Runnable p_105461_, Runnable p_335024_, CallbackInfo ci) {
+    public void trackServerData(ServerData p_105460_, Runnable p_105461_, Runnable p_335024_, EventLoopGroupHolder p_453907_, CallbackInfo ci) {
         viaForge$serverData = p_105460_;
     }
 
-    @Redirect(method = "pingServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connectToServer(Ljava/net/InetSocketAddress;ZLnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;"))
-    public Connection trackVersion(InetSocketAddress inetSocketAddress, boolean b, LocalSampleLogger localSampleLogger) {
+    @Redirect(method = "pingServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connectToServer(Ljava/net/InetSocketAddress;Lnet/minecraft/server/network/EventLoopGroupHolder;Lnet/minecraft/util/debugchart/LocalSampleLogger;)Lnet/minecraft/network/Connection;"))
+    public Connection trackVersion(InetSocketAddress inetSocketAddress, EventLoopGroupHolder eventLoopGroupHolder, LocalSampleLogger localSampleLogger) {
         ProtocolVersion version = ((ExtendedServerData) viaForge$serverData).viaForge$getVersion();
         if (version == null) {
             version = ViaForgeCommon.getManager().getTargetVersion();
@@ -55,7 +56,7 @@ public class MixinServerStatusPinger {
         VersionTracker.storeServerProtocolVersion(inetSocketAddress.getAddress(), version);
         viaForge$serverData = null;
 
-        return Connection.connectToServer(inetSocketAddress, b, localSampleLogger);
+        return Connection.connectToServer(inetSocketAddress, eventLoopGroupHolder, localSampleLogger);
     }
 
 }

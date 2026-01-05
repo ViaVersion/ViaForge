@@ -7,7 +7,7 @@ showAsResourcePack=false
 
 [[mods]]
 modId="viaforge"
-version="1.21.10"
+version="1.21.11"
 displayName="ViaForge"
 displayTest = "IGNORE_ALL_VERSION"
 displayURL="https://github.com/FlorianMichael"
@@ -17,4 +17,4 @@ authors="FlorianMichael/EnZaXD"
 description="description"
 
 [[mixins]]
-config = "mixins.viaforge-mc1219.json"
+config = "mixins.viaforge-mc12111.json"

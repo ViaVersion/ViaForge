@@ -23,6 +23,7 @@ import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.User;
 import net.minecraft.network.HandlerNames;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -33,20 +34,10 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge1219 implements VFPlatform {
+public class ViaForge12111 implements VFPlatform {
 
-    @SuppressWarnings("all")
-    public ViaForge1219(final FMLJavaModLoadingContext context) {
-        if (SharedConstants.getProtocolVersion() >= 771) {
-            FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(this::onInit);;
-        } else {
-            try {
-                Object bus = FMLJavaModLoadingContext.class.getDeclaredMethod("getModEventBus").invoke(context);
-                bus.getClass().getDeclaredMethod("addListener", java.util.function.Consumer.class).invoke(bus, (java.util.function.Consumer<FMLCommonSetupEvent>) this::onInit);
-            } catch (Exception e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
+    public ViaForge12111(final FMLJavaModLoadingContext context) {
+        FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(this::onInit);
     }
 
     private void onInit(FMLCommonSetupEvent event) {
@@ -70,7 +61,9 @@ public class ViaForge1219 implements VFPlatform {
 
     @Override
     public void joinServer(String serverId) throws Throwable {
-        ViaForgeGameProfileFetcher.onJoinServer(serverId);
+        final User session = Minecraft.getInstance().getUser();
+
+        Minecraft.getInstance().services().sessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
     }
 
     @Override

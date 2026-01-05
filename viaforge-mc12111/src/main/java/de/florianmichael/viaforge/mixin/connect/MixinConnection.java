@@ -27,6 +27,7 @@ import io.netty.channel.ChannelFuture;
 import net.minecraft.network.CipherDecoder;
 import net.minecraft.network.CipherEncoder;
 import net.minecraft.network.Connection;
+import net.minecraft.server.network.EventLoopGroupHolder;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
@@ -75,7 +76,7 @@ public class MixinConnection implements VFNetworkManager {
     }
 
     @Inject(method = "connect", at = @At("HEAD"))
-    private static void setTargetVersion(InetSocketAddress p_290034_, boolean p_290035_, Connection p_290031_, CallbackInfoReturnable<ChannelFuture> cir) {
+    private static void setTargetVersion(InetSocketAddress p_290034_, EventLoopGroupHolder p_450865_, Connection p_290031_, CallbackInfoReturnable<ChannelFuture> cir) {
         final VFNetworkManager mixinConnection = (VFNetworkManager) p_290031_;
         mixinConnection.viaForge$setTrackedVersion(VersionTracker.getServerProtocolVersion(p_290034_.getAddress()));
     }

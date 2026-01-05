@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.mixin.v21_9;
+package de.florianmichael.viaforge.mixin;
 
 import de.florianmichael.viaforge.gui.VFDebugScreenEntry;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryStatus;
 import net.minecraft.client.gui.components.debug.DebugScreenProfile;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -40,21 +40,21 @@ public abstract class MixinDebugScreenEntries {
     @Mutable
     @Shadow
     @Final
-    public static Map<DebugScreenProfile, Map<ResourceLocation, DebugScreenEntryStatus>> PROFILES;
+    public static Map<DebugScreenProfile, Map<Identifier, DebugScreenEntryStatus>> PROFILES;
 
     @Shadow
-    public static ResourceLocation register(final ResourceLocation p_430307_, final DebugScreenEntry p_424237_) {
+    public static Identifier register(final Identifier p_430307_, final DebugScreenEntry p_424237_) {
         return null;
     }
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void addViaForgeEntry(CallbackInfo ci) {
-        final ResourceLocation id = register(VFDebugScreenEntry.ID, new VFDebugScreenEntry());
-        final Map<DebugScreenProfile, Map<ResourceLocation, DebugScreenEntryStatus>> profiles = new HashMap<>();
-        for (Map.Entry<DebugScreenProfile, Map<ResourceLocation, DebugScreenEntryStatus>> entry : PROFILES.entrySet()) {
-            final Map<ResourceLocation, DebugScreenEntryStatus> entries = new HashMap<>(entry.getValue());
+        final Identifier id = register(VFDebugScreenEntry.ID, new VFDebugScreenEntry());
+        final Map<DebugScreenProfile, Map<Identifier, DebugScreenEntryStatus>> profiles = new HashMap<>();
+        for (Map.Entry<DebugScreenProfile, Map<Identifier, DebugScreenEntryStatus>> entry : PROFILES.entrySet()) {
+            final Map<Identifier, DebugScreenEntryStatus> entries = new HashMap<>(entry.getValue());
             if (entry.getKey() == DebugScreenProfile.DEFAULT) {
-                entries.put(id, DebugScreenEntryStatus.IN_F3);
+                entries.put(id, DebugScreenEntryStatus.IN_OVERLAY);
             }
             profiles.put(entry.getKey(), entries);
         }
