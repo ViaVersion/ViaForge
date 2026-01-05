@@ -121,6 +121,11 @@ subprojects {
                 mappings channel: "official", version: mcVersion
             }
 
+            // Official mappings at runtime for 1.20.5+
+            if (versionId >= 1_20_5) {
+                reobf = false
+            }
+
             runs {
                 client {
                     workingDirectory project.file("run")

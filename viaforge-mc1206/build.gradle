@@ -1,5 +1,0 @@
-// ....
-
-minecraft {
-    reobf = false // Official mappings at runtime for 1.20.5+
-}
