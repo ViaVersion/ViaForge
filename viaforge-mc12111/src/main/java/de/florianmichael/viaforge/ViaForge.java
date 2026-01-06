@@ -34,9 +34,9 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge12111 implements VFPlatform {
+public class ViaForge implements VFPlatform {
 
-    public ViaForge12111(final FMLJavaModLoadingContext context) {
+    public ViaForge(final FMLJavaModLoadingContext context) {
         FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(this::onInit);
     }
 

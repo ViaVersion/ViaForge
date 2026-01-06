@@ -25,19 +25,19 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
 import net.minecraft.network.HandlerNames;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaNeoForge12111 implements VFPlatform {
+public class ViaForge implements VFPlatform {
 
-    public ViaNeoForge12111(IEventBus modEventBus) {
-        modEventBus.addListener(this::onInit);
+    public ViaForge() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
     }
 
     private void onInit(FMLCommonSetupEvent event) {
@@ -63,7 +63,7 @@ public class ViaNeoForge12111 implements VFPlatform {
     public void joinServer(String serverId) throws Throwable {
         final User session = Minecraft.getInstance().getUser();
 
-        Minecraft.getInstance().services().sessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
+        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
     }
 
     @Override

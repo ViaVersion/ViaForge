@@ -138,7 +138,7 @@ subprojects {
                     property "mixin.hotSwap", "true"
                     property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader"
                     // Only required for MC 1.12, but modern Forges skips this anyway
-                    args "-mixin.config=" + "mixins." + project.getProperty('name') + ".json"
+                    args "-mixin.config=" + "mixins.viaforge.json"
 
                     // source set
                     mods {
@@ -173,7 +173,7 @@ subprojects {
         }
 
         mixin {
-            add sourceSets.main, "mixins.${project.name}.refmap.json"
+            add sourceSets.main, "mixins.viaforge.refmap.json"
         }
 
         if (versionId < 1_20_6) { // Use official mappings at runtime, otherwise re-obfuscate output
@@ -217,7 +217,7 @@ subprojects {
             "TweakOrder": "0",
             "FMLCorePluginContainsFMLMod": "true", // Only required for MC 1.12, but modern Forges skips this anyway
             "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader", // Counterpart to the above
-            "MixinConfigs": "mixins.${project.name}.json",
+            "MixinConfigs": "mixins.viaforge.json",
             "ForceLoadAsMod": "true"
         )
         enabled = false

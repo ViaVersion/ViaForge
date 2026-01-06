@@ -18,8 +18,6 @@
 
 package de.florianmichael.viaforge;
 
-import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
-import com.viaversion.viaversion.protocols.v1_16_4to1_17.packet.ServerboundPackets1_17;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
@@ -35,13 +33,13 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge1171 implements VFPlatform {
+public class ViaForge implements VFPlatform {
 
-    public ViaForge1171() {
+    public ViaForge() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
     }
 
-    public void onInit(FMLCommonSetupEvent event) {
+    private void onInit(FMLCommonSetupEvent event) {
         ViaForgeCommon.init(this);
     }
 

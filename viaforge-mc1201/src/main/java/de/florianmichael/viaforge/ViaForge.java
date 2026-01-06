@@ -18,14 +18,12 @@
 
 package de.florianmichael.viaforge;
 
-import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
-import com.viaversion.viaversion.protocols.v1_16_1to1_16_2.packet.ServerboundPackets1_16_2;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Session;
-import net.minecraft.util.SharedConstants;
+import net.minecraft.client.User;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -35,13 +33,13 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge1165 implements VFPlatform {
+public class ViaForge implements VFPlatform {
 
-    public ViaForge1165() {
+    public ViaForge() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
     }
 
-    public void onInit(FMLCommonSetupEvent event) {
+    private void onInit(FMLCommonSetupEvent event) {
         ViaForgeCommon.init(this);
     }
 
@@ -52,7 +50,7 @@ public class ViaForge1165 implements VFPlatform {
 
     @Override
     public Supplier<Boolean> isSingleplayer() {
-        return () -> Minecraft.getInstance().hasSingleplayerServer();
+        return () -> Minecraft.getInstance().isSingleplayer();
     }
 
     @Override
@@ -62,7 +60,7 @@ public class ViaForge1165 implements VFPlatform {
 
     @Override
     public void joinServer(String serverId) throws Throwable {
-        final Session session = Minecraft.getInstance().getUser();
+        final User session = Minecraft.getInstance().getUser();
 
         Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getGameProfile(), session.getAccessToken(), serverId);
     }

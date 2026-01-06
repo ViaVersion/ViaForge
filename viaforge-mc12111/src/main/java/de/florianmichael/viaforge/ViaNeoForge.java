@@ -18,49 +18,52 @@
 
 package de.florianmichael.viaforge;
 
-import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
-import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ServerboundPackets1_12_1;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.realms.RealmsSharedConstants;
-import net.minecraft.util.Session;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraft.client.User;
+import net.minecraft.network.HandlerNames;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;
 
-@Mod(modid = "viaforge", name = "ViaForge", acceptableRemoteVersions = "*", clientSideOnly=true, useMetadata=true)
-public class ViaForge1122 implements VFPlatform {
+@Mod("viaforge")
+public class ViaNeoForge implements VFPlatform {
 
-    @Mod.EventHandler
-    public void onInit(FMLInitializationEvent event) {
+    public ViaNeoForge(IEventBus modEventBus) {
+        modEventBus.addListener(this::onInit);
+    }
+
+    private void onInit(FMLCommonSetupEvent event) {
         ViaForgeCommon.init(this);
     }
 
     @Override
     public int getGameVersion() {
-        return RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
+        return SharedConstants.getProtocolVersion();
     }
 
     @Override
     public Supplier<Boolean> isSingleplayer() {
-        return () -> Minecraft.getMinecraft().isSingleplayer();
+        return () -> Minecraft.getInstance().isSingleplayer();
     }
 
     @Override
     public File getLeadingDirectory() {
-        return Minecraft.getMinecraft().gameDir;
+        return Minecraft.getInstance().gameDirectory;
     }
 
     @Override
     public void joinServer(String serverId) throws Throwable {
-        final Session session = Minecraft.getMinecraft().getSession();
+        final User session = Minecraft.getInstance().getUser();
 
-        Minecraft.getMinecraft().getSessionService().joinServer(session.getProfile(), session.getToken(), serverId);
+        Minecraft.getInstance().services().sessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
     }
 
     @Override
@@ -70,7 +73,7 @@ public class ViaForge1122 implements VFPlatform {
 
     @Override
     public String getDecodeHandlerName() {
-        return "decoder";
+        return HandlerNames.INBOUND_CONFIG;
     }
 
 }

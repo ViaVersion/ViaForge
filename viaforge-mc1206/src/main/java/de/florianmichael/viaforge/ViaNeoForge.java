@@ -18,27 +18,26 @@
 
 package de.florianmichael.viaforge;
 
-import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
-import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.packet.ServerboundPackets1_19_4;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraft.network.HandlerNames;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge1194 implements VFPlatform {
+public class ViaNeoForge implements VFPlatform {
 
-    public ViaForge1194() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
+    public ViaNeoForge(IEventBus modEventBus) {
+        modEventBus.addListener(this::onInit);
     }
 
     private void onInit(FMLCommonSetupEvent event) {
@@ -64,7 +63,7 @@ public class ViaForge1194 implements VFPlatform {
     public void joinServer(String serverId) throws Throwable {
         final User session = Minecraft.getInstance().getUser();
 
-        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getGameProfile(), session.getAccessToken(), serverId);
+        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class ViaForge1194 implements VFPlatform {
 
     @Override
     public String getDecodeHandlerName() {
-        return "decoder";
+        return HandlerNames.INBOUND_CONFIG;
     }
 
 }

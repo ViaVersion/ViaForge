@@ -18,15 +18,12 @@
 
 package de.florianmichael.viaforge;
 
-import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
-import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPackets1_20_5;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
-import net.minecraft.network.HandlerNames;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -36,9 +33,9 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaForge1206 implements VFPlatform {
+public class ViaForge implements VFPlatform {
 
-    public ViaForge1206() {
+    public ViaForge() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInit);
     }
 
@@ -53,7 +50,7 @@ public class ViaForge1206 implements VFPlatform {
 
     @Override
     public Supplier<Boolean> isSingleplayer() {
-        return () -> Minecraft.getInstance().isSingleplayer();
+        return () -> Minecraft.getInstance().hasSingleplayerServer();
     }
 
     @Override
@@ -65,7 +62,7 @@ public class ViaForge1206 implements VFPlatform {
     public void joinServer(String serverId) throws Throwable {
         final User session = Minecraft.getInstance().getUser();
 
-        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getProfileId(), session.getAccessToken(), serverId);
+        Minecraft.getInstance().getMinecraftSessionService().joinServer(session.getGameProfile(), session.getAccessToken(), serverId);
     }
 
     @Override
@@ -75,7 +72,7 @@ public class ViaForge1206 implements VFPlatform {
 
     @Override
     public String getDecodeHandlerName() {
-        return HandlerNames.INBOUND_CONFIG;
+        return "decoder";
     }
 
 }

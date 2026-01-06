@@ -17,4 +17,4 @@ authors="FlorianMichael/EnZaXD"
 description="{description}"
 
 [[mixins]]
-config = "mixins.viaforge-mc12111.json"
+config = "mixins.viaforge.json"
