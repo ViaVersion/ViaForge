@@ -183,11 +183,11 @@ subprojects {
         }
     }
 
-    // Replace the version in the mcmod.info and mods.toml files with the project version
+    // Replace the version in the mod files with the project version
     // Since this depends on the platform version, we can't define it in the global scope :(
     tasks {
         processResources {
-            for (final def file in ["mcmod.info", "META-INF/mods.toml"]) {
+            for (final def file in ["mcmod.info", "META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
                 filesMatching(file) {
                     expand(
                         "version": project.version,
