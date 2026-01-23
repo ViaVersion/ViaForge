@@ -245,7 +245,7 @@ subprojects {
         }
 
         // Workaround GH-94
-        relocate("org.slf4j", "com.viaversion.vialoader.libs.slf4j")
+        relocate("org.slf4j", "de.florianmichael.viaforge.libs.slf4j")
     }
 
     downgradeJar {
