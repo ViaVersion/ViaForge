@@ -251,10 +251,12 @@ subprojects {
     downgradeJar {
         inputFile = shadowJar.archiveFile
         destinationDirectory = temporaryDir
+        logLevel = "FATAL"
     }
 
     shadeDowngradedApi {
         archiveFileName = jar.archiveFileName
+        logLevel = "FATAL"
     }
 
     jar.dependsOn("shadowJar")
