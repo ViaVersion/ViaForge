@@ -18,11 +18,12 @@
 
 package de.florianmichael.viaforge.gui;
 
-import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,9 +32,6 @@ import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 public class GuiProtocolSelector extends Screen {
 
@@ -112,7 +110,7 @@ public class GuiProtocolSelector extends Screen {
         graphics.drawCenteredString(font, ChatFormatting.GOLD + "ViaForge", width / 4, 3, 16777215);
         pose.popPose();
 
-        graphics.drawCenteredString( font, "https://github.com/ViaVersion/ViaForge", width / 2, (font.lineHeight + 2) * 2 + 3, -1);
+        graphics.drawCenteredString(font, "https://github.com/ViaVersion/ViaForge", width / 2, (font.lineHeight + 2) * 2 + 3, -1);
         graphics.drawString(font, status != null ? status : "Discord: florianmichael", 3, 3, -1);
     }
 
@@ -121,7 +119,7 @@ public class GuiProtocolSelector extends Screen {
         public SlotList(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
             super(client, width, height, top, bottom, slotHeight);
 
-            for (ProtocolVersion version : ProtocolVersionList.getProtocolsNewToOld()) {
+            for (ProtocolVersion version : ProtocolVersion.getReversedProtocols()) {
                 addEntry(new SlotEntry(version));
             }
         }
@@ -156,7 +154,7 @@ public class GuiProtocolSelector extends Screen {
                     color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
                 }
 
-                graphics.drawCenteredString( Minecraft.getInstance().font, color + ProtocolVersion.getName(), width / 2, y, -1);
+                graphics.drawCenteredString(Minecraft.getInstance().font, color + ProtocolVersion.getName(), width / 2, y, -1);
             }
         }
     }

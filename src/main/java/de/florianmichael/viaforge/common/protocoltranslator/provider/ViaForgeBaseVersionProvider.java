@@ -16,47 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocoltranslator.netty;
+package de.florianmichael.viaforge.common.protocoltranslator.provider;
 
-import com.viaversion.vialoader.netty.VLLegacyPipeline;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.protocol.version.BaseVersionProvider;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 
-public class ViaForgeVLLegacyPipeline extends VLLegacyPipeline {
-
-    public ViaForgeVLLegacyPipeline(UserConnection user, ProtocolVersion version) {
-        super(user, version);
-    }
+public class ViaForgeBaseVersionProvider extends BaseVersionProvider {
 
     @Override
-    protected String decompressName() {
-        return "decompress";
-    }
-
-    @Override
-    protected String compressName() {
-        return "compress";
-    }
-
-    @Override
-    protected String packetDecoderName() {
-        return ViaForgeCommon.getManager().getPlatform().getDecodeHandlerName();
-    }
-
-    @Override
-    protected String packetEncoderName() {
-        return "encoder";
-    }
-
-    @Override
-    protected String lengthSplitterName() {
-        return "splitter";
-    }
-
-    @Override
-    protected String lengthPrependerName() {
-        return "prepender";
+    public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {
+        if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer().get()) {
+            return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion();
+        } else {
+            return super.getClosestServerProtocol(connection);
+        }
     }
 
 }

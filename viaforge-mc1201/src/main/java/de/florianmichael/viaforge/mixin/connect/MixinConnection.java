@@ -18,20 +18,19 @@
 
 package de.florianmichael.viaforge.mixin.connect;
 
-import com.viaversion.vialoader.netty.VLLegacyPipeline;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VersionTracker;
-import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
+import java.net.InetSocketAddress;
+import javax.crypto.Cipher;
 import net.minecraft.network.CipherDecoder;
 import net.minecraft.network.CipherEncoder;
 import net.minecraft.network.Connection;
-import net.minecraft.util.LazyLoadedValue;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,17 +38,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import javax.crypto.Cipher;
-import java.net.InetSocketAddress;
 
 @Mixin(Connection.class)
 public class MixinConnection implements VFNetworkManager {
 
-    @Shadow private Channel channel;
+    @Shadow
+    private Channel channel;
 
-    @Shadow private boolean encrypted;
+    @Shadow
+    private boolean encrypted;
     @Unique
     private Cipher viaForge$decryptionCipher;
 
@@ -58,7 +55,7 @@ public class MixinConnection implements VFNetworkManager {
 
     @Inject(method = "setupCompression", at = @At("RETURN"))
     public void reorderPipeline(int p_129485_, boolean p_182682_, CallbackInfo ci) {
-        ViaForgeCommon.getManager().reorderCompression(channel);
+        ViaForgeCommon.getManager().reorderCompression(channel.pipeline());
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)
@@ -74,7 +71,7 @@ public class MixinConnection implements VFNetworkManager {
 
             // Enabling the encryption side
             this.encrypted = true;
-            this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "encrypt", new CipherEncoder(p_244777_2_));
+            this.channel.pipeline().addBefore(PreNettyLengthRemover.NAME, "encrypt", new CipherEncoder(p_244777_2_));
         }
     }
 
@@ -87,7 +84,7 @@ public class MixinConnection implements VFNetworkManager {
     @Override
     public void viaForge$setupPreNettyDecryption() {
         // Enabling the decryption side for 1.6.4 if the 1.7 -> 1.6 protocol tells us to do
-        this.channel.pipeline().addBefore(VLLegacyPipeline.VIALEGACY_PRE_NETTY_LENGTH_REMOVER_NAME, "decrypt", new CipherDecoder(this.viaForge$decryptionCipher));
+        this.channel.pipeline().addBefore(PreNettyLengthRemover.NAME, "decrypt", new CipherDecoder(this.viaForge$decryptionCipher));
     }
 
     @Override

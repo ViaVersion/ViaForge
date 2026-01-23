@@ -19,21 +19,19 @@
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 public class GuiProtocolSelector extends GuiScreen {
 
@@ -134,12 +132,12 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return ProtocolVersionList.getProtocolsNewToOld().size();
+            return ProtocolVersion.getReversedProtocols().size();
         }
 
         @Override
         protected void elementClicked(int index, boolean b, int i1, int i2) {
-            finishedCallback.finished(ProtocolVersionList.getProtocolsNewToOld().get(index), parent);
+            finishedCallback.finished(ProtocolVersion.getReversedProtocols().get(index), parent);
         }
 
         @Override
@@ -155,7 +153,7 @@ public class GuiProtocolSelector extends GuiScreen {
         @Override
         protected void drawSlot(int index, int x, int y, int slotHeight, int mouseX, int mouseY) {
             final ProtocolVersion targetVersion = ViaForgeCommon.getManager().getTargetVersion();
-            final ProtocolVersion version = ProtocolVersionList.getProtocolsNewToOld().get(index);
+            final ProtocolVersion version = ProtocolVersion.getReversedProtocols().get(index);
 
             String color;
             if (targetVersion == version) {
@@ -164,14 +162,14 @@ public class GuiProtocolSelector extends GuiScreen {
                 color = GuiProtocolSelector.this.simple ? ChatFormatting.WHITE.toString() : ChatFormatting.DARK_RED.toString();
             }
 
-            drawCenteredString(mc.fontRendererObj,(color) + version.getName(), width / 2, y, -1);
+            drawCenteredString(mc.fontRendererObj, (color) + version.getName(), width / 2, y, -1);
         }
     }
 
     public interface FinishedCallback {
 
         void finished(final ProtocolVersion version, final GuiScreen parent);
-        
+
     }
-    
+
 }

@@ -18,26 +18,33 @@
 
 package de.florianmichael.viaforge.common;
 
-import com.viaversion.vialoader.ViaLoader;
-import com.viaversion.vialoader.impl.platform.*;
-import com.viaversion.vialoader.netty.CompressionReorderEvent;
+import com.viaversion.viaaprilfools.ViaAprilFoolsPlatformImpl;
+import com.viaversion.viabackwards.ViaBackwardsPlatformImpl;
+import com.viaversion.viarewind.ViaRewindPlatformImpl;
+import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.commands.ViaCommandHandler;
 import com.viaversion.viaversion.connection.ConnectionDetails;
-import com.viaversion.viaversion.connection.UserConnectionImpl;
-import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
+import com.viaversion.viaversion.platform.NoopInjector;
+import com.viaversion.viaversion.platform.ViaChannelInitializer;
+import com.viaversion.viaversion.platform.ViaDecodeHandler;
+import com.viaversion.viaversion.platform.ViaEncodeHandler;
 import de.florianmichael.viaforge.common.platform.VFPlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
-import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLInjector;
-import de.florianmichael.viaforge.common.protocoltranslator.ViaForgeVLLoader;
-import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
-import de.florianmichael.viaforge.common.protocoltranslator.netty.ViaForgeVLLegacyPipeline;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgeViaVersionPlatformImpl;
+import de.florianmichael.viaforge.common.protocoltranslator.ViaForgePlatformLoader;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgeViaVersionPlatform;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelPipeline;
 import io.netty.util.AttributeKey;
-
 import java.io.File;
+import net.raphimc.vialegacy.ViaLegacyPlatformImpl;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import net.raphimc.vialegacy.netty.PreNettyLengthPrepender;
+import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 
 /**
  * This class is used to manage the common code between the different ViaForge versions.
@@ -75,7 +82,18 @@ public class ViaForgeCommon {
 
         final File mainFolder = new File(platform.getLeadingDirectory(), "ViaForge");
 
-        ViaLoader.init(new ViaForgeViaVersionPlatformImpl(mainFolder), new ViaForgeVLLoader(platform), new ViaForgeVLInjector(), null, ViaBackwardsPlatformImpl::new, ViaRewindPlatformImpl::new, ViaLegacyPlatformImpl::new, ViaAprilFoolsPlatformImpl::new);
+        ViaManagerImpl.initAndLoad(
+            new ViaForgeViaVersionPlatform(mainFolder),
+            new NoopInjector(),
+            new ViaCommandHandler(false),
+            new ViaForgePlatformLoader(platform),
+            () -> {
+                new ViaBackwardsPlatformImpl();
+                new ViaRewindPlatformImpl();
+                new ViaLegacyPlatformImpl();
+                new ViaAprilFoolsPlatformImpl();
+            }
+        );
         manager.config = new ViaForgeConfig(new File(mainFolder, "viaforge.yml"), Via.getPlatform().getLogger());
 
         final ProtocolVersion configVersion = ProtocolVersion.getClosest(manager.config.getClientSideVersion());
@@ -96,14 +114,23 @@ public class ViaForgeCommon {
             return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
         }
 
-        channel.attr(VF_NETWORK_MANAGER).set(networkManager);
-
-        final UserConnection user = new UserConnectionImpl(channel, true);
-        new ProtocolPipelineImpl(user);
+        final UserConnection user = ViaChannelInitializer.createUserConnection(channel, true);
 
         channel.attr(VF_VIA_USER).set(user);
+        channel.attr(VF_NETWORK_MANAGER).set(networkManager);
 
-        channel.pipeline().addLast(new ViaForgeVLLegacyPipeline(user, targetVersion));
+        final ChannelPipeline pipeline = channel.pipeline();
+
+        // ViaVersion
+        pipeline.addBefore(platform.getDecodeHandlerName(), ViaDecodeHandler.NAME, new ViaDecodeHandler(user));
+        pipeline.addBefore("encoder", ViaEncodeHandler.NAME, new ViaEncodeHandler(user));
+
+        if (networkManager.viaForge$getTrackedVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+            // ViaLegacy
+            pipeline.addBefore("splitter", PreNettyLengthPrepender.NAME, new PreNettyLengthPrepender(user));
+            pipeline.addBefore("prepender", PreNettyLengthRemover.NAME, new PreNettyLengthRemover(user));
+        }
+
         channel.closeFuture().addListener(future -> {
             if (previousVersion != null) {
                 restoreVersion();
@@ -122,12 +149,24 @@ public class ViaForgeCommon {
     /**
      * Reorders the compression channel.
      *
-     * @param channel the channel to reorder the compression for
+     * @param pipeline the pipeline to reorder the compression in
      */
-    public void reorderCompression(final Channel channel) {
-        // When Minecraft enables compression, we need to reorder the pipeline
-        // to match the counterparts of via-decoder <-> encoder and via-encoder <-> encoder
-        channel.pipeline().fireUserEventTriggered(CompressionReorderEvent.INSTANCE);
+    public void reorderCompression(final ChannelPipeline pipeline) {
+        final int decoderIndex = pipeline.names().indexOf("decompress");
+        if (decoderIndex == -1) {
+            return;
+        }
+
+        if (decoderIndex > pipeline.names().indexOf(ViaDecodeHandler.NAME)) {
+            final ChannelHandler decoderHandler = pipeline.get(ViaDecodeHandler.NAME);
+            final ChannelHandler encoderHandler = pipeline.get(ViaEncodeHandler.NAME);
+
+            pipeline.remove(decoderHandler);
+            pipeline.remove(encoderHandler);
+
+            pipeline.addAfter("decompress", ViaDecodeHandler.NAME, decoderHandler);
+            pipeline.addAfter("compress", ViaEncodeHandler.NAME, encoderHandler);
+        }
     }
 
     public ProtocolVersion getNativeVersion() {

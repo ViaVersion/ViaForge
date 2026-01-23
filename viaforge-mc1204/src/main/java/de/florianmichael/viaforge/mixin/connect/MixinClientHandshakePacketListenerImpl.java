@@ -22,7 +22,7 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.protocoltranslator.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
 import net.minecraft.network.Connection;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;

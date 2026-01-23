@@ -19,10 +19,12 @@
 package de.florianmichael.viaforge.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.viaversion.vialoader.util.ProtocolVersionList;
 import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.DumpUtil;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -30,12 +32,8 @@ import net.minecraft.client.gui.widget.list.AbstractList;
 import net.minecraft.client.gui.widget.list.ExtendedList;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 public class GuiProtocolSelector extends Screen {
 
@@ -123,7 +121,7 @@ public class GuiProtocolSelector extends Screen {
         public SlotList(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
             super(client, width, height, top, bottom, slotHeight);
 
-            for (ProtocolVersion version : ProtocolVersionList.getProtocolsNewToOld()) {
+            for (ProtocolVersion version : ProtocolVersion.getReversedProtocols()) {
                 addEntry(new SlotEntry(version));
             }
         }

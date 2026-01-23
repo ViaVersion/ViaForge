@@ -66,15 +66,11 @@ allprojects {
     }
 
     dependencies {
-        library "com.viaversion:viaversion-common:5.7.1-SNAPSHOT"
-        library "com.viaversion:viabackwards-common:5.7.1-SNAPSHOT"
-        library "com.viaversion:viarewind-common:4.0.14-SNAPSHOT"
-        library "com.viaversion:viaaprilfools-common:4.0.8-SNAPSHOT"
-        library ("com.viaversion:vialoader:4.0.7-SNAPSHOT") {
-            exclude group: "com.google.guava"
-            exclude group: "org.slf4j"
-        }
-        library ("net.raphimc:ViaLegacy:3.0.13-SNAPSHOT") {
+        library "com.viaversion:viaversion-common:5.7.2-SNAPSHOT"
+        library "com.viaversion:viabackwards-common:5.7.1"
+        library "com.viaversion:viarewind-common:4.0.14"
+        library "com.viaversion:viaaprilfools-common:4.0.8"
+        library ("net.raphimc:ViaLegacy:3.0.13") {
             exclude group: "com.google.code.gson", module: "gson"
         }
     }
@@ -322,6 +318,7 @@ subprojects {
 
 dependencies {
     compileOnly "io.netty:netty-all:4.2.2.Final"
+    compileOnly "org.slf4j:slf4j-api:2.0.17"
 }
 
 apply plugin: "net.raphimc.class-token-replacer"

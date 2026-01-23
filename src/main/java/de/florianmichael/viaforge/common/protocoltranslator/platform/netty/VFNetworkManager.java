@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocoltranslator.netty;
+package de.florianmichael.viaforge.common.protocoltranslator.platform.netty;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
