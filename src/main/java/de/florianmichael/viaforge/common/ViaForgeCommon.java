@@ -29,14 +29,13 @@ import com.viaversion.viaversion.commands.ViaCommandHandler;
 import com.viaversion.viaversion.connection.ConnectionDetails;
 import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.platform.NoopInjector;
-import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import com.viaversion.viaversion.platform.ViaDecodeHandler;
 import com.viaversion.viaversion.platform.ViaEncodeHandler;
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
-import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
-import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgePlatformLoader;
 import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
+import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
+import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgePlatformLoader;
 import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgeViaVersionPlatform;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
@@ -111,10 +110,6 @@ public class ViaForgeCommon {
      * @param channel the channel to inject the pipeline into
      */
     public void inject(final Channel channel, final ExtendedNetworkManager networkManager) {
-        if (networkManager.viaForge$getTrackedVersion().equals(getNativeVersion())) {
-            return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
-        }
-
         final UserConnection user = new UserConnectionImpl(channel, true);
         new ProtocolPipelineImpl(user).add(getPlatform().getCustomProtocol());
 
@@ -141,10 +136,6 @@ public class ViaForgeCommon {
     }
 
     public void sendConnectionDetails(final Channel channel) {
-        if (!channel.hasAttr(VF_VIA_USER)) {
-            return;
-        }
-
         ConnectionDetails.sendConnectionDetails(channel.attr(VF_VIA_USER).get(), ConnectionDetails.MOD_CHANNEL);
     }
 
