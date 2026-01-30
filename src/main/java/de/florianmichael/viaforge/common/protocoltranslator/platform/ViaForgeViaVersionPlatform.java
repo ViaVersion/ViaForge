@@ -21,7 +21,7 @@ package de.florianmichael.viaforge.common.protocoltranslator.platform;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.platform.UserConnectionViaVersionPlatform;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.platform.VFPlatform;
+import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
 import de.florianmichael.viaforge.common.protocoltranslator.util.JLoggerToSLF4J;
 import java.io.File;
 import java.util.logging.Logger;
@@ -45,7 +45,7 @@ public final class ViaForgeViaVersionPlatform extends UserConnectionViaVersionPl
 
     @Override
     public String getPlatformVersion() {
-        return VFPlatform.VERSION;
+        return ViaForgePlatform.VERSION;
     }
 
     @Override

@@ -19,7 +19,7 @@
 package de.florianmichael.viaforge.mixin.connect;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
 import io.netty.channel.Channel;
 import net.minecraft.network.NetworkManager;
 import org.spongepowered.asm.mixin.Final;
@@ -38,7 +38,7 @@ public class MixinNetworkManager_1 {
 
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void hookViaPipeline(Channel channel, CallbackInfo ci) {
-        ViaForgeCommon.getManager().inject(channel, (VFNetworkManager) val$networkmanager);
+        ViaForgeCommon.getManager().inject(channel, (ExtendedNetworkManager) val$networkmanager);
     }
 
 }

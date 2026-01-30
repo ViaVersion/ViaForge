@@ -18,7 +18,7 @@
 
 package de.florianmichael.viaforge.mixin;
 
-import de.florianmichael.viaforge.common.gui.ExtendedServerData;
+import de.florianmichael.viaforge.common.extended.ExtendedServerData;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.nbt.CompoundNBT;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

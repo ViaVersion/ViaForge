@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocoltranslator;
+package de.florianmichael.viaforge.common.protocoltranslator.platform;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.platform.ViaPlatformLoader;
 import com.viaversion.viaversion.api.platform.providers.ViaProviders;
 import com.viaversion.viaversion.api.protocol.version.VersionProvider;
 import com.viaversion.viaversion.protocols.v1_8to1_9.provider.MovementTransmitterProvider;
-import de.florianmichael.viaforge.common.platform.VFPlatform;
+import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
 import de.florianmichael.viaforge.common.protocoltranslator.provider.ViaForgeClassicMPPassProvider;
 import de.florianmichael.viaforge.common.protocoltranslator.provider.ViaForgeEncryptionProvider;
 import de.florianmichael.viaforge.common.protocoltranslator.provider.ViaForgeMovementTransmitterProvider;
@@ -36,9 +36,9 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfi
 
 public class ViaForgePlatformLoader implements ViaPlatformLoader {
 
-    private final VFPlatform platform;
+    private final ViaForgePlatform platform;
 
-    public ViaForgePlatformLoader(VFPlatform platform) {
+    public ViaForgePlatformLoader(ViaForgePlatform platform) {
         this.platform = platform;
     }
 

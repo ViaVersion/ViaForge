@@ -16,28 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.protocoltranslator.platform.netty;
+package de.florianmichael.viaforge.common.extended;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
-public interface VFNetworkManager {
+/**
+ * This interface is used to store the target version for a specific server in the server list.
+ */
+public interface ExtendedServerData {
 
-    /**
-     * API method to setup the decryption side of the pipeline.
-     * This method is called by the {@link de.florianmichael.viaforge.common.protocoltranslator.provider.ViaForgeEncryptionProvider} class.
-     */
-    void viaForge$setupPreNettyDecryption();
+    ProtocolVersion viaForge$getVersion();
 
-    /**
-     * @return the target version of the connection
-     */
-    ProtocolVersion viaForge$getTrackedVersion();
-
-    /**
-     * Sets the target version of the connection.
-     *
-     * @param version the target version
-     */
-    void viaForge$setTrackedVersion(final ProtocolVersion version);
+    void viaForge$setVersion(final ProtocolVersion version);
 
 }

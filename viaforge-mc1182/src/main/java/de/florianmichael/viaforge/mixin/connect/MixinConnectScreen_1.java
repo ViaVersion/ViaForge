@@ -19,7 +19,7 @@
 package de.florianmichael.viaforge.mixin.connect;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.gui.ExtendedServerData;
+import de.florianmichael.viaforge.common.extended.ExtendedServerData;
 import de.florianmichael.viaforge.common.platform.VersionTracker;
 import net.minecraft.client.Minecraft;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

@@ -19,7 +19,7 @@
 package de.florianmichael.viaforge;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.platform.VFPlatform;
+import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
@@ -34,7 +34,7 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod("viaforge")
-public class ViaNeoForge implements VFPlatform {
+public class ViaNeoForge implements ViaForgePlatform {
 
     public ViaNeoForge(IEventBus modEventBus) {
         modEventBus.addListener(this::onInit);

@@ -19,7 +19,7 @@
 package de.florianmichael.viaforge;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.platform.VFPlatform;
+import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
 import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
@@ -32,7 +32,7 @@ import java.io.File;
 import java.util.function.Supplier;
 
 @Mod(modid = "viaforge", name = "ViaForge", acceptableRemoteVersions = "*", clientSideOnly=true, useMetadata=true)
-public class ViaForge implements VFPlatform {
+public class ViaForge implements ViaForgePlatform {
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {

@@ -21,7 +21,7 @@ package de.florianmichael.viaforge.mixin.connect;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VersionTracker;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -43,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(Connection.class)
-public class MixinConnection implements VFNetworkManager {
+public class MixinConnection implements ExtendedNetworkManager {
 
     @Shadow
     private Channel channel;
@@ -80,7 +80,7 @@ public class MixinConnection implements VFNetworkManager {
 
     @Inject(method = "connectToServer", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void setTargetVersion(InetSocketAddress p_178301_, boolean p_178302_, CallbackInfoReturnable<Connection> cir, Connection connection, Class<? extends SocketChannel> oclass, LazyLoadedValue<? extends EventLoopGroup> lazyloadedvalue) {
-        final VFNetworkManager mixinConnection = (VFNetworkManager) connection;
+        final ExtendedNetworkManager mixinConnection = (ExtendedNetworkManager) connection;
         mixinConnection.viaForge$setTrackedVersion(VersionTracker.getServerProtocolVersion(p_178301_.getAddress()));
     }
 

@@ -21,7 +21,7 @@ package de.florianmichael.viaforge.mixin.impl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.Pair;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.gui.ExtendedServerData;
+import de.florianmichael.viaforge.common.extended.ExtendedServerData;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.gui.GuiProtocolSelector;
 import net.minecraft.client.gui.GuiButton;

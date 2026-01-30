@@ -18,7 +18,6 @@
 
 package de.florianmichael.viaforge.common.platform;
 
-import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 import java.io.File;
@@ -27,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * This interface is used to access platform-specific fields.
  */
-public interface VFPlatform {
+public interface ViaForgePlatform {
 
     String VERSION = "${version}";
 

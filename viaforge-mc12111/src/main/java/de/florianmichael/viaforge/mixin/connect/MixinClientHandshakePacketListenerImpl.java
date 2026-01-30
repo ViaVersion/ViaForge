@@ -22,7 +22,7 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
 import net.minecraft.network.Connection;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -43,7 +43,7 @@ public class MixinClientHandshakePacketListenerImpl {
 
     @Redirect(method = "authenticateServer", at = @At(value = "INVOKE", target = "Lcom/mojang/authlib/minecraft/MinecraftSessionService;joinServer(Ljava/util/UUID;Ljava/lang/String;Ljava/lang/String;)V"))
     public void onlyJoinServerIfPremium(MinecraftSessionService instance, UUID uuid, String authenticationToken, String serverId) throws AuthenticationException {
-        final VFNetworkManager mixinConnection = (VFNetworkManager) connection;
+        final ExtendedNetworkManager mixinConnection = (ExtendedNetworkManager) connection;
         if (mixinConnection.viaForge$getTrackedVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             final UserConnection user = connection.channel().attr(ViaForgeCommon.VF_VIA_USER).get();
             if (user != null && user.has(ProtocolMetadataStorage.class) && !user.get(ProtocolMetadataStorage.class).authenticate) {

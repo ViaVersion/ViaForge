@@ -31,10 +31,10 @@ import com.viaversion.viaversion.platform.NoopInjector;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import com.viaversion.viaversion.platform.ViaDecodeHandler;
 import com.viaversion.viaversion.platform.ViaEncodeHandler;
-import de.florianmichael.viaforge.common.platform.VFPlatform;
+import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
-import de.florianmichael.viaforge.common.protocoltranslator.ViaForgePlatformLoader;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgePlatformLoader;
+import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
 import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgeViaVersionPlatform;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -53,17 +53,17 @@ import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
 public class ViaForgeCommon {
 
     public static final AttributeKey<UserConnection> VF_VIA_USER = AttributeKey.valueOf("viaforge_via_user");
-    public static final AttributeKey<VFNetworkManager> VF_NETWORK_MANAGER = AttributeKey.valueOf("viaforge_network_manager");
+    public static final AttributeKey<ExtendedNetworkManager> VF_NETWORK_MANAGER = AttributeKey.valueOf("viaforge_network_manager");
 
     private static ViaForgeCommon manager;
 
-    private final VFPlatform platform;
+    private final ViaForgePlatform platform;
     private ProtocolVersion targetVersion;
     private ProtocolVersion previousVersion;
 
     private ViaForgeConfig config;
 
-    public ViaForgeCommon(VFPlatform platform) {
+    public ViaForgeCommon(ViaForgePlatform platform) {
         this.platform = platform;
     }
 
@@ -72,7 +72,7 @@ public class ViaForgeCommon {
      *
      * @param platform the platform fields
      */
-    public static void init(final VFPlatform platform) {
+    public static void init(final ViaForgePlatform platform) {
         final ProtocolVersion version = ProtocolVersion.getProtocol(platform.getGameVersion()); // ViaForge will only load on post-netty versions
         if (version == ProtocolVersion.unknown) {
             throw new IllegalArgumentException("Unknown version " + platform.getGameVersion());
@@ -109,7 +109,7 @@ public class ViaForgeCommon {
      *
      * @param channel the channel to inject the pipeline into
      */
-    public void inject(final Channel channel, final VFNetworkManager networkManager) {
+    public void inject(final Channel channel, final ExtendedNetworkManager networkManager) {
         if (networkManager.viaForge$getTrackedVersion().equals(getNativeVersion())) {
             return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
         }
@@ -200,7 +200,7 @@ public class ViaForgeCommon {
         config.setClientSideVersion(targetVersion.getName());
     }
 
-    public VFPlatform getPlatform() {
+    public ViaForgePlatform getPlatform() {
         return platform;
     }
 

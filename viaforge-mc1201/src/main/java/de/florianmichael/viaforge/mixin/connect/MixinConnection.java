@@ -21,7 +21,7 @@ package de.florianmichael.viaforge.mixin.connect;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VersionTracker;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import java.net.InetSocketAddress;
@@ -40,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Connection.class)
-public class MixinConnection implements VFNetworkManager {
+public class MixinConnection implements ExtendedNetworkManager {
 
     @Shadow
     private Channel channel;
@@ -77,7 +77,7 @@ public class MixinConnection implements VFNetworkManager {
 
     @Inject(method = "connect", at = @At("HEAD"))
     private static void setTargetVersion(InetSocketAddress p_290034_, boolean p_290035_, Connection p_290031_, CallbackInfoReturnable<ChannelFuture> cir) {
-        final VFNetworkManager mixinConnection = (VFNetworkManager) p_290031_;
+        final ExtendedNetworkManager mixinConnection = (ExtendedNetworkManager) p_290031_;
         mixinConnection.viaForge$setTrackedVersion(VersionTracker.getServerProtocolVersion(p_290034_.getAddress()));
     }
 

@@ -16,17 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.common.gui;
+package de.florianmichael.viaforge.common.extended;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
-/**
- * This interface is used to store the target version for a specific server in the server list.
- */
-public interface ExtendedServerData {
+public interface ExtendedNetworkManager {
 
-    ProtocolVersion viaForge$getVersion();
+    /**
+     * API method to setup the decryption side of the pipeline.
+     * This method is called by the {@link de.florianmichael.viaforge.common.protocoltranslator.provider.ViaForgeEncryptionProvider} class.
+     */
+    void viaForge$setupPreNettyDecryption();
 
-    void viaForge$setVersion(final ProtocolVersion version);
+    /**
+     * @return the target version of the connection
+     */
+    ProtocolVersion viaForge$getTrackedVersion();
+
+    /**
+     * Sets the target version of the connection.
+     *
+     * @param version the target version
+     */
+    void viaForge$setTrackedVersion(final ProtocolVersion version);
 
 }

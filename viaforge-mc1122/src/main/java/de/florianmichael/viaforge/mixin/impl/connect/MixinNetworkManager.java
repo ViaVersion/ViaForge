@@ -21,7 +21,7 @@ package de.florianmichael.viaforge.mixin.impl.connect;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.VersionTracker;
-import de.florianmichael.viaforge.common.protocoltranslator.platform.netty.VFNetworkManager;
+import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
 import io.netty.channel.Channel;
 import java.net.InetAddress;
 import javax.crypto.Cipher;
@@ -43,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(NetworkManager.class)
-public class MixinNetworkManager implements VFNetworkManager {
+public class MixinNetworkManager implements ExtendedNetworkManager {
 
     @Shadow
     private Channel channel;
@@ -80,7 +80,7 @@ public class MixinNetworkManager implements VFNetworkManager {
 
     @Inject(method = "createNetworkManagerAndConnect", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/Bootstrap;group(Lio/netty/channel/EventLoopGroup;)Lio/netty/bootstrap/AbstractBootstrap;", remap = false), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void setTargetVersion(InetAddress address, int serverPort, boolean useNativeTransport, CallbackInfoReturnable<NetworkManager> cir, NetworkManager networkmanager, Class oclass, LazyLoadBase lazyloadbase) {
-        final VFNetworkManager mixinNetworkManager = (VFNetworkManager) networkmanager;
+        final ExtendedNetworkManager mixinNetworkManager = (ExtendedNetworkManager) networkmanager;
         mixinNetworkManager.viaForge$setTrackedVersion(VersionTracker.getServerProtocolVersion(address));
     }
 
