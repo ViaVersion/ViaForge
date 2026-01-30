@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.provider;
+package de.florianmichael.viaforge.platform;
 
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfileRepository;
@@ -27,12 +27,11 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.viaversion.viaversion.api.minecraft.GameProfile;
-import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
-
 import java.net.Proxy;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
 

@@ -20,7 +20,11 @@ package de.florianmichael.viaforge;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
-import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
+import de.florianmichael.viaforge.common.platform.ViaForgeProtocolBase;
+import de.florianmichael.viaforge.platform.ViaForgeGameProfileFetcher;
+import de.florianmichael.viaforge.platform.ViaForgeProtocol;
+import java.io.File;
+import java.util.function.Supplier;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
@@ -29,9 +33,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
-
-import java.io.File;
-import java.util.function.Supplier;
 
 @Mod("viaforge")
 public class ViaNeoForge implements ViaForgePlatform {
@@ -74,6 +75,11 @@ public class ViaNeoForge implements ViaForgePlatform {
     @Override
     public String getDecodeHandlerName() {
         return HandlerNames.INBOUND_CONFIG;
+    }
+
+    @Override
+    public ViaForgeProtocolBase<?, ?, ?, ?> getCustomProtocol() {
+        return ViaForgeProtocol.INSTANCE;
     }
 
 }

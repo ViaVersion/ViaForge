@@ -16,54 +16,63 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.provider;
+package de.florianmichael.viaforge.platform;
 
+import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.HttpAuthenticationService;
+import com.mojang.authlib.ProfileLookupCallback;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
-import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import com.mojang.authlib.yggdrasil.response.NameAndId;
 import com.viaversion.viaversion.api.minecraft.GameProfile;
 import java.net.Proxy;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
 
-    private static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
+    private static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
     private static final MinecraftSessionService SESSION_SERVICE = AUTHENTICATION_SERVICE.createMinecraftSessionService();
     private static final GameProfileRepository GAME_PROFILE_REPOSITORY = AUTHENTICATION_SERVICE.createProfileRepository();
 
     @Override
-    public UUID loadMojangUuid(String playerName) {
-        final Optional<NameAndId> nameAndId = GAME_PROFILE_REPOSITORY.findProfileByName(playerName);
-        if (nameAndId.isEmpty()) {
-            throw new ProfileNotFoundException();
-        }
+    public UUID loadMojangUuid(String playerName) throws Exception {
+        final CompletableFuture<com.mojang.authlib.GameProfile> future = new CompletableFuture<>();
+        GAME_PROFILE_REPOSITORY.findProfilesByNames(new String[]{playerName}, Agent.MINECRAFT, new ProfileLookupCallback() {
+            @Override
+            public void onProfileLookupSucceeded(com.mojang.authlib.GameProfile profile) {
+                future.complete(profile);
+            }
 
-        return nameAndId.get().id();
+            @Override
+            public void onProfileLookupFailed(com.mojang.authlib.GameProfile profile, Exception exception) {
+                future.completeExceptionally(exception);
+            }
+        });
+        if (!future.isDone()) {
+            future.completeExceptionally(new ProfileNotFoundException());
+        }
+        return future.get().getId();
     }
 
     @Override
     public GameProfile loadGameProfile(UUID uuid) {
-        final ProfileResult result = SESSION_SERVICE.fetchProfile(uuid, true);
-        if (result == null) {
+        final com.mojang.authlib.GameProfile inProfile = new com.mojang.authlib.GameProfile(uuid, null);
+        final com.mojang.authlib.GameProfile mojangProfile = SESSION_SERVICE.fillProfileProperties(inProfile, true);
+        if (mojangProfile.equals(inProfile)) {
             throw new ProfileNotFoundException();
         }
 
-        final com.mojang.authlib.GameProfile mojangProfile = result.profile();
-
-        final GameProfile.Property[] properties = new GameProfile.Property[mojangProfile.properties().size()];
+        final GameProfile.Property[] properties = new GameProfile.Property[mojangProfile.getProperties().size()];
         int i = 0;
-        for (final Map.Entry<String, Property> entry : mojangProfile.properties().entries()) {
-            properties[i++] = new GameProfile.Property(entry.getValue().name(), entry.getValue().value(), entry.getValue().signature());
+        for (final Map.Entry<String, Property> entry : mojangProfile.getProperties().entries()) {
+            properties[i++] = new GameProfile.Property(entry.getValue().getName(), entry.getValue().getValue(), entry.getValue().getSignature());
         }
-        return new GameProfile(mojangProfile.name(), mojangProfile.id(), properties);
+        return new GameProfile(mojangProfile.getName(), mojangProfile.getId(), properties);
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * This file is part of ViaForge - https://github.com/FlorianMichael/ViaForge
- * Copyright (C) 2021-2024 FlorianMichael/EnZaXD <git@florianmichael.de> and contributors
+ * Copyright (C) 2021-2026 FlorianMichael/EnZaXD <git@florianmichael.de> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.provider;
+package de.florianmichael.viaforge.platform;
 
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfileRepository;
@@ -27,11 +27,12 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.viaversion.viaversion.api.minecraft.GameProfile;
+import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
+
 import java.net.Proxy;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
 
@@ -63,7 +64,9 @@ public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
     public GameProfile loadGameProfile(UUID uuid) {
         final com.mojang.authlib.GameProfile inProfile = new com.mojang.authlib.GameProfile(uuid, null);
         final com.mojang.authlib.GameProfile mojangProfile = SESSION_SERVICE.fillProfileProperties(inProfile, true);
-        if (mojangProfile.equals(inProfile)) throw new ProfileNotFoundException();
+        if (mojangProfile.equals(inProfile)) {
+            throw new ProfileNotFoundException();
+        }
 
         final GameProfile.Property[] properties = new GameProfile.Property[mojangProfile.getProperties().size()];
         int i = 0;

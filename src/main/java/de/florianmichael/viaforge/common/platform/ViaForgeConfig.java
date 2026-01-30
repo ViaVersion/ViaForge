@@ -21,7 +21,6 @@ package de.florianmichael.viaforge.common.platform;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.util.Config;
 import com.viaversion.viaversion.util.Pair;
-
 import java.io.File;
 import java.net.URL;
 import java.util.Collections;
@@ -30,12 +29,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class ViaForgeConfig extends Config {
-    
+
     public static final String CLIENT_SIDE_VERSION = "client-side-version";
     public static final String VERIFY_SESSION_IN_OLD_VERSIONS = "verify-session-in-old-versions";
     public static final String ALLOW_BETACRAFT_AUTHENTICATION = "allow-betacraft-authentication";
     public static final String SHOW_PROTOCOL_VERSION_IN_F3 = "show-protocol-version-in-f3";
-    public static final String SEND_CONNECTION_DETAILS = "send-connection-details";
 
     public static final String SHOW_MAIN_MENU_BUTTON = "show-main-menu-button";
     public static final String SHOW_MULTIPLAYER_BUTTON = "show-multiplayer-button";
@@ -96,10 +94,6 @@ public class ViaForgeConfig extends Config {
         return getBoolean(SHOW_PROTOCOL_VERSION_IN_F3, true);
     }
 
-    public boolean isSendConnectionDetails() {
-        return getBoolean(SEND_CONNECTION_DETAILS, false);
-    }
-
     public boolean isShowMainMenuButton() {
         return getBoolean(SHOW_MAIN_MENU_BUTTON, true);
     }
@@ -146,8 +140,8 @@ public class ViaForgeConfig extends Config {
         public interface PositionInvoker {
 
             Pair<Integer, Integer> invoke(int width, int height);
-            
+
         }
     }
-    
+
 }

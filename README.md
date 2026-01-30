@@ -53,6 +53,5 @@ Note: Build scripts are made to be run using Java 21.
 ViaForge supports sending a custom payload to transmit player protocol version data to the server. This allows servers
 to retrieve a player's protocol version via plugin messages, which can be useful for anti-cheat checks and
 version-dependent logic.
-This feature is enabled by default and can be disabled using the `send-connection-details` config option.
 For more details on how to use this feature, see
-the [Player Details Protocol wiki](https://github.com/ViaVersion/ViaVersion/wiki/Player-Details-Protocol).
+the [Server and Player Details Protocol wiki](https://github.com/ViaVersion/ViaVersion/wiki/Server-and-Player-Details-Protocol).

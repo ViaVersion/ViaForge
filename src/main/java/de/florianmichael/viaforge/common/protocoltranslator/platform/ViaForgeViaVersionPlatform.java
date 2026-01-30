@@ -18,10 +18,14 @@
 
 package de.florianmichael.viaforge.common.protocoltranslator.platform;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.platform.UserConnectionViaVersionPlatform;
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
+import de.florianmichael.viaforge.common.platform.ViaForgeProtocolBase;
 import de.florianmichael.viaforge.common.protocoltranslator.util.JLoggerToSLF4J;
 import java.io.File;
 import java.util.logging.Logger;
@@ -46,6 +50,24 @@ public final class ViaForgeViaVersionPlatform extends UserConnectionViaVersionPl
     @Override
     public String getPlatformVersion() {
         return ViaForgePlatform.VERSION;
+    }
+
+    @Override
+    public void sendCustomPayload(UserConnection connection, String channel, byte[] message) {
+        final ViaForgeProtocolBase<?, ?, ?, ?> protocol = ViaForgeCommon.getManager().getPlatform().getCustomProtocol();
+        final PacketWrapper customPayload = PacketWrapper.create(protocol.getCustomPayloadPacketType(), connection);
+        customPayload.write(Types.STRING, channel);
+        customPayload.write(Types.REMAINING_BYTES, message);
+        customPayload.scheduleSendToServer(protocol.getClass());
+    }
+
+    @Override
+    public void sendCustomPayloadToClient(final UserConnection connection, final String channel, final byte[] message) {
+        final ViaForgeProtocolBase<?, ?, ?, ?> protocol = ViaForgeCommon.getManager().getPlatform().getCustomProtocol();
+        final PacketWrapper customPayload = PacketWrapper.create(protocol.getClientboundCustomPayloadPacketType(), connection);
+        customPayload.write(Types.STRING, channel);
+        customPayload.write(Types.REMAINING_BYTES, message);
+        customPayload.scheduleSend(protocol.getClass());
     }
 
     @Override

@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.provider;
+package de.florianmichael.viaforge.platform;
 
-import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.HttpAuthenticationService;
 import com.mojang.authlib.ProfileLookupCallback;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.viaversion.viaversion.api.minecraft.GameProfile;
 import java.net.Proxy;
@@ -35,21 +35,21 @@ import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfi
 
 public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
 
-    private static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
+    private static final HttpAuthenticationService AUTHENTICATION_SERVICE = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
     private static final MinecraftSessionService SESSION_SERVICE = AUTHENTICATION_SERVICE.createMinecraftSessionService();
     private static final GameProfileRepository GAME_PROFILE_REPOSITORY = AUTHENTICATION_SERVICE.createProfileRepository();
 
     @Override
     public UUID loadMojangUuid(String playerName) throws Exception {
         final CompletableFuture<com.mojang.authlib.GameProfile> future = new CompletableFuture<>();
-        GAME_PROFILE_REPOSITORY.findProfilesByNames(new String[]{playerName}, Agent.MINECRAFT, new ProfileLookupCallback() {
+        GAME_PROFILE_REPOSITORY.findProfilesByNames(new String[]{playerName}, new ProfileLookupCallback() {
             @Override
             public void onProfileLookupSucceeded(com.mojang.authlib.GameProfile profile) {
                 future.complete(profile);
             }
 
             @Override
-            public void onProfileLookupFailed(com.mojang.authlib.GameProfile profile, Exception exception) {
+            public void onProfileLookupFailed(String profileName, Exception exception) {
                 future.completeExceptionally(exception);
             }
         });
@@ -61,16 +61,16 @@ public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
 
     @Override
     public GameProfile loadGameProfile(UUID uuid) {
-        final com.mojang.authlib.GameProfile inProfile = new com.mojang.authlib.GameProfile(uuid, null);
-        final com.mojang.authlib.GameProfile mojangProfile = SESSION_SERVICE.fillProfileProperties(inProfile, true);
-        if (mojangProfile.equals(inProfile)) {
+        final ProfileResult result = SESSION_SERVICE.fetchProfile(uuid, true);
+        if (result == null) {
             throw new ProfileNotFoundException();
         }
 
+        final com.mojang.authlib.GameProfile mojangProfile = result.profile();
         final GameProfile.Property[] properties = new GameProfile.Property[mojangProfile.getProperties().size()];
         int i = 0;
         for (final Map.Entry<String, Property> entry : mojangProfile.getProperties().entries()) {
-            properties[i++] = new GameProfile.Property(entry.getValue().getName(), entry.getValue().getValue(), entry.getValue().getSignature());
+            properties[i++] = new GameProfile.Property(entry.getValue().name(), entry.getValue().value(), entry.getValue().signature());
         }
         return new GameProfile(mojangProfile.getName(), mojangProfile.getId(), properties);
     }

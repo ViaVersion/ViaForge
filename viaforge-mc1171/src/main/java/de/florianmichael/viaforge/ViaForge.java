@@ -20,7 +20,9 @@ package de.florianmichael.viaforge;
 
 import de.florianmichael.viaforge.common.ViaForgeCommon;
 import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
-import de.florianmichael.viaforge.provider.ViaForgeGameProfileFetcher;
+import de.florianmichael.viaforge.common.platform.ViaForgeProtocolBase;
+import de.florianmichael.viaforge.platform.ViaForgeGameProfileFetcher;
+import de.florianmichael.viaforge.platform.ViaForgeProtocol;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
@@ -73,6 +75,11 @@ public class ViaForge implements ViaForgePlatform {
     @Override
     public String getDecodeHandlerName() {
         return "decoder";
+    }
+
+    @Override
+    public ViaForgeProtocolBase<?, ?, ?, ?> getCustomProtocol() {
+        return ViaForgeProtocol.INSTANCE;
     }
 
 }

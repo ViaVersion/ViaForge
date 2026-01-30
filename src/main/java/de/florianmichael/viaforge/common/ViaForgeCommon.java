@@ -27,10 +27,12 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.commands.ViaCommandHandler;
 import com.viaversion.viaversion.connection.ConnectionDetails;
+import com.viaversion.viaversion.connection.UserConnectionImpl;
 import com.viaversion.viaversion.platform.NoopInjector;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import com.viaversion.viaversion.platform.ViaDecodeHandler;
 import com.viaversion.viaversion.platform.ViaEncodeHandler;
+import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeConfig;
 import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgePlatformLoader;
@@ -113,7 +115,8 @@ public class ViaForgeCommon {
             return; // Don't inject ViaVersion into pipeline if there is nothing to translate anyway
         }
 
-        final UserConnection user = ViaChannelInitializer.createUserConnection(channel, true);
+        final UserConnection user = new UserConnectionImpl(channel, true);
+        new ProtocolPipelineImpl(user).add(getPlatform().getCustomProtocol());
 
         channel.attr(VF_VIA_USER).set(user);
         channel.attr(VF_NETWORK_MANAGER).set(networkManager);
@@ -138,7 +141,7 @@ public class ViaForgeCommon {
     }
 
     public void sendConnectionDetails(final Channel channel) {
-        if (!config.isSendConnectionDetails() || !channel.hasAttr(VF_VIA_USER)) {
+        if (!channel.hasAttr(VF_VIA_USER)) {
             return;
         }
 

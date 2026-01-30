@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.viaforge.provider;
+package de.florianmichael.viaforge.platform;
 
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.HttpAuthenticationService;
@@ -67,6 +67,7 @@ public class ViaForgeGameProfileFetcher extends GameProfileFetcher {
         }
 
         final com.mojang.authlib.GameProfile mojangProfile = result.profile();
+
         final GameProfile.Property[] properties = new GameProfile.Property[mojangProfile.getProperties().size()];
         int i = 0;
         for (final Map.Entry<String, Property> entry : mojangProfile.getProperties().entries()) {

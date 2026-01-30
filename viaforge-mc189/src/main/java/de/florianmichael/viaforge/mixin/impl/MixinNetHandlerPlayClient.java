@@ -34,10 +34,6 @@ public class MixinNetHandlerPlayClient {
 
     @Inject(method = "handleJoinGame", at = @At("RETURN"))
     public void sendConnectionDetails(CallbackInfo ci) {
-        if (!ViaForgeCommon.getManager().getConfig().isSendConnectionDetails()) {
-            return;
-        }
-
         final Channel channel = Minecraft.getMinecraft().thePlayer.sendQueue.getNetworkManager().channel();
         final UserConnection connection = channel.attr(ViaForgeCommon.VF_VIA_USER).get();
         if (connection == null) {
