@@ -19,9 +19,9 @@
 package de.florianmichael.viaforge.mixin.connect;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.platform.VersionTracker;
+import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
+import de.florianmichael.viaforge.common.platform.VersionTracker;
 import io.netty.channel.Channel;
 import java.net.InetAddress;
 import javax.crypto.Cipher;
@@ -56,7 +56,7 @@ public class MixinNetworkManager implements ExtendedNetworkManager {
 
     @Inject(method = "setupCompression", at = @At("RETURN"))
     public void reorderPipeline(int p_setCompressionTreshold_1_, CallbackInfo ci) {
-        ViaForgeCommon.getManager().reorderCompression(channel.pipeline());
+        ViaChannelInitializer.reorderPipeline(channel.pipeline(), "compress", "decompress");
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)

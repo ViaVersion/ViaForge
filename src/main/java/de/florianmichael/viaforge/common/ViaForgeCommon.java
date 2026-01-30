@@ -37,7 +37,6 @@ import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgePla
 import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
 import de.florianmichael.viaforge.common.protocoltranslator.platform.ViaForgeViaVersionPlatform;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.AttributeKey;
 import java.io.File;
@@ -144,29 +143,6 @@ public class ViaForgeCommon {
         }
 
         ConnectionDetails.sendConnectionDetails(channel.attr(VF_VIA_USER).get(), ConnectionDetails.MOD_CHANNEL);
-    }
-
-    /**
-     * Reorders the compression channel.
-     *
-     * @param pipeline the pipeline to reorder the compression in
-     */
-    public void reorderCompression(final ChannelPipeline pipeline) {
-        final int decoderIndex = pipeline.names().indexOf("decompress");
-        if (decoderIndex == -1) {
-            return;
-        }
-
-        if (decoderIndex > pipeline.names().indexOf(ViaDecodeHandler.NAME)) {
-            final ChannelHandler decoderHandler = pipeline.get(ViaDecodeHandler.NAME);
-            final ChannelHandler encoderHandler = pipeline.get(ViaEncodeHandler.NAME);
-
-            pipeline.remove(decoderHandler);
-            pipeline.remove(encoderHandler);
-
-            pipeline.addAfter("decompress", ViaDecodeHandler.NAME, decoderHandler);
-            pipeline.addAfter("compress", ViaEncodeHandler.NAME, encoderHandler);
-        }
     }
 
     public ProtocolVersion getNativeVersion() {

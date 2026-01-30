@@ -19,9 +19,9 @@
 package de.florianmichael.viaforge.mixin.connect;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import de.florianmichael.viaforge.common.ViaForgeCommon;
-import de.florianmichael.viaforge.common.platform.VersionTracker;
+import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import de.florianmichael.viaforge.common.extended.ExtendedNetworkManager;
+import de.florianmichael.viaforge.common.platform.VersionTracker;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import java.net.InetSocketAddress;
@@ -29,6 +29,7 @@ import javax.crypto.Cipher;
 import net.minecraft.network.CipherDecoder;
 import net.minecraft.network.CipherEncoder;
 import net.minecraft.network.Connection;
+import net.minecraft.network.HandlerNames;
 import net.minecraft.server.network.EventLoopGroupHolder;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.netty.PreNettyLengthRemover;
@@ -56,7 +57,7 @@ public class MixinConnection implements ExtendedNetworkManager {
 
     @Inject(method = "setupCompression", at = @At("RETURN"))
     public void reorderPipeline(int p_129485_, boolean p_182682_, CallbackInfo ci) {
-        ViaForgeCommon.getManager().reorderCompression(channel.pipeline());
+        ViaChannelInitializer.reorderPipeline(channel.pipeline(), HandlerNames.COMPRESS, HandlerNames.DECOMPRESS);
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)
