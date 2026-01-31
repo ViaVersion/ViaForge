@@ -36,7 +36,7 @@ public final class VFDebugScreenEntry implements DebugScreenEntry {
         final ViaForgeCommon common = ViaForgeCommon.getManager();
         final ProtocolVersion version = ViaForgeCommon.getManager().getTargetVersion();
 
-        if (common.getConfig().isShowProtocolVersionInF3() && version != common.getNativeVersion() && !common.getPlatform().isSingleplayer().get()) {
+        if (common.getConfig().isShowProtocolVersionInF3() && version != common.getNativeVersion() && !common.getPlatform().isSingleplayer()) {
             p_427172_.addLine("ViaForge: " + version.toString());
         }
     }

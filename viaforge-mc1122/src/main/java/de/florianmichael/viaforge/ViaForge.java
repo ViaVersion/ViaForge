@@ -23,6 +23,7 @@ import de.florianmichael.viaforge.common.platform.ViaForgePlatform;
 import de.florianmichael.viaforge.common.platform.ViaForgeProtocolBase;
 import de.florianmichael.viaforge.platform.ViaForgeGameProfileFetcher;
 import de.florianmichael.viaforge.platform.ViaForgeProtocol;
+import java.io.File;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import net.minecraft.util.Session;
@@ -30,10 +31,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
-import java.io.File;
-import java.util.function.Supplier;
-
-@Mod(modid = "viaforge", name = "ViaForge", acceptableRemoteVersions = "*", clientSideOnly=true, useMetadata=true)
+@Mod(modid = "viaforge", name = "ViaForge", acceptableRemoteVersions = "*", clientSideOnly = true, useMetadata = true)
 public class ViaForge implements ViaForgePlatform {
 
     @Mod.EventHandler
@@ -47,8 +45,8 @@ public class ViaForge implements ViaForgePlatform {
     }
 
     @Override
-    public Supplier<Boolean> isSingleplayer() {
-        return () -> Minecraft.getMinecraft().isSingleplayer();
+    public boolean isSingleplayer() {
+        return Minecraft.getMinecraft().isSingleplayer();
     }
 
     @Override

@@ -20,7 +20,6 @@ package de.florianmichael.viaforge.common.platform;
 
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import java.io.File;
-import java.util.function.Supplier;
 import net.raphimc.vialegacy.protocol.release.r1_7_6_10tor1_8.provider.GameProfileFetcher;
 
 /**
@@ -38,7 +37,7 @@ public interface ViaForgePlatform {
     /**
      * @return if the client is in singleplayer
      */
-    Supplier<Boolean> isSingleplayer();
+    boolean isSingleplayer();
 
     /**
      * @return the leading directory of the platform

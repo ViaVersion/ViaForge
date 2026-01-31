@@ -24,7 +24,6 @@ import de.florianmichael.viaforge.common.platform.ViaForgeProtocolBase;
 import de.florianmichael.viaforge.platform.ViaForgeGameProfileFetcher;
 import de.florianmichael.viaforge.platform.ViaForgeProtocol;
 import java.io.File;
-import java.util.function.Supplier;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
@@ -51,8 +50,8 @@ public class ViaNeoForge implements ViaForgePlatform {
     }
 
     @Override
-    public Supplier<Boolean> isSingleplayer() {
-        return () -> Minecraft.getInstance().isSingleplayer();
+    public boolean isSingleplayer() {
+        return Minecraft.getInstance().isSingleplayer();
     }
 
     @Override

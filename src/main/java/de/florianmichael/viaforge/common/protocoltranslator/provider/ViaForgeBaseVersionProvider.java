@@ -27,7 +27,7 @@ public class ViaForgeBaseVersionProvider extends BaseVersionProvider {
 
     @Override
     public ProtocolVersion getClosestServerProtocol(UserConnection connection) throws Exception {
-        if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer().get()) {
+        if (connection.isClientSide() && !ViaForgeCommon.getManager().getPlatform().isSingleplayer()) {
             return connection.getChannel().attr(ViaForgeCommon.VF_NETWORK_MANAGER).get().viaForge$getTrackedVersion();
         } else {
             return super.getClosestServerProtocol(connection);

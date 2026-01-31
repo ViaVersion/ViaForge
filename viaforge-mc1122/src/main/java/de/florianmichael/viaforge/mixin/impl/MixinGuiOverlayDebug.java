@@ -36,7 +36,7 @@ public class MixinGuiOverlayDebug {
         final ViaForgeCommon common = ViaForgeCommon.getManager();
         final ProtocolVersion version = ViaForgeCommon.getManager().getTargetVersion();
 
-        if (common.getConfig().isShowProtocolVersionInF3() && version != common.getNativeVersion() && !common.getPlatform().isSingleplayer().get()) {
+        if (common.getConfig().isShowProtocolVersionInF3() && version != common.getNativeVersion() && !common.getPlatform().isSingleplayer()) {
             cir.getReturnValue().add("");
             cir.getReturnValue().add("ViaForge: " + version.toString());
         }
