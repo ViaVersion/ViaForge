@@ -7,9 +7,9 @@
     "mcversion": "[1.12,)",
     "url": "https://github.com/ViaVersion/ViaForge",
     "authorList": [
-      "FlorianMichael/EnZaXD"
+      "Florian Reuth (EnZaXD)"
     ],
-    "credits": "https://github.com/FlorianMichael/",
+    "credits": "https://github.com/florianreuth/",
     "logoFile": "icon.png"
   }
 ]

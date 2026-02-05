@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_21",
-  "package": "de.florianmichael.viaforge.mixin",
+  "package": "com.viaversion.viaforge.mixin",
   "client": [
     "MixinClientPacketListener",
     "MixinDirectJoinServerScreen",

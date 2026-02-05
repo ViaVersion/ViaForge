@@ -132,7 +132,7 @@ subprojects {
                     // mixin
                     property "mixin.debug.export", "true"
                     property "mixin.hotSwap", "true"
-                    property "fml.coreMods.load", "de.florianmichael.viaforge.mixin.MixinLoader"
+                    property "fml.coreMods.load", "com.viaversion.viaforge.mixin.MixinLoader"
                     // Only required for MC 1.12, but modern Forges skips this anyway
                     args "-mixin.config=" + "mixins.viaforge.json"
 
@@ -202,17 +202,17 @@ subprojects {
     jar {
         manifest.attributes(
             "Specification-Title": project.name,
-            "Specification-Vendor": "FlorianMichael/EnZaXD",
+            "Specification-Vendor": "EnZaXD",
             "Specification-Version": project.version,
             "Implementation-Title": project.name,
-            "Implementation-Vendor": "FlorianMichael/EnZaXD",
+            "Implementation-Vendor": "EnZaXD",
             "Implementation-Version": project.version,
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd" - "HH:mm:ssZ"),
-            "Implementation-Contact": "git@florianmichael.de",
+            "Implementation-Contact": "git@florianreuth.de",
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
             "FMLCorePluginContainsFMLMod": "true", // Only required for MC 1.12, but modern Forges skips this anyway
-            "FMLCorePlugin": "de.florianmichael.viaforge.mixin.MixinLoader", // Counterpart to the above
+            "FMLCorePlugin": "com.viaversion.viaforge.mixin.MixinLoader", // Counterpart to the above
             "MixinConfigs": "mixins.viaforge.json",
             "ForceLoadAsMod": "true"
         )
@@ -245,7 +245,7 @@ subprojects {
         }
 
         // Workaround GH-94
-        relocate("org.slf4j", "de.florianmichael.viaforge.libs.slf4j")
+        relocate("org.slf4j", "com.viaversion.viaforge.libs.slf4j")
     }
 
     downgradeJar {

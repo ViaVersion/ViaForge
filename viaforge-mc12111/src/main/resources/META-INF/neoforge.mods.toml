@@ -10,10 +10,10 @@ modId="viaforge"
 version="${version}"
 displayName="ViaForge"
 displayTest = "IGNORE_ALL_VERSION"
-displayURL="https://github.com/FlorianMichael"
+displayURL="https://github.com/florianreuth"
 logoFile="icon.png"
 credits="Github contributors"
-authors="FlorianMichael/EnZaXD"
+authors="Florian Reuth (EnZaXD)"
 description="{description}"
 
 [[mixins]]
