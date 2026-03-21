@@ -11,6 +11,7 @@
     "MixinGuiScreenAddServer",
     "MixinGuiScreenServerList",
     "MixinNetHandlerPlayClient",
+    "MixinS08PacketPlayerPosLook",
     "MixinServerData",
     "compatibility.patcher.MixinProtocolVersionDetector",
     "connect.MixinGuiConnecting_1",

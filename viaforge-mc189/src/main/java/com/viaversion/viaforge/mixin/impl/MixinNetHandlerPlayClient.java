@@ -18,12 +18,19 @@
 
 package com.viaversion.viaforge.mixin.impl;
 
+import com.viaversion.viaforge.mixin.impl.interfaces.IS08;
+import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.connection.ConnectionDetails;
 import com.viaversion.viaforge.common.ViaForgeCommon;
+import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
 import io.netty.channel.Channel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,4 +50,18 @@ public class MixinNetHandlerPlayClient {
         ConnectionDetails.sendConnectionDetails(connection, ConnectionDetails.MOD_CHANNEL);
     }
 
+    @Inject(method = "handlePlayerPosLook", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;setPositionAndRotation(DDDFF)V", shift = At.Shift.AFTER))
+    public void handleTeleportPacket(S08PacketPlayerPosLook packetIn, CallbackInfo ci) {
+        final Channel channel = Minecraft.getMinecraft().thePlayer.sendQueue.getNetworkManager().channel();
+        final UserConnection connection = channel.attr(ViaForgeCommon.VF_VIA_USER).get();
+        if (connection == null) {
+            return;
+        }
+
+        if (ViaForgeCommon.getManager().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_9)) {
+            PacketWrapper packet = PacketWrapper.create(ServerboundPackets1_9.ACCEPT_TELEPORTATION, connection);
+            packet.write(Types.VAR_INT, ((IS08)packetIn).getTeleportId());
+            packet.sendToServer(Protocol1_9To1_8.class);
+        }
+    }
 }
