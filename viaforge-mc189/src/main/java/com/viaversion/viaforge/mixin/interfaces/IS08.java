@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viaforge.mixin.impl.interfaces;
+package com.viaversion.viaforge.mixin.interfaces;
 
 public interface IS08 {
-
     int getTeleportId();
 }

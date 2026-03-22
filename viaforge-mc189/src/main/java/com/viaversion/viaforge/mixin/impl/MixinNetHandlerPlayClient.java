@@ -18,7 +18,7 @@
 
 package com.viaversion.viaforge.mixin.impl;
 
-import com.viaversion.viaforge.mixin.impl.interfaces.IS08;
+import com.viaversion.viaforge.mixin.interfaces.IS08;
 import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;

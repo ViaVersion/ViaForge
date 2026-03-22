@@ -19,8 +19,12 @@
 package com.viaversion.viaforge.mixin.impl;
 
 import com.viaversion.viaforge.common.ViaForgeCommon;
-import com.viaversion.viaforge.mixin.impl.interfaces.IS08;
+import com.viaversion.viaforge.mixin.interfaces.IS08;
+import com.viaversion.viarewind.protocol.v1_9to1_8.storage.PlayerPositionTracker;
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import io.netty.channel.Channel;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +43,14 @@ public class MixinS08PacketPlayerPosLook implements IS08 {
     @Inject(method = "readPacketData", at = @At("RETURN"))
     public void onReadPacketData(PacketBuffer buf, CallbackInfo ci) throws IOException {
         if (ViaForgeCommon.getManager().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_9)) {
-            this.teleportId = buf.readVarIntFromBuffer();
+            Channel channel = Minecraft.getMinecraft().thePlayer.sendQueue.getNetworkManager().channel();
+            UserConnection connection = channel.attr(ViaForgeCommon.VF_VIA_USER).get();
+            if (connection != null) {
+                PlayerPositionTracker tracker = connection.get(PlayerPositionTracker.class);
+                if (tracker != null) {
+                    this.teleportId = tracker.getConfirmId();
+                }
+            }
         }
     }
 
