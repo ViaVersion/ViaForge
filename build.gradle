@@ -94,15 +94,18 @@ allprojects {
         library "com.viaversion:viabackwards-common:5.8.0"
         library "com.viaversion:viarewind-common:4.0.15"
         library "com.viaversion:viaaprilfools-common:4.1.0"
-        library ("net.raphimc:ViaLegacy:3.0.14") {
+        library("net.raphimc:ViaLegacy:3.0.14") {
             exclude group: "com.google.code.gson", module: "gson"
         }
     }
 }
 
 subprojects {
-    apply plugin: "net.minecraftforge.gradle"
-    apply plugin: "org.spongepowered.mixin"
+    def applyFg = project.hasProperty("applyFg") ? Boolean.parseBoolean(project.applyFg) : true
+    if (applyFg) {
+        apply plugin: "net.minecraftforge.gradle"
+        apply plugin: "org.spongepowered.mixin"
+    }
     apply plugin: "me.modmuss50.mod-publish-plugin"
 
     // Define the jar output attributes for all platforms
@@ -120,79 +123,56 @@ subprojects {
     // Used to execute code only for specific submodules
     def versionId = Integer.parseInt(mcVersion.replace(".", ""))
 
-    // Java 17 is default, set newer versions here
-    if (versionId >= 1_20_6) {
-        compileJava.setSourceCompatibility("21")
-        compileJava.setTargetCompatibility("21")
-    }
     compileJava.options.encoding = "UTF-8"
 
     dependencies {
         library project(":") // Include the base project
     }
 
-    minecraft {
-        // Unify to mojang mappings for 1.14+, MCP for below
-        if (versionId >= 1_16_5) {
-            mappings channel: "official", version: mcVersion
-        }
+    if (applyFg) {
+        minecraft {
+            runs {
+                client {
+                    workingDirectory project.file("run")
 
-        // Official mappings at runtime for 1.20.5+
-        if (versionId >= 1_20_5) {
-            reobf = false
-        }
+                    property "forge.logging.markers", "REGISTRIES"
+                    property "forge.logging.console.level", "debug"
 
-        runs {
-            client {
-                workingDirectory project.file("run")
+                    // mixin
+                    property "mixin.debug.export", "true"
+                    property "mixin.hotSwap", "true"
+                    property "fml.coreMods.load", "com.viaversion.viaforge.mixin.MixinLoader"
+                    // Only required for MC 1.12, but modern Forges skips this anyway
+                    args "-mixin.config=" + "mixins.viaforge.json"
 
-                property "forge.logging.markers", "REGISTRIES"
-                property "forge.logging.console.level", "debug"
-
-                // mixin
-                property "mixin.debug.export", "true"
-                property "mixin.hotSwap", "true"
-                property "fml.coreMods.load", "com.viaversion.viaforge.mixin.MixinLoader"
-                // Only required for MC 1.12, but modern Forges skips this anyway
-                args "-mixin.config=" + "mixins.viaforge.json"
-
-                // source set
-                mods {
-                    "${project.name}" {
-                        source sourceSets.main
+                    // source set
+                    mods {
+                        "${project.name}" {
+                            source sourceSets.main
+                        }
                     }
                 }
             }
         }
-    }
 
-    sourceSets.main.resources {
-        srcDir "src/generated/resources"
-    }
-
-    dependencies {
-        minecraft "net.minecraftforge:forge:${forge_version}"
-        library "org.slf4j:slf4j-api:2.0.17"
-
-        if (versionId >= 1_16_5 && versionId < 1_20_6) {
-            // Always include for refmap in versions that don't have official mappings at runtime,
-            // later exclude classes to prevent loading conflicts...
-            library "org.spongepowered:mixin:${mixin_version}"
-            annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+        sourceSets.main.resources {
+            srcDir "src/generated/resources"
         }
 
-        if (versionId >= 1_20_6) {
-            // NeoForge, only to compile against
-            compileOnly("net.neoforged.fancymodloader:loader:2.0.20") { transitive = false }
-            compileOnly("net.neoforged:bus:8.0.5") { transitive = false }
+        dependencies {
+            minecraft "net.minecraftforge:forge:${forge_version}"
+
+            if (versionId > 1_8_9) {
+                library "org.slf4j:slf4j-api:2.0.17"
+                library "org.spongepowered:mixin:${mixin_version}"
+                annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+            }
         }
-    }
 
-    mixin {
-        add sourceSets.main, "mixins.viaforge.refmap.json"
-    }
+        mixin {
+            add sourceSets.main, "mixins.viaforge.refmap.json"
+        }
 
-    if (versionId < 1_20_6) { // Use official mappings at runtime, otherwise re-obfuscate output
         reobf {
             shadowJar {}
         }
@@ -239,25 +219,12 @@ subprojects {
     }
 
     shadowJar {
-        if (versionId >= 1_17_1) {
-            archiveFileName = jar.archiveFileName
-        } else {
-            destinationDirectory = temporaryDir
-        }
+        destinationDirectory = temporaryDir
         configurations = [project.configurations.library] // Include the dependencies from the include configuration
         duplicatesStrategy DuplicatesStrategy.EXCLUDE
 
         // Prevent conflicts with Forge's weird service loading
         exclude("META-INF/maven/**")
-        if (versionId >= 1_13_2) {
-            // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
-            exclude("org/spongepowered/**")
-        }
-        if (versionId >= 1_16_5) {
-            // Get rid of the services folder, since Forge 1.16+ would conflict with some of the ForgeDev Environment's services
-            // And since we don't need them for Mixins anyway, we can just exclude them from the shadowJar
-            exclude("META-INF/services/**")
-        }
 
         // Workaround GH-94
         relocate("org.slf4j", "com.viaversion.viaforge.libs.slf4j")
@@ -269,23 +236,49 @@ subprojects {
         logLevel = "FATAL"
     }
 
+    if (!applyFg) {
+        afterEvaluate {
+            // Unimined creates remap tasks later; pick the remapped archive task dynamically.
+            def remapArchiveTask = tasks.findAll {
+                it.name.toLowerCase().contains("remap") && it.hasProperty("archiveFile")
+            }.sort { it.name }.find { it.name.toLowerCase().contains("shadow") } ?: tasks.findAll {
+                it.name.toLowerCase().contains("remap") && it.hasProperty("archiveFile")
+            }.sort { it.name }.find()
+
+            if (remapArchiveTask == null) {
+                throw new GradleException("No remap archive task found for ${project.path}")
+            }
+
+            tasks.named("downgradeJar") {
+                dependsOn(remapArchiveTask)
+                inputFile = remapArchiveTask.archiveFile
+            }
+
+            // remapJar (from the dev jar) can overwrite the release artifact path in build/libs.
+            def remapDevJarTask = tasks.findByName("remapJar")
+            if (remapDevJarTask != null) {
+                remapDevJarTask.enabled = false
+            }
+
+            tasks.matching { it.name == "publishCurseforge" || it.name == "publishModrinth" || it.name == "publishMods" }.configureEach {
+                dependsOn(remapArchiveTask)
+                dependsOn(tasks.named("shadeDowngradedApi"))
+            }
+        }
+    }
+
     shadeDowngradedApi {
-        archiveFileName = jar.archiveFileName
+        // Keep publish artifact stable across toolchains; Unimined jar names can carry a -dev classifier.
+        archiveFileName = "${project.name}-${project.version}.jar"
         logLevel = "FATAL"
     }
 
     jar.dependsOn("shadowJar")
-    if (versionId < 1_17_1) {
-        // Downgrade the jar to Java 8 for Minecraft 1.16.5 and below
-        jar.dependsOn("shadeDowngradedApi")
-    }
+    // Downgrade the jar to Java 8 for Minecraft 1.16.5 and below
+    jar.dependsOn("shadeDowngradedApi")
 
     publishMods {
-        if (versionId < 1_17_1) { // FG's reobfuscation will rename the jar in place, so use the one *before* finalizing the jar
-            file = tasks.shadeDowngradedApi.archiveFile
-        } else {
-            file = tasks.shadowJar.archiveFile
-        }
+        file = tasks.shadeDowngradedApi.archiveFile
         def commitHash = latestCommitHash(rootProject)
         def commitMessage = latestCommitMessage(rootProject).replaceAll("\\s+", " ").trim()
         if (commitHash == "unknown" || commitMessage == "unknown") {
@@ -296,22 +289,13 @@ subprojects {
         version = project.version.toString() + "+" + mcVersion
         displayName = version
         modLoaders.add("forge")
-        if (versionId == 1_20_1 || versionId >= 1_20_6) {
-            modLoaders.add("neoforge")
-        }
         type = ReleaseType.ALPHA
 
         curseforge {
             accessToken = System.getenv("CURSEFORGE_TOKEN")
             projectId = "418933"
 
-            if (versionId < 1_17_1) {
-                javaVersions.add(JavaVersion.VERSION_1_8)
-            } else if (versionId < 1_20_6) {
-                javaVersions.add(JavaVersion.VERSION_17)
-            } else {
-                javaVersions.add(JavaVersion.VERSION_21)
-            }
+            javaVersions.add(JavaVersion.VERSION_1_8)
             minecraftVersions.add(mcVersion.toString())
 
             clientRequired = true
