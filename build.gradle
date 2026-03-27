@@ -300,12 +300,9 @@ subprojects {
             modLoaders.add("neoforge")
         }
         type = ReleaseType.ALPHA
-        dryRun = !rootProject.hasProperty("curseforge_publish_token") || !rootProject.hasProperty("modrinth_publish_token")
 
         curseforge {
-            if (rootProject.hasProperty("curseforge_publish_token")) {
-                accessToken = rootProject.property("curseforge_publish_token")
-            }
+            accessToken = System.getenv("CURSEFORGE_TOKEN")
             projectId = "418933"
 
             if (versionId < 1_17_1) {
@@ -320,9 +317,7 @@ subprojects {
             clientRequired = true
         }
         modrinth {
-            if (rootProject.hasProperty("modrinth_publish_token")) {
-                accessToken = rootProject.property("modrinth_publish_token")
-            }
+            accessToken = System.getenv("MODRINTH_TOKEN")
             projectId = "Z6se2s8f"
 
             minecraftVersions.add(mcVersion.toString())
