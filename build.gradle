@@ -66,11 +66,11 @@ allprojects {
     }
 
     dependencies {
-        library "com.viaversion:viaversion-common:5.7.2-SNAPSHOT"
-        library "com.viaversion:viabackwards-common:5.7.2-SNAPSHOT"
-        library "com.viaversion:viarewind-common:4.0.14"
-        library "com.viaversion:viaaprilfools-common:4.0.8"
-        library ("net.raphimc:ViaLegacy:3.0.13") {
+        library "com.viaversion:viaversion-common:5.8.0"
+        library "com.viaversion:viabackwards-common:5.8.0"
+        library "com.viaversion:viarewind-common:4.0.9"
+        library "com.viaversion:viaaprilfools-common:4.1.0"
+        library ("net.raphimc:ViaLegacy:3.0.14") {
             exclude group: "com.google.code.gson", module: "gson"
         }
     }
