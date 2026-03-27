@@ -1,5 +1,29 @@
 import me.modmuss50.mpp.ReleaseType
 
+String runGitCommand(Project project, List<String> args) {
+    try {
+        def output = new ByteArrayOutputStream()
+        project.exec {
+            commandLine(["git"] + args)
+            standardOutput = output
+            ignoreExitValue = true
+        }
+
+        def result = output.toString("UTF-8").trim()
+        return result ? result : "unknown"
+    } catch (Exception ignored) {
+        return "unknown"
+    }
+}
+
+String latestCommitHash(Project project) {
+    return runGitCommand(project, ["rev-parse", "--short", "HEAD"])
+}
+
+String latestCommitMessage(Project project) {
+    return runGitCommand(project, ["log", "-1", "--pretty=%B"])
+}
+
 buildscript {
     // Unify build logic of all submodules in here, ugly but easier since we have to deal with a lot random stuff
     repositories {
@@ -262,7 +286,13 @@ subprojects {
         } else {
             file = tasks.shadowJar.archiveFile
         }
-        changelog = "A changelog can be found at https://github.com/ViaVersion/ViaForge/commits"
+        def commitHash = latestCommitHash(rootProject)
+        def commitMessage = latestCommitMessage(rootProject).replaceAll("\\s+", " ").trim()
+        if (commitHash == "unknown" || commitMessage == "unknown") {
+            changelog = "A changelog can be found at https://github.com/ViaVersion/ViaForge/commits"
+        } else {
+            changelog = "[${commitHash}](https://github.com/ViaVersion/ViaForge/commit/${commitHash}) ${commitMessage}"
+        }
         version = project.version.toString() + "+" + mcVersion
         displayName = version
         modLoaders.add("forge")
