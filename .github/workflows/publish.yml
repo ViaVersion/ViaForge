@@ -2,7 +2,7 @@ name: Publish to CurseForge and Modrinth
 on:
   push:
     branches:
-      - ver/1.16-1.21
+      - ver/1.8-1.12
   workflow_dispatch:
 permissions:
   contents: read
