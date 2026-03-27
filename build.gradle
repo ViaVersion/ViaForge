@@ -83,10 +83,10 @@ subprojects {
 
     // Define the jar output attributes for all platforms
     base {
-        group = project.maven_group
+        group = "com.viaversion"
         archivesName = project.name
-        version = project.maven_version
-        description = project.maven_description
+        version = "4.4.0+" + (System.getenv("GITHUB_RUN_NUMBER") ?: "unknown")
+        description = "Client-side ViaVersion implementation for MinecraftForge and NeoForge"
     }
 
     // Get the game version (1.16.5) from the forge version
@@ -107,72 +107,70 @@ subprojects {
         library project(":") // Include the base project
     }
 
-    if (applyFg) {
-        minecraft {
-            // Unify to mojang mappings for 1.14+, MCP for below
-            if (versionId >= 1_16_5) {
-                mappings channel: "official", version: mcVersion
-            }
+    minecraft {
+        // Unify to mojang mappings for 1.14+, MCP for below
+        if (versionId >= 1_16_5) {
+            mappings channel: "official", version: mcVersion
+        }
 
-            // Official mappings at runtime for 1.20.5+
-            if (versionId >= 1_20_5) {
-                reobf = false
-            }
+        // Official mappings at runtime for 1.20.5+
+        if (versionId >= 1_20_5) {
+            reobf = false
+        }
 
-            runs {
-                client {
-                    workingDirectory project.file("run")
+        runs {
+            client {
+                workingDirectory project.file("run")
 
-                    property "forge.logging.markers", "REGISTRIES"
-                    property "forge.logging.console.level", "debug"
+                property "forge.logging.markers", "REGISTRIES"
+                property "forge.logging.console.level", "debug"
 
-                    // mixin
-                    property "mixin.debug.export", "true"
-                    property "mixin.hotSwap", "true"
-                    property "fml.coreMods.load", "com.viaversion.viaforge.mixin.MixinLoader"
-                    // Only required for MC 1.12, but modern Forges skips this anyway
-                    args "-mixin.config=" + "mixins.viaforge.json"
+                // mixin
+                property "mixin.debug.export", "true"
+                property "mixin.hotSwap", "true"
+                property "fml.coreMods.load", "com.viaversion.viaforge.mixin.MixinLoader"
+                // Only required for MC 1.12, but modern Forges skips this anyway
+                args "-mixin.config=" + "mixins.viaforge.json"
 
-                    // source set
-                    mods {
-                        "${project.name}" {
-                            source sourceSets.main
-                        }
+                // source set
+                mods {
+                    "${project.name}" {
+                        source sourceSets.main
                     }
                 }
             }
         }
+    }
 
-        sourceSets.main.resources {
-            srcDir "src/generated/resources"
+    sourceSets.main.resources {
+        srcDir "src/generated/resources"
+    }
+
+    dependencies {
+        minecraft "net.minecraftforge:forge:${forge_version}"
+        library "org.slf4j:slf4j-api:2.0.17"
+
+        if (versionId >= 1_16_5 && versionId < 1_20_6) {
+            // Always include for refmap in versions that don't have official mappings at runtime,
+            // later exclude classes to prevent loading conflicts...
+            library "org.spongepowered:mixin:${mixin_version}"
+            annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
         }
 
-        dependencies {
-            minecraft "net.minecraftforge:forge:${forge_version}"
-            library "org.slf4j:slf4j-api:2.0.17"
-
-            if (versionId >= 1_16_5 && versionId < 1_20_6) {
-                // Always include for refmap in versions that don't have official mappings at runtime,
-                // later exclude classes to prevent loading conflicts...
-                library "org.spongepowered:mixin:${mixin_version}"
-                annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-            }
-
-            if (versionId >= 1_20_6) {
-                // NeoForge, only to compile against
-                compileOnly("net.neoforged.fancymodloader:loader:2.0.20") { transitive = false }
-                compileOnly("net.neoforged:bus:8.0.5") { transitive = false }
-            }
+        if (versionId >= 1_20_6) {
+            // NeoForge, only to compile against
+            compileOnly("net.neoforged.fancymodloader:loader:2.0.20") { transitive = false }
+            compileOnly("net.neoforged:bus:8.0.5") { transitive = false }
         }
+    }
 
-        mixin {
-            add sourceSets.main, "mixins.viaforge.refmap.json"
-        }
+    mixin {
+        add sourceSets.main, "mixins.viaforge.refmap.json"
+    }
 
-        if (versionId < 1_20_6) { // Use official mappings at runtime, otherwise re-obfuscate output
-            reobf {
-                shadowJar {}
-            }
+    if (versionId < 1_20_6) { // Use official mappings at runtime, otherwise re-obfuscate output
+        reobf {
+            shadowJar {}
         }
     }
 
@@ -271,7 +269,7 @@ subprojects {
         if (versionId == 1_20_1 || versionId >= 1_20_6) {
             modLoaders.add("neoforge")
         }
-        type = ReleaseType.STABLE
+        type = ReleaseType.ALPHA
         dryRun = !rootProject.hasProperty("curseforge_publish_token") || !rootProject.hasProperty("modrinth_publish_token")
 
         curseforge {
@@ -315,7 +313,7 @@ apply plugin: "net.raphimc.class-token-replacer"
 sourceSets {
     main {
         classTokenReplacer {
-            property("\${version}", project.maven_version)
+            property("\${version}", project.version)
         }
     }
 }
