@@ -77,11 +77,8 @@ allprojects {
 }
 
 subprojects {
-    def applyFg = project.hasProperty("applyFg") ? Boolean.parseBoolean(project.applyFg) : true
-    if (applyFg) {
-        apply plugin: "net.minecraftforge.gradle"
-        apply plugin: "org.spongepowered.mixin"
-    }
+    apply plugin: "net.minecraftforge.gradle"
+    apply plugin: "org.spongepowered.mixin"
     apply plugin: "me.modmuss50.mod-publish-plugin"
 
     // Define the jar output attributes for all platforms
@@ -154,7 +151,7 @@ subprojects {
             minecraft "net.minecraftforge:forge:${forge_version}"
             library "org.slf4j:slf4j-api:2.0.17"
 
-            if (versionId > 1_8_9 && versionId < 1_20_6) {
+            if (versionId >= 1_16_5 && versionId < 1_20_6) {
                 // Always include for refmap in versions that don't have official mappings at runtime,
                 // later exclude classes to prevent loading conflicts...
                 library "org.spongepowered:mixin:${mixin_version}"
@@ -230,10 +227,6 @@ subprojects {
 
         // Prevent conflicts with Forge's weird service loading
         exclude("META-INF/maven/**")
-        if (versionId <= 1_12_2) {
-            exclude("META-INF/versions/**")
-        }
-
         if (versionId >= 1_13_2) {
             // We don't need to package mixins into Forge 1.13+ jars, since Forge already has it
             exclude("org/spongepowered/**")
@@ -266,18 +259,12 @@ subprojects {
     }
 
     publishMods {
-        if (project.name == "viaforge-mc189") { // Special handle module...
-            def folder = project.file("publishMods")
-            if (!folder.exists() || folder.listFiles().length != 1) {
-                return
-            }
-            file = folder.listFiles()[0]
-        } else if (versionId < 1_17_1) { // FG's reobfuscation will rename the jar in place, so use the one *before* finalizing the jar
+        if (versionId < 1_17_1) { // FG's reobfuscation will rename the jar in place, so use the one *before* finalizing the jar
             file = tasks.shadeDowngradedApi.archiveFile
         } else {
             file = tasks.shadowJar.archiveFile
         }
-        changelog = rootProject.file("CHANGELOG").text
+        changelog = "A changelog can be found at https://github.com/ViaVersion/ViaForge/commits"
         version = project.version.toString() + "+" + mcVersion
         displayName = version
         modLoaders.add("forge")
