@@ -14,11 +14,24 @@
 
 ## How to (Users)
 
+If you are using the latest Minecraft version and care about the gameplay being more enjoyable/functional, you may want
+to
+check [ViaFabricPlus](https://modrinth.com/mod/viafabricplus) out.
+
 ### Supported Client versions
 
-ViaForge can be installed on 1.8.9, 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2, 1.19.4, 1.20.1, 1.20.4, 1.20.6 and 1.21.11
-Forge,
-and 1.20.1, 1.20.6, 1.21.11 NeoForge client versions. <br>
+- Minecraft 26.x+ versions
+- 1.16.5 – 1.21.11
+- 1.8.9 / 1.12.2
+  using the Forge or NeoForge (1.20.1+) Loader.
+
+For each year, there is a versioned branch named after that year (for example, `ver/26.x`). Each yearly branch contains
+all `26.x` releases published during that year.
+
+Additional version branches
+
+- `ver/1.16-1.21`
+- `ver/1.8-1.12`
 
 ## Supported Server versions
 
@@ -55,3 +68,9 @@ to retrieve a player's protocol version via plugin messages, which can be useful
 version-dependent logic.
 For more details on how to use this feature, see
 the [Server and Player Details Protocol wiki](https://github.com/ViaVersion/ViaVersion/wiki/Server-and-Player-Details-Protocol).
+
+## Disclaimer
+
+It cannot be guaranteed that this mod is allowed on specific servers as it can possibly cause problems with anti-cheat
+plugins.\
+***(USE ONLY WITH CAUTION!)***
