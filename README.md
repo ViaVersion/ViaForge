@@ -1,3 +1,11 @@
+# This project has been archived!
+
+Forge and NeoForge ViaVersion have seen almost no use in recent months, aside from some very old client versions.
+Keeping the project updated and working has become increasingly time-consuming, and it’s no longer worth the effort.
+
+Please consider switching to the [FabricMC mod loader](https://fabricmc.net/)
+with [one of our Fabric platforms](https://viaversion.com/), or use [ViaProxy](https://github.com/ViaVersion/ViaProxy).
+
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
   <img src="https://raw.githubusercontent.com/ViaVersion/ViaForge/master/src/main/resources/icon.png" width="150" alt="ViaForge logo">
